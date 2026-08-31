@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  guia-desarrollo-guiado:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: guia-desarrollo-guiado-web
+    ports:
+      - "8148:80"
+    restart: unless-stopped
