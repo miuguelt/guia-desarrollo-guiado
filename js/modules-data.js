@@ -358,6 +358,9 @@ window.MODULES_DATA = [
           </div>
         </div>
 
+        <!-- Vista Previa en Vivo del Estilo Seleccionado -->
+        <div id="stitch-custom-style-preview" style="margin-top: 1rem;"></div>
+
         <div class="code-container" style="margin-top: 1.25rem;">
           <div class="code-header">
             <span>PROMPT_STITCH_PERSONALIZADO.md</span>

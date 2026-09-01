@@ -1184,6 +1184,14 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
           <span class="style-category-tag">${s.categoryLabel}</span>
         </div>
 
+        <div class="style-preview-wrapper">
+          <div class="style-preview-header">
+            <span>👁️ Vista Previa</span>
+            <span class="preview-mode-tag">UI Snippet</span>
+          </div>
+          ${this.getStylePreviewHtml(s.id)}
+        </div>
+
         <p class="style-desc">${s.desc}</p>
 
         <div class="style-details">
@@ -1205,6 +1213,669 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         </div>
       </div>
     `).join('');
+  },
+
+  // Generador de vistas previas visuales enriquecidas para los 40 estilos
+  getStylePreviewHtml: function(styleId) {
+    switch (styleId) {
+      case "minimalismo":
+        return `
+          <div class="style-preview-box preview-minimalismo">
+            <div class="mini-ui-card min-card">
+              <div class="min-header">
+                <span class="min-dot"></span>
+                <span class="min-title">Workspace</span>
+                <span class="min-badge">v1.0</span>
+              </div>
+              <div class="min-body">
+                <span class="min-subtext">Active Projects</span>
+                <div class="min-metric">$12,450 <span>/ mo</span></div>
+              </div>
+              <button class="min-btn">Explore →</button>
+            </div>
+          </div>
+        `;
+      case "glasmorfismo":
+        return `
+          <div class="style-preview-box preview-glasmorfismo">
+            <div class="glass-orb glass-orb-1"></div>
+            <div class="glass-orb glass-orb-2"></div>
+            <div class="mini-ui-card glass-card">
+              <div class="glass-header">
+                <span class="glass-badge">✨ Glass Panel</span>
+                <span class="glass-chip">Active</span>
+              </div>
+              <div class="glass-metric">$28,940.00</div>
+              <div class="glass-footer">
+                <div class="glass-progress-track"><div class="glass-progress-bar"></div></div>
+                <span class="glass-tag">84%</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "brutalismo":
+        return `
+          <div class="style-preview-box preview-brutalismo">
+            <div class="mini-ui-card brutal-card">
+              <div class="brutal-header">
+                <span class="brutal-badge">WARNING!</span>
+                <span class="brutal-cross">✖</span>
+              </div>
+              <div class="brutal-title">RAW & BOLD</div>
+              <button class="brutal-btn">CLICK HERE ➔</button>
+            </div>
+          </div>
+        `;
+      case "neomorfismo":
+        return `
+          <div class="style-preview-box preview-neomorfismo">
+            <div class="mini-ui-card neumorph-card">
+              <div class="neumorph-row">
+                <div class="neumorph-circle-btn active">⚡</div>
+                <div class="neumorph-indicator"><div class="neumorph-led"></div></div>
+                <div class="neumorph-circle-btn">⚙️</div>
+              </div>
+              <div class="neumorph-slider-track">
+                <div class="neumorph-slider-thumb"></div>
+              </div>
+              <div class="neumorph-inset-pill">78.5% LEVEL</div>
+            </div>
+          </div>
+        `;
+      case "skeuomorfismo":
+        return `
+          <div class="style-preview-box preview-skeuomorfismo">
+            <div class="mini-ui-card skeuo-card">
+              <div class="skeuo-metal-plate">
+                <div class="skeuo-screw top-l"></div><div class="skeuo-screw top-r"></div>
+                <div class="skeuo-dial-container">
+                  <div class="skeuo-dial-knob">
+                    <div class="skeuo-dial-indicator"></div>
+                  </div>
+                  <div class="skeuo-switch-box">
+                    <div class="skeuo-rocker active"><span class="skeuo-led-red"></span>ON</div>
+                  </div>
+                </div>
+                <div class="skeuo-screw bot-l"></div><div class="skeuo-screw bot-r"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "material-design":
+        return `
+          <div class="style-preview-box preview-material">
+            <div class="mini-ui-card md-surface">
+              <div class="md-appbar">
+                <span class="md-title">Material You</span>
+                <span class="md-chip">Tonal</span>
+              </div>
+              <div class="md-content">
+                <div class="md-chips-row">
+                  <span class="md-pill-chip active">Starred</span>
+                  <span class="md-pill-chip">Recent</span>
+                </div>
+              </div>
+              <button class="md-fab">+</button>
+            </div>
+          </div>
+        `;
+      case "flat-design":
+        return `
+          <div class="style-preview-box preview-flat">
+            <div class="mini-ui-card flat-card">
+              <div class="flat-row">
+                <div class="flat-badge-red">NEW</div>
+                <div class="flat-badge-teal">DOCS</div>
+                <div class="flat-badge-yellow">★ 4.9</div>
+              </div>
+              <div class="flat-bar-grid">
+                <div class="flat-bar f-coral" style="width: 70%;"></div>
+                <div class="flat-bar f-teal" style="width: 45%;"></div>
+                <div class="flat-bar f-amber" style="width: 85%;"></div>
+              </div>
+              <button class="flat-btn">SUBMIT</button>
+            </div>
+          </div>
+        `;
+      case "fluent-design":
+        return `
+          <div class="style-preview-box preview-fluent">
+            <div class="mini-ui-card fluent-acrylic">
+              <div class="fluent-header">
+                <div class="fluent-icon">🪟</div>
+                <span class="fluent-title">Fluent Acrylic</span>
+                <span class="fluent-pill">Mica UI</span>
+              </div>
+              <div class="fluent-body">
+                <div class="fluent-tile active">
+                  <span class="fluent-tile-bar"></span>
+                  <span>Storage Cloud</span>
+                </div>
+                <div class="fluent-tile">
+                  <span>Security Hub</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "cyberpunk":
+        return `
+          <div class="style-preview-box preview-cyberpunk">
+            <div class="cyber-grid-bg"></div>
+            <div class="mini-ui-card cyber-card">
+              <div class="cyber-header">
+                <span class="cyber-tag">// NIGHT_CITY.SYS</span>
+                <span class="cyber-fps">99 FPS</span>
+              </div>
+              <div class="cyber-hud-metric">
+                <span class="cyber-neon-cyan">SYNAPSE</span>
+                <span class="cyber-neon-pink">OVERLOAD 94%</span>
+              </div>
+              <div class="cyber-bar-track"><div class="cyber-bar-fill"></div></div>
+            </div>
+          </div>
+        `;
+      case "retro-vintage":
+        return `
+          <div class="style-preview-box preview-vintage">
+            <div class="mini-ui-card vintage-card">
+              <div class="vintage-border-inner">
+                <div class="vintage-stamp">EST. 1984</div>
+                <div class="vintage-title">The Artisan Press</div>
+                <div class="vintage-subtitle">★ HERITAGE CRAFT ★</div>
+                <div class="vintage-divider">❖ ❖ ❖</div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "y2k":
+        return `
+          <div class="style-preview-box preview-y2k">
+            <div class="mini-ui-card y2k-card">
+              <div class="y2k-stars">✦ ✧ ✦</div>
+              <div class="y2k-bubble-badge">CYBER GIRLIE 2000</div>
+              <div class="y2k-btn-bubble">
+                <span>CLICK ME! ✨</span>
+              </div>
+              <div class="y2k-sticker">★ WINNER ★</div>
+            </div>
+          </div>
+        `;
+      case "memphis-design":
+        return `
+          <div class="style-preview-box preview-memphis">
+            <div class="memphis-shape shape-triangle"></div>
+            <div class="memphis-shape shape-zigzag">〰️</div>
+            <div class="memphis-shape shape-circle"></div>
+            <div class="mini-ui-card memphis-card">
+              <div class="memphis-header">
+                <span class="memphis-pill">POP 80s</span>
+                <span class="memphis-dot-grid">:::</span>
+              </div>
+              <div class="memphis-title">CREATIVE STUDIO</div>
+              <button class="memphis-btn">EXPLORE ⚡</button>
+            </div>
+          </div>
+        `;
+      case "bento-grid":
+        return `
+          <div class="style-preview-box preview-bento">
+            <div class="bento-mini-grid">
+              <div class="bento-cell bento-main">
+                <span class="bento-label">Growth</span>
+                <span class="bento-val">+34.8%</span>
+                <div class="bento-sparkline"><div class="bento-wave"></div></div>
+              </div>
+              <div class="bento-cell bento-stat">
+                <span class="bento-icon">⚡</span>
+                <span class="bento-sub">99.9%</span>
+              </div>
+              <div class="bento-cell bento-users">
+                <span class="bento-icon">👥</span>
+                <span class="bento-sub">1.2k</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "editorial-magazine":
+        return `
+          <div class="style-preview-box preview-editorial">
+            <div class="mini-ui-card editorial-card">
+              <div class="editorial-topline">VOLUME VII · ISSUE 04</div>
+              <div class="editorial-headline">L’Élégance Moderne</div>
+              <div class="editorial-cols">
+                <div class="editorial-col"><span class="dropcap">A</span>rchitecture & form.</div>
+                <div class="editorial-col">Minimal spatial typography.</div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "organic-natural":
+        return `
+          <div class="style-preview-box preview-organic">
+            <div class="organic-leaf-bg"></div>
+            <div class="mini-ui-card organic-card">
+              <div class="organic-header">
+                <span class="organic-badge">🌿 Botánica</span>
+                <span class="organic-zen">Zen Mode</span>
+              </div>
+              <div class="organic-title">Flora & Tierra</div>
+              <div class="organic-pill-row">
+                <span class="organic-pill">Sage</span>
+                <span class="organic-pill">Clay</span>
+                <span class="organic-pill">Linen</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "futurista":
+        return `
+          <div class="style-preview-box preview-futurista">
+            <div class="mini-ui-card scifi-card">
+              <div class="scifi-header">
+                <div class="scifi-radar"><div class="scifi-sweep"></div></div>
+                <div class="scifi-telemetry">
+                  <span class="scifi-label">TELEMETRY_LINK</span>
+                  <span class="scifi-coords">45.892° N / 12.041° W</span>
+                </div>
+              </div>
+              <div class="scifi-data-row">
+                <span class="scifi-status">[SECURE_LOCK]</span>
+                <span class="scifi-val">99.42% OK</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "dashboard-saas":
+        return `
+          <div class="style-preview-box preview-saas">
+            <div class="mini-ui-card saas-card">
+              <div class="saas-header">
+                <span class="saas-metric-title">MRR Revenue</span>
+                <span class="saas-growth-badge">+24.5% ↑</span>
+              </div>
+              <div class="saas-metric-val">$48,250</div>
+              <div class="saas-chart-bars">
+                <span style="height: 40%"></span>
+                <span style="height: 65%"></span>
+                <span style="height: 50%"></span>
+                <span style="height: 85%"></span>
+                <span style="height: 100%"></span>
+                <span style="height: 75%"></span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "dark-ui":
+        return `
+          <div class="style-preview-box preview-darkui">
+            <div class="mini-ui-card darkui-card">
+              <div class="darkui-header">
+                <span class="darkui-dot"></span>
+                <span class="darkui-title">Deep Slate Pro</span>
+                <span class="darkui-pill">#0b0f19</span>
+              </div>
+              <div class="darkui-grid">
+                <div class="darkui-item active"><span class="darkui-led green"></span>Server Active</div>
+                <div class="darkui-item"><span class="darkui-led purple"></span>AI Pipeline</div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "aurora-gradient":
+        return `
+          <div class="style-preview-box preview-aurora">
+            <div class="aurora-glow glow-1"></div>
+            <div class="aurora-glow glow-2"></div>
+            <div class="aurora-glow glow-3"></div>
+            <div class="mini-ui-card aurora-card">
+              <div class="aurora-badge">🌌 Celestial Glow</div>
+              <div class="aurora-title">Aurora Lumina</div>
+              <div class="aurora-pill">Cosmic Deep Blur</div>
+            </div>
+          </div>
+        `;
+      case "motion-interactive":
+        return `
+          <div class="style-preview-box preview-motion">
+            <div class="mini-ui-card motion-card">
+              <div class="motion-row">
+                <div class="motion-pulse-dot"></div>
+                <span class="motion-text">Live Interactive</span>
+                <div class="motion-toggle active"><div class="motion-toggle-handle"></div></div>
+              </div>
+              <div class="motion-bar-track">
+                <div class="motion-bar-elastic"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "liquid-ui":
+        return `
+          <div class="style-preview-box preview-liquid">
+            <div class="liquid-wave-bg"></div>
+            <div class="mini-ui-card liquid-card">
+              <div class="liquid-blob">💧 Fluid Motion</div>
+              <div class="liquid-title">Oceanic Flow</div>
+              <div class="liquid-pills">
+                <span class="liquid-pill">Wave 01</span>
+                <span class="liquid-pill">Wave 02</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "claymorphism":
+        return `
+          <div class="style-preview-box preview-clay">
+            <div class="mini-ui-card clay-card">
+              <div class="clay-badge">🧸 3D Clay</div>
+              <div class="clay-pill-btn">
+                <span>Inflated Button</span>
+              </div>
+              <div class="clay-tag-row">
+                <span class="clay-tag c-mint">Mint</span>
+                <span class="clay-tag c-lilac">Lilac</span>
+                <span class="clay-tag c-peach">Peach</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "pixel-art":
+        return `
+          <div class="style-preview-box preview-pixel">
+            <div class="mini-ui-card pixel-card">
+              <div class="pixel-header">
+                <span class="pixel-title">RETRO QUEST</span>
+                <span class="pixel-score">1UP: 4200</span>
+              </div>
+              <div class="pixel-hp-row">
+                <span class="pixel-label">HP:</span>
+                <div class="pixel-hp-bar">
+                  <span class="pixel-hp-chunk filled"></span>
+                  <span class="pixel-hp-chunk filled"></span>
+                  <span class="pixel-hp-chunk filled"></span>
+                  <span class="pixel-hp-chunk empty"></span>
+                </div>
+              </div>
+              <div class="pixel-btn">▶ START</div>
+            </div>
+          </div>
+        `;
+      case "terminal-hacker":
+        return `
+          <div class="style-preview-box preview-terminal">
+            <div class="mini-ui-card term-card">
+              <div class="term-header">
+                <span class="term-dot r"></span><span class="term-dot y"></span><span class="term-dot g"></span>
+                <span class="term-title">bash - root@sys: ~</span>
+              </div>
+              <div class="term-code">
+                <span class="term-prompt">$</span> curl -s api/v1/auth<br/>
+                <span class="term-success">[OK 200]</span> token=0x9f8c...<br/>
+                <span class="term-prompt">$</span> deploy --prod<span class="term-cursor">_</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "kinetic-typography":
+        return `
+          <div class="style-preview-box preview-kinetic">
+            <div class="kinetic-strip strip-1">
+              <span>KINETIC TYPE · MAXIMUM IMPACT · DESIGN · </span>
+            </div>
+            <div class="kinetic-strip strip-2">
+              <span>VOLTAGE 100% · BOLD VISION · AGILITY · </span>
+            </div>
+            <div class="kinetic-badge">KINETIC UI</div>
+          </div>
+        `;
+      case "maximalismo":
+        return `
+          <div class="style-preview-box preview-maximalism">
+            <div class="maxi-bg-pattern"></div>
+            <div class="maxi-sticker sticker-1">🔥 HOT!</div>
+            <div class="maxi-sticker sticker-2">⚡ 100%</div>
+            <div class="mini-ui-card maxi-card">
+              <div class="maxi-title">CHAOS & COLOR</div>
+              <span class="maxi-badge">EXTRA VISUAL</span>
+            </div>
+          </div>
+        `;
+      case "hand-drawn":
+        return `
+          <div class="style-preview-box preview-handdrawn">
+            <div class="mini-ui-card sketch-card">
+              <div class="sketch-header">
+                <span class="sketch-title">✏️ Idea Canvas</span>
+                <span class="sketch-arrow">➔</span>
+              </div>
+              <div class="sketch-note">
+                <div class="sketch-pin">📌</div>
+                <span>MVP Roadmap!</span>
+              </div>
+              <div class="sketch-btn">Hand-Made</div>
+            </div>
+          </div>
+        `;
+      case "monochromatic":
+        return `
+          <div class="style-preview-box preview-monochrome">
+            <div class="mini-ui-card mono-card">
+              <div class="mono-layer mono-l1">
+                <span class="mono-tag">Pure Cobalt Palette</span>
+                <div class="mono-layer mono-l2">
+                  <span class="mono-text">Tonal Depth</span>
+                  <div class="mono-layer mono-l3">
+                    <span class="mono-badge">#38bdf8</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "3d-ui":
+        return `
+          <div class="style-preview-box preview-3d">
+            <div class="mini-ui-card isoflex-stage">
+              <div class="iso-cube">
+                <div class="iso-face top"></div>
+                <div class="iso-face left"></div>
+                <div class="iso-face right"></div>
+              </div>
+              <div class="iso-floating-badge">3D Isometric</div>
+            </div>
+          </div>
+        `;
+      case "ai-generative":
+        return `
+          <div class="style-preview-box preview-aigen">
+            <div class="mini-ui-card aigen-card">
+              <div class="aigen-header">
+                <span class="aigen-sparkle">✨</span>
+                <span class="aigen-title">Gemini Neural Studio</span>
+                <span class="aigen-badge">Live</span>
+              </div>
+              <div class="aigen-prompt-pill">
+                <span>"Crea un dashboard RLS..."</span>
+                <span class="aigen-run-dot"></span>
+              </div>
+              <div class="aigen-chips">
+                <span class="aigen-chip">⚡ SQL Gen</span>
+                <span class="aigen-chip">🎨 Stitch UI</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "liquid-glass":
+        return `
+          <div class="style-preview-box preview-liquidglass">
+            <div class="liqglass-glow"></div>
+            <div class="mini-ui-card liqglass-card">
+              <div class="liqglass-specular"></div>
+              <div class="liqglass-header">
+                <span class="liqglass-diamond">💎</span>
+                <span class="liqglass-title">Liquid Refraction</span>
+              </div>
+              <div class="liqglass-balance">$104,820</div>
+              <div class="liqglass-badge">Ultra-Luxe Glass</div>
+            </div>
+          </div>
+        `;
+      case "paper-ui":
+        return `
+          <div class="style-preview-box preview-paper">
+            <div class="mini-ui-card paper-sheet">
+              <div class="paper-folder-tab">ARCHIVE_01</div>
+              <div class="paper-lines">
+                <div class="paper-line l1"></div>
+                <div class="paper-line l2"></div>
+                <div class="paper-line l3"></div>
+              </div>
+              <div class="paper-stamp">CONFIDENTIAL</div>
+            </div>
+          </div>
+        `;
+      case "gradient-mesh":
+        return `
+          <div class="style-preview-box preview-gradmesh">
+            <div class="gradmesh-mesh"></div>
+            <div class="mini-ui-card gradmesh-card">
+              <div class="gradmesh-header">
+                <span class="gradmesh-badge">🌈 Mesh 4D</span>
+                <span class="gradmesh-pill">Vibrant</span>
+              </div>
+              <div class="gradmesh-title">Chromatic Fluid</div>
+            </div>
+          </div>
+        `;
+      case "frosted-ui":
+        return `
+          <div class="style-preview-box preview-frosted">
+            <div class="frosted-ice-bg"></div>
+            <div class="mini-ui-card frosted-glass">
+              <div class="frosted-header">
+                <span class="frosted-snowflake">❄️</span>
+                <span class="frosted-title">Glacial Frost</span>
+                <span class="frosted-temp">-6°C</span>
+              </div>
+              <div class="frosted-body">
+                <div class="frosted-bar"></div>
+                <span class="frosted-tag">Ice Crystal Glass</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "neo-brutalism":
+        return `
+          <div class="style-preview-box preview-neobrutal">
+            <div class="mini-ui-card neobrutal-card">
+              <div class="neobrutal-tag">★ GUMROAD STYLE ★</div>
+              <div class="neobrutal-title">NEO-BRUTAL</div>
+              <button class="neobrutal-btn">BUY $19 ➔</button>
+            </div>
+          </div>
+        `;
+      case "scroll-based":
+        return `
+          <div class="style-preview-box preview-scrolly">
+            <div class="mini-ui-card scrolly-card">
+              <div class="scrolly-track">
+                <div class="scrolly-dot active"></div>
+                <div class="scrolly-dot"></div>
+                <div class="scrolly-dot"></div>
+              </div>
+              <div class="scrolly-content">
+                <span class="scrolly-badge">Chapter 02</span>
+                <div class="scrolly-title">Scrollytelling UI</div>
+                <span class="scrolly-hint">↓ Scroll to reveal</span>
+              </div>
+            </div>
+          </div>
+        `;
+      case "microinteractions":
+        return `
+          <div class="style-preview-box preview-micro">
+            <div class="mini-ui-card micro-card">
+              <div class="micro-row">
+                <div class="micro-check-badge">✓ Done</div>
+                <div class="micro-haptic-pill">Haptic Feedback</div>
+              </div>
+              <div class="micro-interactive-row">
+                <div class="micro-heart active">❤️ <span class="micro-count">842</span></div>
+                <div class="micro-tooltip-box">Copied! 🚀</div>
+              </div>
+            </div>
+          </div>
+        `;
+      case "data-visualization":
+        return `
+          <div class="style-preview-box preview-dataviz">
+            <div class="mini-ui-card dataviz-card">
+              <div class="dataviz-header">
+                <span class="dataviz-title">BI Analytics</span>
+                <span class="dataviz-kpi">▲ +19.4%</span>
+              </div>
+              <div class="dataviz-svg-wrap">
+                <svg class="dataviz-chart" viewBox="0 0 160 40">
+                  <path d="M0,35 Q30,10 60,25 T120,8 T160,18" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+                  <path d="M0,35 Q30,10 60,25 T120,8 T160,18 L160,40 L0,40 Z" fill="url(#dataviz-grad)" opacity="0.25"/>
+                  <defs>
+                    <linearGradient id="dataviz-grad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#38bdf8"/>
+                      <stop offset="100%" stop-color="transparent"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div class="dataviz-legend">
+                <span class="dataviz-dot blue"></span> 2.4M queries
+              </div>
+            </div>
+          </div>
+        `;
+      case "voice-ui":
+        return `
+          <div class="style-preview-box preview-voice">
+            <div class="mini-ui-card voice-card">
+              <div class="voice-center">
+                <div class="voice-orb">
+                  <div class="voice-orb-glow"></div>
+                  <span>🎙️</span>
+                </div>
+                <div class="voice-wave-bars">
+                  <span class="v-bar"></span>
+                  <span class="v-bar"></span>
+                  <span class="v-bar"></span>
+                  <span class="v-bar"></span>
+                  <span class="v-bar"></span>
+                </div>
+              </div>
+              <span class="voice-sub">Listening... "Generate RLS"</span>
+            </div>
+          </div>
+        `;
+      case "adaptive-ui":
+        return `
+          <div class="style-preview-box preview-adaptive">
+            <div class="mini-ui-card adaptive-card">
+              <div class="adaptive-header">
+                <span class="adaptive-badge">Density</span>
+                <div class="adaptive-toggles">
+                  <span class="adaptive-btn active">Compact</span>
+                  <span class="adaptive-btn">Normal</span>
+                </div>
+              </div>
+              <div class="adaptive-row">
+                <div class="adaptive-box a-box-1">Grid 1</div>
+                <div class="adaptive-box a-box-2">Grid 2</div>
+                <div class="adaptive-box a-box-3">Grid 3</div>
+              </div>
+            </div>
+          </div>
+        `;
+      default:
+        return `<div class="style-preview-box"><div class="mini-ui-card">Preview UI</div></div>`;
+    }
   },
 
   // Cambiar categoría activa
@@ -1352,6 +2023,30 @@ LOS 4 ESTADOS DE INTERFAZ OBLIGATORIOS:
 - Error State: Banner de advertencia con botón de reintento en caso de fallo.`;
 
     outputEl.textContent = promptText;
+
+    // Actualizar la vista previa en vivo superior del estilo seleccionado
+    const previewContainer = document.getElementById('stitch-custom-style-preview');
+    if (previewContainer) {
+      previewContainer.innerHTML = `
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 0.75rem 1rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <span style="font-size: 1.1rem;">${style.icon}</span>
+              <span style="font-size: 0.85rem; font-weight: 700; color: #a5b4fc;">
+                Estilo #${style.num}: ${style.name}
+              </span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.4rem;">
+              <span class="style-category-tag">${style.categoryLabel}</span>
+              <span class="preview-mode-tag">Vista en Tiempo Real</span>
+            </div>
+          </div>
+          <div class="style-preview-wrapper" style="margin: 0;">
+            ${this.getStylePreviewHtml(style.id)}
+          </div>
+        </div>
+      `;
+    }
   },
 
   // 4. Presets rápidos de Google Stitch
