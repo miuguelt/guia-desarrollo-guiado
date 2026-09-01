@@ -1,187 +1,355 @@
 # 📦 Colección de Prompts Maestros para el Pipeline SDLC Guiado por IA
 ## Repositorio Profesional de Plantillas Listas para Copiar y Pegar
 
-Este documento contiene los **prompts maestros optimizados y probados** para cada herramienta del ecosistema de desarrollo guiado por IA. Cada prompt está diseñado para producir resultados de **nivel profesional** y puede personalizarse reemplazando las variables entre corchetes `[VARIABLE]`.
+Este documento contiene los **prompts maestros y plantillas canónicas** para construir la documentación y el código de tu aplicación siguiendo el estándar **Plan ➔ PRD ➔ User Flow ➔ TRD ➔ Stitch ➔ Supabase ➔ AI Studio**.
 
-> **💡 Consejo para el Aprendiz:** No copies y pegues sin leer. Dedica 2 minutos a personalizar las variables `[PLACEHOLDER]` con los datos reales de tu proyecto. Un prompt bien personalizado produce resultados 10× mejores que uno genérico.
+> **💡 Regla de Oro para el Aprendiz:** No copies y pegues sin leer. Personaliza las variables `[PLACEHOLDER]` con los datos reales de tu proyecto. Un prompt contextualizado produce resultados 10× superiores y sin alucinaciones.
 
 ---
 
-## 💎 1. System Prompt Maestro para la Gema de Gemini (Tutor SDLC Socrático)
+## 💎 1. System Prompt Maestro para la Gema de Gemini (Mentor SDLC Socrático)
 
 **Dónde usarlo:** Pégalo en el campo "Instrucciones" al crear tu Gema en [gemini.google.com](https://gemini.google.com) → Gestor de Gemas → Nueva Gema.
 
 ```markdown
 # ROL Y IDENTIDAD
-Eres "ArchMentor SDLC", un Arquitecto de Software Senior con más de 15 años de experiencia en ingeniería de requisitos, metodologías ágiles (Scrum/Kanban), arquitectura cloud moderna (serverless, microservicios) y desarrollo full-stack guiado por IA generativa. Tu misión es guiar al estudiante de manera interactiva, rigurosa y socrática para transformar su idea de negocio o proyecto en una especificación técnica profesional, completa y lista para alimentar herramientas de prototipado (Google Stitch) y construcción (Google AI Studio con Supabase).
+Eres "ArchMentor SDLC", un Arquitecto de Software y Lead Product Manager Senior con más de 15 años de experiencia en ingeniería de requisitos, metodologías ágiles (Scrum/Kanban), arquitectura cloud moderna (serverless, Supabase) y desarrollo asistido por IA. Tu misión es guiar al estudiante de manera interactiva, rigurosa y socrática para transformar su idea en los CUATRO documentos canónicos de la industria (Plan, PRD, User Flow y TRD) antes de generar código.
 
 # METODOLOGÍA SOCRÁTICA OBLIGATORIA
-1. NUNCA generes toda la documentación de una sola vez. Eso abruma al estudiante y produce resultados superficiales.
+1. NUNCA generes toda la documentación de una sola vez.
 2. Trabaja estrictamente FASE POR FASE. En cada fase:
-   a) Explica brevemente qué se va a definir y POR QUÉ es importante.
-   b) Haz de 2 a 4 preguntas clave abiertas al estudiante para extraer su visión y necesidades.
+   a) Explica brevemente qué documento se va a construir y POR QUÉ es indispensable.
+   b) Haz de 2 a 3 preguntas clave abiertas para extraer la visión del estudiante.
    c) Espera su respuesta antes de continuar.
-   d) Sintetiza, mejora y formaliza el contenido de esa fase en un bloque Markdown estructurado (tablas, listas numeradas, bloques de código).
-   e) Pide confirmación explícita: "¿Apruebas esta fase o deseas ajustar algo antes de continuar?"
-   f) Solo avanza a la siguiente fase tras recibir aprobación.
+   d) Formaliza y entrega el documento completo en un bloque de código Markdown listo para guardar.
+   e) Pide confirmación explícita: "¿Apruebas este documento o deseas ajustar algo antes de continuar?"
+   f) Solo avanza tras recibir la aprobación del usuario.
 
-# PROTOCOLO DE 7 FASES DEL PROYECTO
+# PROTOCOLO DE FASES Y ARTEFACTOS
 
-## FASE 1 — DESCUBRIMIENTO DEL NEGOCIO Y PROPÓSITO
-Objetivo: Definir el problema central, la audiencia y el alcance mínimo viable.
-- Nombre del proyecto, eslogan y propuesta de valor única (UVP).
-- Problema específico que resuelve y público objetivo (demographics).
-- Alcance del MVP: qué INCLUYE y qué NO incluye en la primera versión.
-- Competidores directos o alternativas actuales del usuario.
-Artefacto de salida: Tabla resumen "Ficha del Proyecto" en Markdown.
+## FASE 1: PLAN DE PROYECTO (`01_PLAN_PROYECTO.md`)
+- Propósito central y criterio de éxito del MVP.
+- Límites de alcance: Qué está estrictamente IN-SCOPE (Dentro del MVP) y qué queda OUT-OF-SCOPE (Para la versión 2.0).
+- Matriz de dependencias técnicas (Supabase -> Stitch -> AI Studio).
+- Cronograma de sprints.
 
-## FASE 2 — ACTORES, ROLES Y MATRIZ DE PERMISOS
-Objetivo: Identificar quién usa el sistema y qué puede hacer.
-- Lista de actores del sistema (ej. Administrador, Usuario Registrado, Visitante, API Externa).
-- Matriz de permisos CRUD por rol en formato tabla Markdown:
-  | Rol | Crear | Leer | Editar | Eliminar | Gestionar Usuarios |
-- Flujo de registro e ingreso al sistema para cada tipo de actor.
-Artefacto de salida: Tabla "Matriz de Roles y Permisos".
-
-## FASE 3 — REQUERIMIENTOS FUNCIONALES (RF) CON CRITERIOS GHERKIN
-Objetivo: Documentar cada funcionalidad con precisión testeable.
-Para cada requerimiento funcional (RF-01, RF-02, ..., RF-XX), genera:
-- **ID y Nombre:** RF-01 — Registro de Usuarios
-- **Descripción:** Explicación concisa de la funcionalidad.
-- **Actor principal:** Quién ejecuta la acción.
-- **Prioridad MoSCoW:** Must Have / Should Have / Could Have / Won't Have.
-- **Criterios de Aceptación en formato Gherkin (BDD):**
+## FASE 2: PRODUCT REQUIREMENTS DOCUMENT (`02_PRD_PRODUCTO.md`)
+- Perfiles de usuario (User Personas y Jobs-To-Be-Done).
+- Requerimientos Funcionales (RF-01 a RF-XX) con prioridad MoSCoW.
+- Criterios de Aceptación obligatorios en formato Gherkin BDD (al menos 2 escenarios por RF: Happy Path y Edge Case):
   ```gherkin
-  Escenario: [Nombre descriptivo del escenario]
-    DADO [contexto previo / estado del sistema]
+  Escenario: [Nombre]
+    DADO [contexto previo]
     CUANDO [acción del usuario]
-    ENTONCES [resultado esperado del sistema]
+    ENTONCES [resultado esperado]
   ```
-- **Dependencias:** Otros RF que deben existir previamente.
-Artefacto de salida: Archivo `01_SRS_REQUISITOS.md` y `02_CASOS_USO_GHERKIN.md`.
+- Reglas de negocio críticas del dominio.
 
-## FASE 4 — REQUERIMIENTOS NO FUNCIONALES (RNF) Y REGLAS DE NEGOCIO
-Objetivo: Establecer estándares de calidad, seguridad y restricciones del dominio.
-- **RNF-Seguridad:** Autenticación JWT/OAuth, cifrado en tránsito (HTTPS), Row Level Security obligatorio en Supabase.
-- **RNF-Rendimiento:** Tiempos de respuesta de UI < 200ms, llamadas a API < 1s, uso de caché y paginación.
-- **RNF-Usabilidad:** Diseño responsive Mobile-First, soporte Dark/Light mode, WCAG 2.1 AA (contraste, aria-labels, navegación por teclado).
-- **RNF-Resiliencia:** Skeleton loaders en carga, manejo global de errores con toast accesibles, reintentos automáticos en fallos de red.
-- **Reglas de Negocio (RN):** Restricciones lógicas del dominio (ej. "un usuario no puede reservar dos citas en el mismo horario", "solo el propietario puede eliminar un proyecto").
-Artefacto de salida: Sección integrada en `01_SRS_REQUISITOS.md`.
+## FASE 3: USER FLOW & ESTADOS DE PANTALLA (`03_USER_FLOWS_UX.md`)
+- Diagrama de flujo de navegación completo en sintaxis Mermaid Flowchart.
+- Matriz obligatoria de 4 estados para cada pantalla: Empty State, Loading/Skeleton State, Success Feedback (Toast), Error State & Retry.
 
-## FASE 5 — MODELO DE DATOS POSTGRESQL PARA SUPABASE
-Objetivo: Generar el script SQL DDL completo, optimizado y seguro.
-- Extensión `pgcrypto` para llaves primarias: `id UUID DEFAULT gen_random_uuid() PRIMARY KEY`.
-- Timestamps automáticos: `created_at TIMESTAMPTZ DEFAULT now()`, `updated_at` con trigger PL/pgSQL.
-- Llaves foráneas con integridad referencial: `ON DELETE CASCADE` para dependientes, `ON DELETE SET NULL` para opcionales.
-- Tabla `profiles` vinculada a `auth.users(id)` con trigger `handle_new_user()` para creación automática.
-- Habilitación de Row Level Security: `ALTER TABLE x ENABLE ROW LEVEL SECURITY;` en TODAS las tablas.
-- Políticas RLS individuales para SELECT, INSERT, UPDATE y DELETE vinculadas a `auth.uid()`.
-- Índices B-Tree en llaves foráneas frecuentemente consultadas.
-Artefacto de salida: Archivo `03_ESQUEMA_SUPABASE_RLS.sql` listo para ejecutar en el SQL Editor de Supabase.
+## FASE 4: TECHNICAL REQUIREMENTS DOCUMENT (`04_TRD_ARQUITECTURA_TECNICA.md`)
+- Stack tecnológico con versiones exactas (React 18/19, Tailwind, Supabase v2, TypeScript).
+- Diagrama Entidad-Relación (Mermaid ERD).
+- Requerimientos No Funcionales (RNF: Rendimiento <200ms, WCAG 2.1 AA, RLS en el 100% de tablas).
 
-## FASE 6 — GENERADOR DE PROMPT PARA GOOGLE STITCH
-Objetivo: Crear un prompt altamente descriptivo para generar la UI en stitch.withgoogle.com.
-El prompt debe especificar:
-- Tipo de aplicación y contexto (SaaS, E-commerce, Plataforma Médica, etc.).
-- Layout completo: Sidebar con navegación y perfil, Header con búsqueda y acciones, Área central con Grid responsive.
-- Componentes específicos: KPI Cards con datos de ejemplo, Tablas con filtros y paginación, Tablero Kanban, Formularios Modales con validación, Empty States ilustrados.
-- Sistema de diseño: Paleta de colores exacta (códigos hex), tipografía (Inter/Plus Jakarta Sans), Glassmorphism, esquinas redondeadas (rounded-xl), microinteracciones hover.
-- Estados de interacción: Loading skeletons, toast notifications, hover effects, focus rings.
-Artefacto de salida: Archivo `04_PROMPTS_GOOGLE_STITCH.md`.
+## FASE 5: ESQUEMA SUPABASE SQL & RLS (`05_ESQUEMA_SUPABASE_COMPLETO.sql`)
+- Script SQL DDL para Supabase con llaves primarias UUID `gen_random_uuid()`, triggers de `updated_at`, trigger `handle_new_user()` y Row Level Security (RLS) habilitado con políticas estrictas.
 
-## FASE 7 — PROMPT MAESTRO PARA GOOGLE AI STUDIO
-Objetivo: Generar el prompt de compilación completo para aistudio.google.com/apps.
-El prompt debe exigir:
-- Stack: React 18/19 + Tailwind CSS + Lucide Icons + `@supabase/supabase-js` v2.x.
-- Arquitectura modular: `/src/features/[módulo]/components|hooks|services`.
-- Cliente Supabase singleton en `/src/lib/supabaseClient.js` con las variables de entorno.
-- AuthProvider con `supabase.auth.onAuthStateChange` y protección de rutas.
-- CRUD completo reactivo sobre todas las tablas del esquema de la Fase 5.
-- KPIs calculados dinámicamente desde las consultas a Supabase.
-- Skeleton loaders, toast notifications accesibles, Empty States, diálogos de confirmación.
-Artefacto de salida: Archivo `05_PROMPT_MAESTRO_AISTUDIO.md`.
+## FASE 6: PROMPT PARA GOOGLE STITCH (`06_PROMPTS_GOOGLE_STITCH.md`)
+- Prompt visual altamente detallado para `stitch.withgoogle.com`, especificando Sidebar, Header, KPI cards, tablas interactivas y los 4 estados de pantalla.
+- **Selección de Estilo Visual:** Elegir y aplicar activamente uno de los **40 Estilos de Diseño Frontend** (ej. Minimalismo, Glassmorphism, Bento Grid, Cyberpunk, Terminal UI, Neo-Brutalism, Claymorphism, Aurora UI, Liquid Glass, etc.) según el dominio del producto.
 
-# FORMATO DE ENTREGA
-- Usa Markdown impecable: títulos jerárquicos (##, ###), tablas alineadas, bloques de código con sintaxis resaltada (```sql, ```gherkin, ```javascript, ```markdown).
-- Siempre que generes código o prompts, añade notas explicativas breves de POR QUÉ se diseñó así.
-- Genera diagramas Mermaid cuando ayuden a visualizar relaciones (ERD, flujos, arquitectura).
+## FASE 7: PROMPT MAESTRO PARA GOOGLE AI STUDIO (`07_PROMPT_MAESTRO_AISTUDIO.md`)
+- Prompt de compilación fullstack para `aistudio.google.com/apps`, ensamblando el cliente Supabase, AuthProvider, consultas CRUD reactivas, componentes modulares y diseño importado de Stitch.
 
-# TONO Y CONDUCTA
-- Sé claro, motivador, didáctico y técnicamente riguroso.
-- Celebra los avances del estudiante ("¡Excelente definición de roles!").
-- Si el estudiante da respuestas vagas, pide ejemplos concretos antes de continuar.
-- Nunca inventes datos de negocio: siempre pregunta al estudiante.
+# TONO Y REGLAS DE CONDUCTA
+- Sé didáctico, claro, motivador y técnicamente riguroso.
+- Celebra los avances del estudiante.
+- Si el estudiante da respuestas vagas, solicita ejemplos concretos del dominio antes de continuar.
+- Nunca inventes datos de negocio: pregunta siempre al aprendiz.
 ```
 
 ---
 
-## 🎨 2. Prompt Maestro para Google Stitch (Prototipado de UI)
-
-**Dónde usarlo:** Pégalo directamente en [stitch.withgoogle.com](https://stitch.withgoogle.com/?pli=1) para generar la interfaz visual.
+## 🗓️ 2. Plantilla Canónica: `01_PLAN_PROYECTO.md`
 
 ```markdown
-Diseña una interfaz web SaaS moderna, altamente profesional y completamente responsive para "[NOMBRE DE LA APP]", una plataforma enfocada en [PROPÓSITO Y CONTEXTO DEL NEGOCIO].
+# 🗓️ Plan de Ejecución del Proyecto: [NOMBRE DE LA APP]
 
-## LAYOUT Y ESTRUCTURA GLOBAL
-1. **Sidebar Izquierdo (Navegación Principal):**
-   - Logo de la aplicación con icono estilizado y nombre "[NOMBRE]".
-   - Navegación vertical con iconos Lucide: [Dashboard (activo), Módulo 1, Módulo 2, Módulo 3, Configuración].
-   - Indicador de estado del sistema (punto verde "En línea") y versión de la app.
-   - Perfil del usuario activo en la base: avatar circular, nombre "[NOMBRE EJEMPLO]", rol "[ROL EJEMPLO]" y botón de cerrar sesión.
+## 1. Declaración de Misión y Criterio de Éxito del MVP
+- **Propósito:** [Descripción en una frase del valor central para el usuario]
+- **Métrica North Star del MVP:** [Ej. "El usuario puede registrarse y crear su primer registro en menos de 60 segundos"]
 
-2. **Header Superior (Barra de Acciones):**
-   - Barra de búsqueda global con placeholder "Buscar [elementos]... (Ctrl + K)" e icono de lupa.
-   - Botón de acción principal: "+ [Nuevo Elemento]" con gradiente índigo a púrpura y sombra glow.
-   - Icono de notificaciones con badge numérico rojo.
-   - Selector de tema claro/oscuro (toggle).
+## 2. Delimitación Estricta del Alcance (Scope Boundaries)
+### ✅ IN-SCOPE (Incluido en el MVP):
+1. Autenticación con Supabase Auth (Email + Password).
+2. Perfil de usuario automático en tabla `profiles`.
+3. CRUD completo de la entidad principal `[Entidad Principal]`.
+4. Dashboard con 4 métricas calculadas en vivo desde Supabase.
+5. Sistema de notificaciones Toast accesibles para confirmación de acciones.
 
-3. **Área Central (Dashboard Principal):**
-   a) **Fila de KPIs (Grid 4 columnas):**
-      - Tarjeta 1: "[Métrica 1]" → Valor numérico grande, badge de tendencia (+12% en verde), icono circular.
-      - Tarjeta 2: "[Métrica 2]" → Valor numérico, indicador porcentual, icono circular.
-      - Tarjeta 3: "[Métrica 3]" → Valor con comparativa vs período anterior.
-      - Tarjeta 4: "[Métrica 4]" → Valor con barra de progreso o rating.
-   
-   b) **Vista Principal de Datos (Conmutable):**
-      - Selector de pestañas: "Vista Lista", "Vista Kanban", "Vista Calendario".
-      - Filtros inline: por Estado, por Prioridad, por Fecha, por Asignado.
-      - Tabla de datos enriquecida con: avatares, etiquetas de colores por estado, fechas con alertas de proximidad, barra de progreso, columna de acciones rápidas (Editar, Eliminar, Ver detalle).
-      - Paginación inferior con contador de registros.
-   
-   c) **Modal de Creación/Edición:**
-      - Formulario flotante con overlay oscuro, campos validados con labels claras y mensajes de error inline.
-      - Selectores de categoría, campos de fecha, textarea para descripción y botones de acción (Guardar / Cancelar).
+### ❌ OUT-OF-SCOPE (Excluido del MVP - Postergado a v2.0):
+1. Pasarela de pagos con Stripe.
+2. Exportación masiva de reportes en PDF/Excel.
+3. Notificaciones push móviles y modo offline nativo.
 
-## SISTEMA DE DISEÑO Y ESTILO VISUAL
-- **Paleta de Colores:** Fondo principal `#0f172a` (Slate 900), tarjetas `#1e293b` (Slate 800), bordes `#334155` (Slate 700), acentos `#6366f1` (Indigo 500), texto principal `#f8fafc` (Slate 50), texto secundario `#94a3b8` (Slate 400). Éxito: `#10b981`. Alerta: `#f59e0b`. Error: `#ef4444`.
-- **Acabados Premium:** Glassmorphism sutil (`backdrop-blur-md`, bordes semi-translúcidos `border-slate-700/50`), sombras difusas en tarjetas.
-- **Tipografía:** Inter (400, 500, 600, 700, 800) para UI, JetBrains Mono para código.
-- **Esquinas y Espaciado:** Esquinas redondeadas grandes (`rounded-xl` / `rounded-2xl`), espaciado generoso entre secciones.
-- **Microinteracciones:** Hover con transición suave en tarjetas (`hover:border-indigo-500/50 transition-all duration-200`), efecto de elevación en botones (`hover:translate-y-[-2px]`), glow sutil en el botón principal.
-- **Estados de Interfaz:** Incluir al menos un Skeleton Loader visible, un Empty State con ilustración y un Toast de confirmación.
+## 3. Matriz de Dependencias Técnicas
+- **Dependencia 1:** No se puede iniciar la UI en AI Studio sin tener el esquema DDL ejecutado en Supabase con RLS.
+- **Dependencia 2:** No se pueden crear registros de datos sin tener el flujo de autenticación resolviendo `auth.uid()`.
+- **Dependencia 3:** El diseño en Google Stitch debe validar los 4 estados de pantalla antes de generar el código frontend.
+
+## 4. Sprints de Entrega
+- **Sprint 1:** Documentación canónica (Plan, PRD, User Flow, TRD).
+- **Sprint 2:** Despliegue de Base de Datos en Supabase y Prototipado en Google Stitch.
+- **Sprint 3:** Compilación Fullstack en Google AI Studio y Pruebas E2E.
 ```
 
 ---
 
-## ⚡ 3. Prompt Maestro para Google AI Studio (Construcción de la App)
-
-**Dónde usarlo:** Pégalo en [aistudio.google.com/apps](https://aistudio.google.com/apps) al crear una nueva aplicación web.
+## 📋 3. Plantilla Canónica: `02_PRD_PRODUCTO.md`
 
 ```markdown
-# OBJETIVO DE LA APLICACIÓN
-Construye una aplicación web Single Page Application (SPA) profesional, completa, modular y lista para producción llamada "[NOMBRE DE LA APP]". La aplicación es [DESCRIPCIÓN DEL PROPÓSITO: ej. una plataforma SaaS de gestión ágil de proyectos para equipos de ingeniería], conectada a una base de datos PostgreSQL real en Supabase.
+# 📋 Documento de Requisitos de Producto (PRD)
+## Proyecto: [NOMBRE DE LA APLICACIÓN]
 
-# STACK TECNOLÓGICO OBLIGATORIO
-- **Framework:** React 18/19 (o Vanilla JS modular con ES Modules si React no está disponible).
-- **Estilos:** Tailwind CSS con diseño Dark Mode por defecto. Paleta: Slate 900/800 para fondos, Indigo 500 para acentos, Glassmorphism sutil.
-- **Iconografía:** Lucide Icons (`lucide-react` o vía CDN `https://unpkg.com/lucide@latest`).
-- **Backend:** `@supabase/supabase-js` versión 2.x (importar vía CDN: `https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2`).
-- **Tipografía:** Google Fonts Inter (400-800) y JetBrains Mono para bloques de código.
-- **Notificaciones:** Sistema de Toast notifications accesible (posición: bottom-right, con auto-dismiss de 4 segundos).
+### 1. Perfiles de Usuario (User Personas)
+- **Persona Principal ([Nombre / Rol]):** Necesita [objetivo clave] para evitar [problema actual].
+- **Administrador ([Nombre / Rol]):** Necesita auditar el sistema y supervisar métricas globales.
+
+### 2. Requerimientos Funcionales (RF) con Escenarios Gherkin (BDD)
+
+#### RF-01: Autenticación Segura y Perfiles
+- **Prioridad MoSCoW:** Must Have
+- **Actor:** Visitante / Usuario Registrado
+- **Descripción:** Registro e inicio de sesión con persistencia en Supabase Auth y creación automática de perfil.
+
+```gherkin
+Escenario: Registro exitoso
+  DADO que un visitante está en la pantalla de registro
+  CUANDO ingresa un correo válido, una contraseña segura y su nombre completo
+  Y hace clic en "Registrarse"
+  ENTONCES Supabase crea el usuario en 'auth.users'
+  Y el trigger inserta la fila en 'public.profiles'
+  Y el usuario ingresa al Dashboard viendo un mensaje de bienvenida.
+
+Escenario: Error en credenciales de acceso
+  DADO que el usuario está en el formulario de Login
+  CUANDO ingresa credenciales erróneas
+  ENTONCES la interfaz muestra un mensaje toast accesible "Credenciales inválidas"
+  Y los campos permanecen editables sin recargar la página.
+```
+
+#### RF-02: Gestión de Entidad Principal (CRUD)
+- **Prioridad MoSCoW:** Must Have
+- **Actor:** Usuario Autenticado
+- **Descripción:** Operaciones de creación, listado con búsqueda y filtros, edición y borrado de registros.
+
+```gherkin
+Escenario: Creación exitosa de un registro
+  DADO que el usuario tiene sesión activa en el Dashboard
+  CUANDO hace clic en "+ Nuevo", completa los datos obligatorios y confirma
+  ENTONCES el registro se guarda en Supabase asociado a su 'owner_id'
+  Y la lista se actualiza reactivamente mostrando el toast "✓ Guardado con éxito".
+```
+
+### 3. Reglas de Negocio (RN)
+- **RN-01:** La dirección de correo electrónico debe ser única en todo el sistema.
+- **RN-02:** Los usuarios estándar solo tienen permisos de lectura y modificación sobre sus propios registros.
+- **RN-03:** Las eliminaciones son irreversibles o mediante soft-delete controlado.
+```
+
+---
+
+## 🔀 4. Plantilla Canónica: `03_USER_FLOWS_UX.md`
+
+```markdown
+# 🔀 Flujos de Usuario e Interacción (User Flows)
+## Proyecto: [NOMBRE DE LA APLICACIÓN]
+
+### 1. Diagrama de Navegación Global
+```mermaid
+flowchart TD
+    A["🟢 Visitante"] --> B{"¿Sesión Activa?"}
+    B -- No --> C["Pantalla de Login / Registro"]
+    B -- Sí --> D["📊 Dashboard Principal"]
+    C -->|Autenticación Exitosa| D
+    D --> E["Vista Tabla / Kanban"]
+    D --> F["Modal '+ Nuevo Registro'"]
+    F -->|Guardar| G["Persistencia en Supabase"]
+    G -->|Éxito| D
+```
+
+### 2. Matriz Obligatoria de 4 Estados por Pantalla
+
+| Pantalla / Módulo | 📭 Empty State | ⏳ Loading State | ✅ Success State | ❌ Error State |
+| :--- | :--- | :--- | :--- | :--- |
+| **Dashboard** | Ilustración de bienvenida + CTA "+ Crear primer registro" | 4 Skeleton Cards pulsantes con gradiente | KPIs numéricos actualizados en vivo | Banner con botón "Reintentar conexión" |
+| **Tabla de Datos** | "No se encontraron registros con los filtros actuales" | Esqueleto de filas de tabla con brillo animado | Filas renderizadas con badges de estado | Toast de error: "Fallo al cargar datos" |
+| **Formulario Modal** | Campos limpios con placeholders descriptivos | Botón con spinner giratorio y estado `disabled` | Modal se cierra + Toast "✓ Creado" | Bordes rojos en campos inválidos con mensaje |
+```
+
+---
+
+## 🏗️ 5. Plantilla Canónica: `04_TRD_ARQUITECTURA_TECNICA.md`
+
+```markdown
+# 🏗️ Documento de Requisitos Técnicos (TRD)
+## Proyecto: [NOMBRE DE LA APLICACIÓN]
+
+### 1. Stack Tecnológico Estandarizado
+- **Frontend:** React 18/19 SPA + Tailwind CSS + Lucide Icons.
+- **Backend & Database:** Supabase PostgreSQL 15+ con Row Level Security (RLS).
+- **SDK:** `@supabase/supabase-js` v2.x.
+- **Patrón Arquitectónico:** Service/Repository modular con separación de componentes, hooks y servicios.
+
+### 2. Modelo Entidad-Relación (Mermaid ERD)
+```mermaid
+erDiagram
+    PROFILES ||--o{ ITEMS : owns
+    PROFILES {
+        uuid id PK "auth.users.id"
+        string email
+        string full_name
+        string role
+        timestamp created_at
+    }
+    ITEMS {
+        uuid id PK
+        uuid owner_id FK
+        string title
+        text description
+        string status
+        timestamp created_at
+    }
+```
+
+### 3. Script SQL DDL Maestro para Supabase
+```sql
+-- Extensiones
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
+-- Función de updated_at
+CREATE OR REPLACE FUNCTION public.handle_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = timezone('utc'::text, now());
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Función de creación automática de perfil
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.profiles (id, email, full_name, avatar_url)
+    VALUES (
+        NEW.id,
+        NEW.email,
+        COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),
+        NEW.raw_user_meta_data->>'avatar_url'
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Tabla profiles
+CREATE TABLE IF NOT EXISTS public.profiles (
+    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+    email TEXT UNIQUE NOT NULL,
+    full_name TEXT,
+    avatar_url TEXT,
+    role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'manager', 'user')),
+    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Tabla del dominio
+CREATE TABLE IF NOT EXISTS public.[tabla_principal] (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    owner_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    description TEXT,
+    status TEXT DEFAULT 'active' CHECK (status IN ('draft', 'active', 'completed', 'archived')),
+    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_[tabla]_owner ON public.[tabla_principal](owner_id);
+
+-- RLS Obligatorio
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.[tabla_principal] ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Lectura de registros propios"
+    ON public.[tabla_principal] FOR SELECT TO authenticated
+    USING (auth.uid() = owner_id);
+
+CREATE POLICY "Inserción vinculada al usuario"
+    ON public.[tabla_principal] FOR INSERT TO authenticated
+    WITH CHECK (auth.uid() = owner_id);
+
+CREATE POLICY "Actualización de registros propios"
+    ON public.[tabla_principal] FOR UPDATE TO authenticated
+    USING (auth.uid() = owner_id);
+
+CREATE POLICY "Eliminación de registros propios"
+    ON public.[tabla_principal] FOR DELETE TO authenticated
+    USING (auth.uid() = owner_id);
+```
+```
+
+---
+
+## 🎨 6. Prompt Maestro para Google Stitch (stitch.withgoogle.com)
+
+```markdown
+Diseña una interfaz web SaaS moderna, altamente profesional y completamente responsive para "[NOMBRE DE LA APP]", basada en el siguiente User Flow y Requerimientos:
+
+## LAYOUT Y ESTRUCTURA
+1. **Sidebar Izquierdo:**
+   - Logo con icono estilizado y nombre "[NOMBRE DE LA APP]".
+   - Menú de navegación: Dashboard (activo), Módulo Principal, Configuración.
+   - Perfil de usuario en la base: Avatar circular, Nombre, Rol y botón de cerrar sesión.
+
+2. **Header Superior:**
+   - Barra de búsqueda con atajo de teclado "(Ctrl + K)".
+   - Botón principal de acción "+ [Nuevo Registro]" con gradiente índigo-púrpura y sombra glow.
+   - Indicador de estado y notificaciones.
+
+3. **Área Central (Dashboard):**
+   - 4 Tarjetas KPI con números grandes, iconos circulares y badges de porcentaje (+12%).
+   - Selector de pestañas: "Vista Lista" y "Vista Kanban".
+   - Tabla de datos enriquecida con badges de colores por estado, avatares y menú de acciones (Editar / Eliminar).
+   - Modal flotante de creación con validación de campos.
+
+## SISTEMA DE DISEÑO (SELECCIONAR UNO DE LOS 40 ESTILOS VISUALES)
+- **Estilo Base:** [Seleccionar del Catálogo de 40 Estilos, ej. Bento Grid, Minimalismo, Glassmorphism, Neo-Brutalism, Cyberpunk, Claymorphism, Terminal UI, Aurora UI, Liquid Glass, etc.]
+- **Paleta de Colores:** Fondo principal, tarjetas de contenido, acentos primarios y texto.
+- **Acabados:** Acorde al estilo (ej. `backdrop-blur-md` para Glassmorphism, `border-[3px] shadow-[4px_4px_0px_#000]` para Neo-Brutalism, o `rounded-2xl` para Bento Grid).
+- **Tipografía:** [Inter / Plus Jakarta Sans / JetBrains Mono / Playfair Display].
+- **Estados de Interfaz:** Incluir visualmente un Skeleton Loader pulsante, un Empty State ilustrado y un Toast flotante en esquina inferior derecha.
+```
+
+> **💡 Catálogo de Estilos para el Aprendiz:** Consulta la guía [`03_PROTOTIPADO_CON_GOOGLE_STITCH.md`](./03_PROTOTIPADO_CON_GOOGLE_STITCH.md) para ver la descripción y los snippets exactos de los **40 estilos visuales** (20 estilos principales + 20 adicionales).
+
+---
+
+## ⚡ 7. Prompt Maestro para Google AI Studio (aistudio.google.com/apps)
+
+```markdown
+# OBJETIVO
+Construye una aplicación web SPA profesional y completa llamada "[NOMBRE DE LA APP]", basada en la tetralogía documental (Plan, PRD, User Flow y TRD), conectada a PostgreSQL en Supabase.
+
+# STACK TECNOLÓGICO
+- React 18/19 + Tailwind CSS (Dark Mode por defecto) + Lucide Icons + `@supabase/supabase-js` v2.x.
+- Google Fonts Inter y JetBrains Mono.
 
 # CONFIGURACIÓN DEL CLIENTE SUPABASE
-Crea un módulo `supabaseClient.js` con la siguiente inicialización:
 ```javascript
 import { createClient } from '@supabase/supabase-js';
 
@@ -198,204 +366,18 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 ```
 
 # GESTIÓN DE AUTENTICACIÓN
-1. Implementa un `AuthProvider` que escuche `supabase.auth.onAuthStateChange` y proporcione `{ user, loading, signIn, signUp, signOut }` a toda la aplicación.
-2. **Vista de Login/Registro:** Pantalla moderna con formulario centrado, campos de email y contraseña con validación visual, botones con loading state y enlace para alternar entre Login y Registro.
-3. **Protección de rutas:** Si el usuario no está autenticado, mostrar SOLO la pantalla de bienvenida con Login/Registro. Si está autenticado, mostrar el Dashboard con los datos del usuario.
-4. **Cierre de sesión:** Botón visible en el Sidebar que llama a `supabase.auth.signOut()` y redirige a la pantalla de Login.
+- AuthProvider que escuche `supabase.auth.onAuthStateChange`.
+- Formulario modal o vista de Login/Registro protegida.
+- Redirección automática al Dashboard tras el login.
 
-# ESQUEMA DE DATOS EN SUPABASE
-La aplicación interactúa con estas tablas existentes (ya creadas con RLS activo):
+# ESQUEMA DE DATOS Y OPERACIONES CRUD
+- Interactuar con la tabla `[tabla_principal]` y `profiles`.
+- Consultas protegidas por RLS usando `auth.uid() = owner_id`.
+- Métricas del Dashboard calculadas con funciones agregadas de Supabase.
 
-1. `profiles`: `id (UUID PK → auth.users)`, `email`, `full_name`, `avatar_url`, `role`, `created_at`
-2. [LISTA TUS TABLAS ADICIONALES CON COLUMNAS Y TIPOS]
-
-# REQUERIMIENTOS FUNCIONALES
-[PEGA AQUÍ LOS RF GENERADOS POR LA GEMA, EJEMPLO:]
-1. **Dashboard Principal:** Mostrar 4 tarjetas KPI con métricas calculadas dinámicamente desde Supabase (totales, porcentajes, tendencias). Usar consultas `.select('*', { count: 'exact' })` y funciones de agregación.
-2. **Listado con Filtros:** Vista de datos en tabla con filtros por estado, búsqueda en tiempo real con debounce de 300ms, ordenamiento por columnas y paginación.
-3. **CRUD Completo:** Crear, leer, actualizar y eliminar registros mediante formularios modales con validación de campos requeridos.
-4. **Vistas Alternativas:** Conmutar entre Vista Lista (tabla) y Vista Kanban (tablero de columnas drag-and-drop si es posible, o menú desplegable para cambiar estado).
-
-# EXPERIENCIA DE USUARIO (UX) OBLIGATORIA
-- **Skeleton Loaders:** Mostrar placeholders animados con gradiente durante la carga de datos.
-- **Empty States:** Cuando no haya registros, mostrar un mensaje amigable con icono ilustrativo y botón de acción para crear el primer elemento.
-- **Toast Notifications:** Confirmar cada acción exitosa ("✓ Registro creado") y reportar errores ("✗ Error al guardar: [mensaje]").
-- **Diálogos de Confirmación:** Antes de eliminar cualquier registro, mostrar un diálogo modal con "¿Estás seguro? Esta acción no se puede deshacer." y botones "Cancelar" / "Eliminar".
-- **Responsive:** La interfaz debe adaptarse perfectamente a móvil (sidebar colapsable), tablet y desktop.
-- **Accesibilidad:** Etiquetas `aria-label` en botones de icono, `role="alert"` en toasts, navegación por teclado funcional.
-
-# ARQUITECTURA Y CALIDAD DEL CÓDIGO
-- Código modular: separar componentes, hooks y servicios en archivos independientes.
-- Funciones de servicio puras para Supabase (no escribir `supabase.from(...)` dentro de componentes JSX).
-- Manejo de errores con try/catch y mensajes descriptivos.
-- Sin variables globales sueltas, sin `console.log` en producción.
-```
-
----
-
-## 🐘 4. Plantilla SQL DDL con RLS para Supabase
-
-**Dónde usarlo:** Ejecuta este script en el SQL Editor de [supabase.com/dashboard](https://supabase.com/dashboard) → SQL Editor → New query.
-
-```sql
--- =============================================================================
--- SCRIPT DDL MAESTRO PARA SUPABASE — [NOMBRE DEL PROYECTO]
--- Autor: Generado por la Gema SDLC ArchMentor
--- Descripción: Esquema relacional completo con RLS, triggers y políticas seguras.
--- =============================================================================
-
--- 1. EXTENSIONES NECESARIAS
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-
--- 2. FUNCIÓN REUTILIZABLE: Actualización automática de updated_at
-CREATE OR REPLACE FUNCTION public.handle_updated_at()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = timezone('utc'::text, now());
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- 3. FUNCIÓN: Creación automática de perfil al registrarse en Auth
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO public.profiles (id, email, full_name, avatar_url)
-    VALUES (
-        NEW.id,
-        NEW.email,
-        COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),
-        NEW.raw_user_meta_data->>'avatar_url'
-    );
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
-
--- 4. TRIGGER: Ejecutar handle_new_user al registrarse
-CREATE OR REPLACE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
-
--- 5. TABLA: Perfiles de Usuario
-CREATE TABLE IF NOT EXISTS public.profiles (
-    id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
-    email TEXT UNIQUE NOT NULL,
-    full_name TEXT,
-    avatar_url TEXT,
-    role TEXT DEFAULT 'user' CHECK (role IN ('admin', 'manager', 'user', 'viewer')),
-    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
-    updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
-);
-CREATE TRIGGER on_profiles_updated BEFORE UPDATE ON public.profiles
-    FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
-
--- 6. TABLA: [TU TABLA PRINCIPAL]
-CREATE TABLE IF NOT EXISTS public.[tabla_principal] (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    owner_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
-    title TEXT NOT NULL,
-    description TEXT,
-    status TEXT DEFAULT 'active' CHECK (status IN ('draft', 'active', 'completed', 'archived')),
-    created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL,
-    updated_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
-);
-CREATE TRIGGER on_[tabla]_updated BEFORE UPDATE ON public.[tabla_principal]
-    FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
-CREATE INDEX IF NOT EXISTS idx_[tabla]_owner ON public.[tabla_principal](owner_id);
-
--- 7. HABILITAR ROW LEVEL SECURITY EN TODAS LAS TABLAS
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.[tabla_principal] ENABLE ROW LEVEL SECURITY;
-
--- 8. POLÍTICAS RLS PARA PROFILES
-CREATE POLICY "Perfiles visibles para usuarios autenticados"
-    ON public.profiles FOR SELECT TO authenticated
-    USING (true);  -- Los perfiles son públicos para la comunidad interna
-
-CREATE POLICY "Cada usuario edita solo su propio perfil"
-    ON public.profiles FOR UPDATE TO authenticated
-    USING (auth.uid() = id);
-
--- 9. POLÍTICAS RLS PARA [TABLA PRINCIPAL]
-CREATE POLICY "Lectura de registros propios"
-    ON public.[tabla_principal] FOR SELECT TO authenticated
-    USING (auth.uid() = owner_id);
-
-CREATE POLICY "Creación vinculada al usuario autenticado"
-    ON public.[tabla_principal] FOR INSERT TO authenticated
-    WITH CHECK (auth.uid() = owner_id);
-
-CREATE POLICY "Edición de registros propios"
-    ON public.[tabla_principal] FOR UPDATE TO authenticated
-    USING (auth.uid() = owner_id);
-
-CREATE POLICY "Eliminación de registros propios"
-    ON public.[tabla_principal] FOR DELETE TO authenticated
-    USING (auth.uid() = owner_id);
-```
-
----
-
-## 🔗 5. Prompt para Iterar y Refinar en AI Studio
-
-**Dónde usarlo:** Después de que AI Studio genere la primera versión de la app, usa estos prompts de refinamiento en el chat de la misma sesión.
-
-### 5.1 Corrección de Estilo Visual
-```markdown
-Ajusta la interfaz para que coincida exactamente con el sistema de diseño profesional:
-- Fondo principal: #0f172a, tarjetas: #1e293b con bordes #334155 y backdrop-blur-md.
-- Acentos en Indigo #6366f1, texto principal #f8fafc, texto secundario #94a3b8.
-- Esquinas rounded-xl en todas las tarjetas, sombras difusas, hover con borde indigo translúcido.
-- Tipografía Inter para la interfaz y JetBrains Mono para bloques de código.
-- Botón principal con gradiente linear-gradient(135deg, #6366f1, #a855f7) y box-shadow glow.
-```
-
-### 5.2 Corrección de Errores RLS
-```markdown
-La aplicación muestra un array vacío al consultar la tabla '[NOMBRE_TABLA]'. Verifica que:
-1. El usuario ha iniciado sesión correctamente con supabase.auth.getSession().
-2. La consulta incluye el token JWT automáticamente (el cliente Supabase lo gestiona).
-3. La política RLS de SELECT usa USING (auth.uid() = owner_id) o, si los registros deben ser públicos internamente, USING (true).
-4. Muestra en consola el error exacto con: const { data, error } = await supabase.from('tabla').select('*'); if (error) console.error(error);
-```
-
-### 5.3 Agregar un Nuevo Módulo sin Romper lo Existente
-```markdown
-Agrega un nuevo módulo "[NOMBRE DEL MÓDULO]" a la aplicación siguiendo la arquitectura existente:
-1. Crea los componentes en /src/features/[modulo]/components/.
-2. Crea el servicio en /src/features/[modulo]/services/[modulo]Service.js con las consultas CRUD a Supabase.
-3. Crea el hook en /src/features/[modulo]/hooks/use[Modulo].js que gestione el estado.
-4. Registra la nueva ruta en el enrutador principal.
-5. Añade el enlace de navegación en el Sidebar.
-6. NO modifiques los archivos de otros módulos existentes.
-```
-
-### 5.4 Optimización de Rendimiento
-```markdown
-Optimiza el rendimiento de la aplicación:
-1. Implementa debounce de 300ms en la barra de búsqueda para evitar consultas excesivas.
-2. Usa paginación con .range(offset, offset + pageSize - 1) en lugar de cargar todos los registros.
-3. Agrega Skeleton Loaders animados con CSS gradient mientras las consultas están en progreso.
-4. Implementa caché local con useState para evitar re-consultas innecesarias al navegar entre pestañas.
-```
-
----
-
-## 🧪 6. Prompt para Generar Tests Automatizados desde Criterios Gherkin
-
-**Dónde usarlo:** En tu IDE (Cursor, VS Code) o en AI Studio para generar la suite de pruebas.
-
-```markdown
-A partir de los siguientes criterios de aceptación Gherkin, genera las pruebas automatizadas correspondientes:
-
-## Criterio Gherkin de Entrada:
-```gherkin
-[PEGA AQUÍ TUS CRITERIOS GHERKIN GENERADOS EN LA FASE 3]
-```
-
-Genera:
-1. **Prueba E2E con Playwright** (TypeScript) que simule la interacción completa del usuario en el navegador.
-2. **Prueba Unitaria con Vitest** (TypeScript) que valide la lógica del servicio de Supabase de forma aislada.
-
-Formato de salida: Dos archivos independientes con las pruebas completas y listas para ejecutar.
+# EXPERIENCIA DE USUARIO (LOS 4 ESTADOS)
+- **Empty States:** Ilustración y botón CTA cuando no existan registros.
+- **Loading:** Skeleton loaders con gradiente durante las peticiones.
+- **Feedback:** Sistema de notificaciones Toast accesibles para confirmar éxitos y reportar errores.
+- **Diálogos de Confirmación:** Confirmación obligatoria antes de eliminar registros.
 ```

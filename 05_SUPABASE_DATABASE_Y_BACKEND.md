@@ -204,3 +204,15 @@ En tu panel de Supabase:
 3. Copia la **`anon` `public` key** (clave pública segura para el frontend).
 
 Estas dos variables son las únicas que necesitarás proveer a Google AI Studio para que la aplicación funcione en tiempo real.
+
+---
+
+## ⚠️ Configuración Crítica de Autenticación para Entornos Sandbox
+
+Para que el aprendiz pueda probar el registro y login en AI Studio sin quedar esperando un correo de confirmación:
+1. En el panel de Supabase, navega a **Authentication** ➔ **Providers** ➔ **Email**.
+2. Desactiva la opción **"Confirm email"** (ponla en `OFF`).
+3. Guarda los cambios.
+
+> **💡 Beneficio:** Esto permite que cualquier usuario registrado mediante `supabase.auth.signUp()` obtenga una sesión activa inmediata con su respectivo `auth.uid()`, activando el trigger de `public.profiles` de forma instantánea.
+

@@ -94,7 +94,7 @@ window.App = {
     } else if (moduleId === 'artefactos-individuales') {
       window.Generators.updateAllArtifacts();
     } else if (moduleId === 'stitch-ui') {
-      window.Generators.loadStitchPreset();
+      window.Generators.initStitchModule();
     } else if (moduleId === 'conexion-supabase') {
       window.Generators.updateSupabaseClientPreview();
     } else if (moduleId === 'evaluacion') {
@@ -107,7 +107,7 @@ window.App = {
 
   switchArtifactTab: function(tabKey) {
     window.Generators.activeArtifactTab = tabKey;
-    ['srs', 'gherkin', 'sql', 'stitch', 'aistudio'].forEach(k => {
+    ['plan', 'prd', 'userflow', 'trd', 'sql', 'stitch', 'aistudio'].forEach(k => {
       const btn = document.getElementById(`tab-btn-${k}`);
       if (btn) {
         if (k === tabKey) btn.classList.add('active');

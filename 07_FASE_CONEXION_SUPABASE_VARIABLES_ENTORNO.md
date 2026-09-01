@@ -132,9 +132,13 @@ export async function createProject(title, description) {
 
 ## 🛡️ Lista de Chequeo de Errores Comunes para Aprendices
 
-* **Error: `new row violates row-level security policy`:**
-  * Causa: Estás intentando insertar un registro con un `user_id` diferente al del usuario que inició sesión (`auth.uid()`).
-  * Solución: Asegúrate de obtener `user.id` con `supabase.auth.getUser()` y asignarlo al campo `user_id` u `owner_id`.
-* **Error: Las consultas devuelven un arreglo vacío `[]` a pesar de haber datos:**
-  * Causa: La política RLS está bloqueando la lectura porque no coincide `auth.uid()`.
-  * Solución: Revisa que la política de `SELECT` tenga `USING (auth.uid() = user_id)` o `USING (true)` si los perfiles son públicos.
+* **Error: `42501 / new row violates row-level security policy`:**
+  * Causa: Estás intentando insertar un registro con un `owner_id` diferente al del usuario que inició sesión (`auth.uid()`), o la política de `INSERT` no incluye `WITH CHECK (auth.uid() = owner_id)`.
+  * Solución: Asegúrate de obtener `user.id` con `const { data: { user } } = await supabase.auth.getUser();` y asignarlo al campo `owner_id`.
+* **Error: Las consultas devuelven un arreglo vacío `[]` a pesar de haber datos en Supabase:**
+  * Causa: La política RLS de `SELECT` está bloqueando la lectura porque el registro tiene un `owner_id` distinto, o la consulta se ejecutó sin sesión iniciada.
+  * Solución: Revisa que la política de `SELECT` tenga `USING (auth.uid() = owner_id)` y valida que el usuario tenga sesión activa con `useAuth()`.
+* **Error: Al registrar un usuario en AI Studio no inicia sesión automáticamente:**
+  * Causa: Supabase tiene activa la verificación de email obligatoria por defecto.
+  * Solución: Ve a Supabase Dashboard ➔ **Authentication** ➔ **Providers** ➔ **Email** ➔ Desactiva **"Confirm email"**.
+

@@ -93,7 +93,7 @@ ESTRUCTURA DE PANTALLA (DASHBOARD DEL DOCTOR):
    - Modal de Registro de Cita: formulario con selector de paciente, médico, especialidad, fecha/hora y tipo (presencial/telemedicina).
    - Modal de Historial Clínico: editor de diagnóstico, receta médica y plan de tratamiento.
 
-SISTEMA DE DISEÑO:
+SISTEMA DE DISEÑO (ESTILO #2 GLASMORFISMO + #17 DASHBOARD / SAAS):
 - Paleta: Fondo Slate 900 (#0f172a), tarjetas Slate 800 (#1e293b), bordes (#334155), acentos en Cian (#06b6d4) y Esmeralda (#10b981), texto (#f8fafc).
 - Acabados: Glassmorphism sutil (backdrop-blur-md), esquinas rounded-xl, microinteracciones hover suaves.
 - Tipografía: Inter / Plus Jakarta Sans con excelente contraste para el entorno médico.

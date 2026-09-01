@@ -1,10 +1,10 @@
 /**
  * generators.js
- * Lógica para la generación dinámica de Prompts, Artefactos MD individuales, SQL y Conexión Supabase
+ * Lógica para la generación dinámica de Prompts, Artefactos Canónicos (.md y .sql) y Conexión Supabase
  */
 
 window.Generators = {
-  activeArtifactTab: 'srs',
+  activeArtifactTab: 'plan',
 
   // 0. Visualizador de las 7 Fases del SDLC (Antes vs Hoy)
   showSdlcPhase: function(phaseNum) {
@@ -22,19 +22,19 @@ window.Generators = {
 
     const phases = {
       1: {
-        title: "Fase 1: Requisitos & Planificación",
+        title: "Fase 1: Requisitos, Planificación & Tetralogía Documental",
         icon: "📋",
         before: "Semanas de reuniones y documentos Word de 100 páginas que nadie leía y quedaban desactualizados a los 3 días.",
-        today: "Gemas socráticas en Gemini que extraen requerimientos en minutos, generando SRS formal, criterios Gherkin y diagramas C4.",
-        tools: "Gemini Custom Gems · Mermaid.js · Linear · Eraser.io",
-        impact: "Claridad total: no se escribe una línea de código sin entender la necesidad del usuario.",
+        today: "Gemas socráticas en Gemini que extraen requerimientos en minutos, generando la Tetralogía Canónica: Plan, PRD, User Flow y TRD.",
+        tools: "Gemini Custom Gems · Mermaid.js · Gherkin BDD · Linear",
+        impact: "Claridad total: no se escribe una línea de código sin entender el alcance, el usuario y la arquitectura técnica.",
         color: "#818cf8"
       },
       2: {
         title: "Fase 2: Diseño UI/UX & Prototipado",
         icon: "🎨",
         before: "Diseñadores creando wireframes estáticos en Photoshop o Figma que los programadores debían 're-escribir' desde cero en HTML.",
-        today: "Google Stitch y v0 que generan interfaces completas en lenguaje natural, exportando código con Tailwind y componentes accesibles.",
+        today: "Google Stitch y v0 que generan interfaces completas en lenguaje natural con los 4 estados de pantalla (Empty, Loading, Success, Error).",
         tools: "Google Stitch · v0.dev · Figma AI · shadcn/ui · Lucide Icons",
         impact: "Fidelidad inmediata: el prototipo visual nace listo para integrarse a la lógica real.",
         color: "#34d399"
@@ -61,7 +61,7 @@ window.Generators = {
         title: "Fase 5: Testing & QA Automatizado",
         icon: "🧪",
         before: "Pruebas manuales lentas haciendo clics; los tests automáticos se descartaban por 'falta de tiempo'.",
-        today: "Playwright y Vitest generados automáticamente a partir de los criterios Gherkin de la fase de requisitos.",
+        today: "Playwright y Vitest generados automáticamente a partir de los criterios Gherkin del PRD.",
         tools: "Playwright (E2E) · Vitest (Unit) · Biome · ESLint",
         impact: "Resiliencia absoluta: se valida cada flujo de usuario en cada cambio sin esfuerzo manual.",
         color: "#f472b6"
@@ -126,34 +126,43 @@ window.Generators = {
     let filename = "";
 
     if (val === 'g1') {
-      filename = "GEMA_1_ANALISTA_REQUISITOS_INSTRUCTIONS.md";
+      filename = "GEMA_1_ARQUITECTO_PRODUCTO_INSTRUCTIONS.md";
       text = `# ROL
-Eres un Analista de Requisitos de Software Senior con certificación IREB y experiencia en metodologías ágiles (Scrum, Kanban) y BDD. Tu especialidad es transformar ideas en especificaciones técnicas precisas y testeables.
+Eres un Arquitecto de Software y Lead Product Manager Senior con amplia experiencia en metodologías ágiles, BDD (Behavior-Driven Development) y diseño de sistemas SaaS. Tu especialidad es transformar ideas iniciales en la tetralogía documental estándar de la industria (Plan, PRD, User Flow y TRD).
 
 # MISIÓN
-Guiar al aprendiz paso a paso para extraer, estructurar y formalizar los requisitos de su proyecto. NUNCA inventes funcionalidades: siempre pregunta al usuario.
+Guiar al aprendiz paso a paso mediante diálogo socrático para generar CUATRO artefactos independientes y de máxima precisión técnica. NUNCA inventes requerimientos: pregunta siempre al usuario.
 
 # METODOLOGÍA SOCRÁTICA
-1. **Fase de Descubrimiento (3-5 preguntas):**
-   - ¿Qué problema específico resuelve tu aplicación y para quién?
-   - ¿Quiénes son los tipos de usuarios (roles)?
-   - ¿Cuáles son las 3-5 funcionalidades estrella del MVP?
-   - ¿Existen restricciones técnicas o de negocio?
+1. **Paso 1: Descubrimiento & Plan:**
+   - ¿Qué problema crítico resuelve la app y para quién?
+   - ¿Cuáles son las 3 funcionalidades que entran en el MVP y qué queda explícitamente fuera de alcance (Out-of-Scope)?
+   -> Genera: '01_PLAN_PROYECTO.md'
 
-2. **Fase de Formalización:**
-   Genera DOS archivos Markdown estructurados:
-   - Archivo 1: '01_SRS_REQUISITOS.md' (Ficha de proyecto, Roles/Permisos, RF-01 a RF-XX con MoSCoW, RNF y Diagrama Mermaid ERD).
-   - Archivo 2: '02_CASOS_USO_GHERKIN.md' (Criterios de Aceptación Dado-Cuando-Entonces con happy path y edge cases).
+2. **Paso 2: PRD & Casos de Uso Gherkin:**
+   - ¿Cuáles son los roles de usuario (ej. Admin, Miembro, Visitante)?
+   - ¿Cuáles son los Requerimientos Funcionales (RF-01 a RF-XX) con sus criterios de aceptación BDD?
+   -> Genera: '02_PRD_PRODUCTO.md'
 
-3. **Fase de Validación:**
-   Pide confirmación antes de pasar a la siguiente etapa e indica al aprendiz que suba los archivos a 'Conocimientos' de la Gema 2.`;
+3. **Paso 3: User Flow & Estados de UI:**
+   - ¿Cuál es la ruta de navegación desde que el usuario ingresa hasta que completa su tarea principal?
+   - Define los 4 estados para cada pantalla: Empty, Loading, Success, Error.
+   -> Genera: '03_USER_FLOWS_UX.md' (con diagrama Mermaid Flowchart)
+
+4. **Paso 4: TRD & Arquitectura:**
+   - Modelo de datos Entidad-Relación (Mermaid ERD), llaves UUID, reglas de aislamiento Row Level Security (RLS) y requerimientos no funcionales (RNF).
+   -> Genera: '04_TRD_ARQUITECTURA_TECNICA.md'
+
+# FORMATO DE ENTREGA
+- Entrega cada documento como un bloque de código Markdown independiente listo para descargar.
+- Pide confirmación al aprendiz antes de avanzar entre documentos.`;
     } else if (val === 'g2') {
       filename = "GEMA_2_ARQUITECTO_SUPABASE_INSTRUCTIONS.md";
       text = `# ROL
 Eres un Administrador de Bases de Datos PostgreSQL Senior y Arquitecto Backend especializado en Supabase.
 
 # MISIÓN
-Leer el archivo '01_SRS_REQUISITOS.md' cargado en tus Conocimientos y generar el script DDL completo '03_ESQUEMA_SUPABASE_RLS.sql'.
+Leer el archivo '04_TRD_ARQUITECTURA_TECNICA.md' cargado en tus Conocimientos y generar el script DDL completo '05_ESQUEMA_SUPABASE_COMPLETO.sql'.
 
 # ESPECIFICACIONES TÉCNICAS OBLIGATORIAS
 1. Extensión 'pgcrypto' para llaves primarias UUID: 'id UUID DEFAULT gen_random_uuid() PRIMARY KEY'.
@@ -167,32 +176,31 @@ Leer el archivo '01_SRS_REQUISITOS.md' cargado en tus Conocimientos y generar el
     } else if (val === 'g3') {
       filename = "GEMA_3_DISENADOR_STITCH_INSTRUCTIONS.md";
       text = `# ROL
-Eres un Diseñador UI/UX Senior con experiencia en Design Systems, Tailwind CSS y Google Stitch (stitch.withgoogle.com).
+Eres un Diseñador UI/UX Lead especializado en Design Systems modernos (Dark Mode, Glassmorphism, Tailwind CSS, Radix UI) y prompt engineering visual para Google Stitch (stitch.withgoogle.com).
 
 # MISIÓN
-Leer los requisitos y casos de uso de tus Conocimientos y generar '04_PROMPTS_GOOGLE_STITCH.md' con prompts visuales de alta fidelidad.
+Leer el PRD ('02_PRD_PRODUCTO.md') y el User Flow ('03_USER_FLOWS_UX.md') cargados en tus Conocimientos y generar '06_PROMPTS_GOOGLE_STITCH.md'.
 
-# ESTRUCTURA DE CADA PROMPT PARA STITCH
-1. **Contexto & Objetivo:** Tipo de aplicación y rol del usuario.
-2. **Layout Estructural:** Sidebar (logo, navegación, perfil), Header (búsqueda Ctrl+K, notificaciones, botón '+ Nuevo'), Área central (grid 12 columnas).
-3. **Componentes Clave:** 4 Tarjetas KPIs con métricas y badges de tendencia, tablas interactivas con filtros, modales con validación y empty states ilustrados.
-4. **Sistema de Diseño:** Paleta Dark Slate (#0f172a / #1e293b), acentos en Índigo (#6366f1) / Cian (#06b6d4), tipografía Inter, Glassmorphism sutil y bordes rounded-xl.
-5. **Estados UI:** Skeleton loaders, microinteracciones hover y toasts accesibles.`;
+# PROTOCOLO PARA CADA PANTALLA
+1. **Layout Estructural:** Sidebar (logo, navegación, perfil), Header (búsqueda Ctrl+K, notificaciones, botón '+ Nuevo'), Área central (grid 12 columnas).
+2. **Componentes Clave:** 4 Tarjetas KPIs con métricas y badges de tendencia, tablas interactivas con filtros, modales con validación.
+3. **Los 4 Estados de Pantalla:** Empty State, Loading Skeleton, Success Toast y Error State.
+4. **Sistema de Diseño:** Paleta Dark Slate (#0f172a / #1e293b), acentos en Índigo (#6366f1), tipografía Inter y bordes rounded-xl.`;
     } else {
       filename = "GEMA_4_ORQUESTADOR_AISTUDIO_INSTRUCTIONS.md";
       text = `# ROL
-Eres un Arquitecto Fullstack Senior especializado en Google AI Studio Apps (aistudio.google.com/apps).
+Eres un Arquitecto Fullstack Senior y Orquestador de Aplicaciones especializado en Google AI Studio Apps (aistudio.google.com/apps).
 
 # MISIÓN
-Leer '03_ESQUEMA_SUPABASE_RLS.sql' y '04_PROMPTS_GOOGLE_STITCH.md' y ensamblar '05_PROMPT_MAESTRO_AISTUDIO.md'.
+Leer '04_TRD_ARQUITECTURA_TECNICA.md', '05_ESQUEMA_SUPABASE_COMPLETO.sql' y '06_PROMPTS_GOOGLE_STITCH.md' para generar '07_PROMPT_MAESTRO_AISTUDIO.md'.
 
 # ESTRUCTURA DEL PROMPT MAESTRO
 1. **Stack:** React 18/19 SPA + Tailwind CSS + Lucide Icons + '@supabase/supabase-js' v2.x.
-2. **Variables de Entorno:** SUPABASE_URL y SUPABASE_ANON_KEY en un cliente singleton modular.
+2. **Cliente Supabase:** Singleton modular con SUPABASE_URL y SUPABASE_ANON_KEY.
 3. **Autenticación:** AuthProvider con 'supabase.auth.onAuthStateChange', login, registro y protección de rutas.
 4. **CRUD Reactivo:** Operaciones completas sobre las tablas existentes en Supabase respetando RLS.
-5. **UI & UX:** Componentes basados en el prototipo de Stitch, 4 KPIs dinámicos, Skeleton Loaders, Toasts y Empty States.
-6. **Arquitectura:** Estructura modular /src/features/ con patrón de 3 capas (UI ➔ Hook ➔ Service).`;
+5. **UI & UX:** Componentes basados en Stitch con los 4 estados (Empty, Loading, Toast, Error).
+6. **Arquitectura:** Estructura modular /src/features/ con separación de componentes, hooks y servicios.`;
     }
 
     if (filenameEl) filenameEl.textContent = filename;
@@ -211,108 +219,191 @@ Leer '03_ESQUEMA_SUPABASE_RLS.sql' y '04_PROMPTS_GOOGLE_STITCH.md' y ensamblar '
 
     const tab = this.activeArtifactTab;
 
-    if (tab === 'srs') {
-      if (filenameEl) filenameEl.textContent = '01_SRS_REQUISITOS.md';
-      outputEl.textContent = `# 📋 Especificación de Requisitos de Software (SRS)
-## Proyecto: ${appName}
+    if (tab === 'plan') {
+      if (filenameEl) filenameEl.textContent = '01_PLAN_PROYECTO.md';
+      outputEl.textContent = `# 🗓️ Plan de Ejecución del Proyecto: ${appName}
 **Propósito:** ${purpose}
 
 ---
 
-### 1. Ficha Técnica y Alcance del MVP
-- **Nombre:** ${appName}
+### 1. Visión y Criterio de Éxito del MVP
+- **Nombre de la Aplicación:** ${appName}
 - **Actor Principal:** ${actor}
-- **Público Objetivo:** Usuarios y administradores que requieren una solución ágil y segura.
-- **Alcance MVP:** Autenticación de usuarios, gestión de registros principales, dashboard con KPIs y seguridad RLS.
+- **Métrica de Éxito del MVP:** El usuario puede registrarse, configurar su perfil y completar el flujo principal en menos de 90 segundos sin errores.
 
 ---
 
-### 2. Matriz de Roles y Permisos (CRUD)
-| Rol | Crear | Leer | Editar | Eliminar |
+### 2. Delimitación Estricta del Alcance (Scope Boundaries)
+#### ✅ IN-SCOPE (Dentro del MVP):
+1. Autenticación con Supabase Auth (Email + Contraseña) y perfil automático en 'profiles'.
+2. CRUD reactivo completo de la entidad principal de ${appName}.
+3. Dashboard interactivo con 4 métricas KPIs calculadas dinámicamente desde la base de datos.
+4. Sistema de notificaciones Toast accesibles para confirmación de acciones y reportes de error.
+5. Diseño responsive (Mobile-First y Desktop) en Dark Mode con Tailwind CSS.
+
+#### ❌ OUT-OF-SCOPE (Fuera del MVP - Postergado a Versión 2.0):
+1. Pasarela de pagos internacionales (Stripe / Mercado Pago).
+2. Exportación avanzada de reportes en PDF y hojas de cálculo Excel.
+3. Notificaciones push móviles y modo offline nativo.
+
+---
+
+### 3. Matriz de Dependencias Técnicas
+- **Paso 1:** Desplegar DDL de Supabase con RLS habilitado (TRD).
+- **Paso 2:** Prototipar vistas y los 4 estados de pantalla en Google Stitch (User Flow).
+- **Paso 3:** Ensamblar cliente Supabase y vistas en Google AI Studio.
+- **Paso 4:** Validación con suite de pruebas E2E en Playwright.
+
+---
+
+### 4. Cronograma de Sprints
+- **Sprint 1:** Definición y aprobación de Plan, PRD, User Flow y TRD.
+- **Sprint 2:** Creación de base de datos en Supabase y prototipado visual en Google Stitch.
+- **Sprint 3:** Compilación Fullstack en Google AI Studio y pruebas de aceptación.`;
+
+    } else if (tab === 'prd') {
+      if (filenameEl) filenameEl.textContent = '02_PRD_PRODUCTO.md';
+      outputEl.textContent = `# 📋 Documento de Requisitos de Producto (PRD)
+## Proyecto: ${appName}
+**Problema & Propósito:** ${purpose}
+
+---
+
+### 1. Perfiles de Usuario (User Personas)
+- **${actor} (Usuario Principal):** Requiere una interfaz ágil, visual y accesible para gestionar sus tareas y consultar métricas sin fricción.
+- **Administrador:** Requiere supervisar registros globales, auditar la seguridad y controlar el acceso de los miembros.
+
+---
+
+### 2. Requerimientos Funcionales (RF) con Escenarios Gherkin (BDD)
+
+#### RF-01: Autenticación Segura y Gestión de Sesión
+- **Prioridad MoSCoW:** Must Have (Crítico)
+- **Actor:** Visitante / Usuario Registrado
+- **Descripción:** Registro e inicio de sesión con Supabase Auth y creación automática de perfil en PostgreSQL.
+
+\`\`\`gherkin
+Escenario: Registro exitoso de nuevo usuario
+  DADO que un visitante se encuentra en la pantalla de registro
+  CUANDO ingresa un correo válido, una contraseña segura (> 8 caracteres) y su nombre
+  Y hace clic en "Crear Cuenta"
+  ENTONCES Supabase registra el usuario en 'auth.users'
+  Y el trigger inserta automáticamente la fila correspondiente en 'public.profiles'
+  Y redirige al Dashboard principal mostrando un mensaje toast "¡Bienvenido a ${appName}!".
+
+Escenario: Intento de acceso con credenciales incorrectas
+  DADO que el usuario está en el formulario de Login
+  CUANDO ingresa una contraseña equivocada
+  ENTONCES la interfaz muestra una alerta accesible "Credenciales inválidas"
+  Y mantiene los datos del formulario editables sin recargar la página.
+\`\`\`
+
+#### RF-02: Gestión de Entidad Principal (CRUD)
+- **Prioridad MoSCoW:** Must Have
+- **Actor:** ${actor}
+- **Descripción:** Creación, listado con búsqueda y filtros, actualización y borrado de registros propios.
+
+\`\`\`gherkin
+Escenario: Creación exitosa de registro
+  DADO que el usuario tiene sesión activa en el Dashboard
+  CUANDO hace clic en "+ Nuevo Registro", completa título y descripción
+  Y confirma el formulario modal
+  ENTONCES el registro se guarda en Supabase asociado a su 'owner_id'
+  Y la tabla se actualiza reactivamente con una notificación "✓ Registro guardado con éxito".
+\`\`\`
+
+---
+
+### 3. Reglas de Negocio (RN)
+- **RN-01 (Unicidad):** No pueden existir dos cuentas con la misma dirección de correo electrónico.
+- **RN-02 (Aislamiento Total):** Un usuario estándar bajo ninguna circunstancia puede ver o modificar los registros de otro usuario.
+- **RN-03 (Integridad Referencial):** Si se elimina un perfil, sus registros dependientes se borran en cascada controlada.`;
+
+    } else if (tab === 'userflow') {
+      if (filenameEl) filenameEl.textContent = '03_USER_FLOWS_UX.md';
+      outputEl.textContent = `# 🔀 Flujos de Usuario e Interacción (User Flows)
+## Proyecto: ${appName}
+
+---
+
+### 1. Diagrama de Navegación y Ramificación Lógica
+\`\`\`mermaid
+flowchart TD
+    START(["🟢 Visitante"]) --> AUTH_CHECK{"¿Sesión Activa?"}
+    AUTH_CHECK -- No --> LOGIN_VIEW["Pantalla de Login / Registro"]
+    AUTH_CHECK -- Sí --> DASHBOARD["📊 Dashboard Principal"]
+    
+    LOGIN_VIEW --> SUBMIT_AUTH["Enviar Credenciales"]
+    SUBMIT_AUTH --> AUTH_RESULT{"¿Válidas?"}
+    AUTH_RESULT -- Error --> TOAST_ERR["Mostrar Toast Error & Resaltar Campos"]
+    AUTH_RESULT -- Éxito --> DASHBOARD
+
+    DASHBOARD --> LIST_VIEW["Vista Lista / Filtros"]
+    DASHBOARD --> OPEN_MODAL["Clic en '+ Nuevo Registro'"]
+    OPEN_MODAL --> MODAL_FORM["Modal de Creación"]
+    MODAL_FORM --> SAVE_DB["Persistencia en Supabase"]
+    SAVE_DB --> FEEDBACK["Cerrar Modal + Toast '✓ Éxito' + Refresh Reactivo"]
+\`\`\`
+
+---
+
+### 2. Matriz Obligatoria de los 4 Estados por Pantalla
+
+| Pantalla / Vista | 📭 Empty State | ⏳ Loading State | ✅ Success State | ❌ Error State |
 | :--- | :--- | :--- | :--- | :--- |
-| **${actor}** | Propios | Propios y Públicos | Propios | Propios |
-| **Administrador** | Todos | Todos | Todos | Todos |
+| **Dashboard** | Ilustración amigable + CTA "+ Crear primer elemento" | 4 Skeleton Cards pulsantes con gradiente | KPIs con métricas reales y gráficos en vivo | Banner con botón "Reintentar conexión" |
+| **Tabla de Registros** | "No hay registros que coincidan con los filtros" | Esqueleto de filas de tabla con brillo animado | Filas renderizadas con badges de estado | Alerta Toast: "Error al sincronizar datos" |
+| **Formulario Modal** | Campos limpios con placeholders descriptivos | Botón con spinner giratorio (disabled) | Modal se cierra + Toast "✓ Guardado" | Bordes rojos en campos con mensaje inline |`;
+
+    } else if (tab === 'trd') {
+      if (filenameEl) filenameEl.textContent = '04_TRD_ARQUITECTURA_TECNICA.md';
+      outputEl.textContent = `# 🏗️ Documento de Requisitos Técnicos (TRD)
+## Proyecto: ${appName}
 
 ---
 
-### 3. Requerimientos Funcionales (RF)
-| ID | Nombre | Prioridad | Descripción |
-| :--- | :--- | :--- | :--- |
-| **RF-01** | Autenticación Segura | **Must Have** | Registro e inicio de sesión con Supabase Auth y creación automática de perfil. |
-| **RF-02** | Gestión de Entidad Principal | **Must Have** | Creación, lectura con filtros, edición y eliminación de registros del usuario. |
-| **RF-03** | Panel de Métricas (Dashboard) | **Should Have** | Visualización de 4 tarjetas KPIs calculadas dinámicamente desde Supabase. |
-| **RF-04** | Notificaciones y Feedback | **Could Have** | Sistema de notificaciones Toast accesibles ante cada operación exitosa o error. |
+### 1. Stack Tecnológico Estandarizado
+- **Frontend:** React 18/19 + Vite + TypeScript (o Vanilla JS modular con ES Modules).
+- **Estilos & UI:** Tailwind CSS (Dark Mode por defecto) + Lucide Icons + Radix UI.
+- **Backend & Database:** Supabase PostgreSQL 15+ con Row Level Security (RLS) habilitado.
+- **SDK:** \`@supabase/supabase-js\` versión 2.x.
+- **Testing:** Playwright (E2E) y Vitest (Unitario).
 
 ---
 
-### 4. Requerimientos No Funcionales (RNF)
-- **RNF-01 (Seguridad):** Todas las tablas deben tener **Row Level Security (RLS)** activado en PostgreSQL.
-- **RNF-02 (Rendimiento):** Tiempos de respuesta de UI < 200 ms y llamadas a API < 1s.
-- **RNF-03 (Responsividad):** Adaptable a dispositivos móviles, tablets y desktop con Tailwind CSS.
-- **RNF-04 (Accesibilidad):** Cumplimiento WCAG 2.1 AA con contraste mínimo y aria-labels.
-
----
-
-### 5. Diagrama Entidad-Relación (Mermaid ERD)
+### 2. Modelo Entidad-Relación (Mermaid ERD)
 \`\`\`mermaid
 erDiagram
-    PROFILES ||--o{ ITEMS : creates
+    PROFILES ||--o{ ITEMS : owns
     PROFILES {
         uuid id PK "auth.users.id"
         string email
         string full_name
+        string avatar_url
         string role
         timestamp created_at
+        timestamp updated_at
     }
     ITEMS {
         uuid id PK
-        uuid user_id FK
+        uuid owner_id FK
         string title
         text description
         string status
         timestamp created_at
         timestamp updated_at
     }
-\`\`\``;
-    } else if (tab === 'gherkin') {
-      if (filenameEl) filenameEl.textContent = '02_CASOS_USO_GHERKIN.md';
-      outputEl.textContent = `# 🥒 Criterios de Aceptación y Casos de Uso (Gherkin BDD)
-## Proyecto: ${appName}
+\`\`\`
 
 ---
 
-### Característica: Autenticación de Usuarios (RF-01)
-  Escenario: Registro e inicio de sesión exitoso
-    DADO que un usuario no autenticado se encuentra en la pantalla de registro
-    CUANDO ingresa un correo electrónico válido, una contraseña segura y su nombre
-    Y hace clic en "Crear Cuenta"
-    ENTONCES el sistema registra al usuario en Supabase Auth
-    Y crea automáticamente su fila en la tabla 'profiles'
-    Y redirige al Dashboard principal mostrando un mensaje de bienvenida.
+### 3. Requerimientos No Funcionales (RNF)
+- **RNF-01 (Seguridad RLS):** 100% de tablas protegidas con Row Level Security. Cero uso de claves 'service_role' en frontend.
+- **RNF-02 (Rendimiento):** Tiempo de respuesta de UI < 200ms y carga inicial de SPA < 1s.
+- **RNF-03 (Accesibilidad):** Cumplimiento estricto de WCAG 2.1 AA (contraste >= 4.5:1, etiquetas aria-label).`;
 
-  Escenario: Intento de acceso con credenciales incorrectas
-    DADO que el usuario está en la pantalla de Login
-    CUANDO ingresa una contraseña incorrecta
-    ENTONCES el sistema muestra una alerta accesible "Credenciales inválidas"
-    Y mantiene los datos del formulario sin recargar la página.
-
----
-
-### Característica: Gestión de Registros Principales (RF-02)
-  Escenario: Creación exitosa de un registro con persistencia en Supabase
-    DADO que el ${actor} tiene sesión activa y se encuentra en el Dashboard
-    CUANDO hace clic en "+ Nuevo Registro", completa título y descripción requeridos
-    Y confirma el formulario modal
-    ENTONCES el registro se inserta en Supabase vinculado a 'auth.uid()'
-    Y la tabla se actualiza reactivamente mostrando una notificación toast "✓ Registro creado".
-
-  Escenario: Intento de creación con campos requeridos vacíos
-    DADO que el usuario abre el modal de creación
-    CUANDO intenta guardar dejando el título en blanco
-    ENTONCES el sistema resalta el campo con borde rojo y mensaje "Este campo es obligatorio"
-    Y no realiza ninguna petición a la base de datos.`;
     } else if (tab === 'sql') {
-      if (filenameEl) filenameEl.textContent = '03_ESQUEMA_SUPABASE_RLS.sql';
+      if (filenameEl) filenameEl.textContent = '05_ESQUEMA_SUPABASE_COMPLETO.sql';
       outputEl.textContent = `-- =============================================================================
 -- ESQUEMA DDL Y POLÍTICAS RLS PARA SUPABASE: ${appName.toUpperCase()}
 -- =============================================================================
@@ -361,10 +452,10 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 CREATE TRIGGER on_profiles_updated BEFORE UPDATE ON public.profiles
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
 
--- 5. Tabla Principal de Items
+-- 5. Tabla Principal del Dominio
 CREATE TABLE IF NOT EXISTS public.items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+    owner_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
     title TEXT NOT NULL,
     description TEXT,
     status TEXT DEFAULT 'active' CHECK (status IN ('active', 'completed', 'archived')),
@@ -373,7 +464,7 @@ CREATE TABLE IF NOT EXISTS public.items (
 );
 CREATE TRIGGER on_items_updated BEFORE UPDATE ON public.items
     FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
-CREATE INDEX IF NOT EXISTS idx_items_user_id ON public.items(user_id);
+CREATE INDEX IF NOT EXISTS idx_items_owner_id ON public.items(owner_id);
 
 -- 6. Habilitación de Row Level Security (RLS)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
@@ -387,18 +478,19 @@ CREATE POLICY "Edición de propio perfil" ON public.profiles
     FOR UPDATE TO authenticated USING (auth.uid() = id);
 
 CREATE POLICY "Lectura de items propios" ON public.items
-    FOR SELECT TO authenticated USING (auth.uid() = user_id);
+    FOR SELECT TO authenticated USING (auth.uid() = owner_id);
 
 CREATE POLICY "Creación de items propios" ON public.items
-    FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+    FOR INSERT TO authenticated WITH CHECK (auth.uid() = owner_id);
 
 CREATE POLICY "Actualización de items propios" ON public.items
-    FOR UPDATE TO authenticated USING (auth.uid() = user_id);
+    FOR UPDATE TO authenticated USING (auth.uid() = owner_id);
 
 CREATE POLICY "Eliminación de items propios" ON public.items
-    FOR DELETE TO authenticated USING (auth.uid() = user_id);`;
+    FOR DELETE TO authenticated USING (auth.uid() = owner_id);`;
+
     } else if (tab === 'stitch') {
-      if (filenameEl) filenameEl.textContent = '04_PROMPTS_GOOGLE_STITCH.md';
+      if (filenameEl) filenameEl.textContent = '06_PROMPTS_GOOGLE_STITCH.md';
       outputEl.textContent = `# 🎨 Prompt de Diseño Visual para Google Stitch (stitch.withgoogle.com)
 ## Proyecto: ${appName}
 
@@ -424,16 +516,23 @@ ESTRUCTURA DE PANTALLA (DASHBOARD PRINCIPAL):
 
 4. Sección Central Dinámica:
    - Selector de pestañas: "Vista Lista" / "Vista Tablero".
-   - Filtros inline por estado (Activo, Completado, Archivado) y buscador reactivo.
-   - Tabla interactiva con etiquetas de colores, fecha de entrega y acciones rápidas (Editar, Eliminar).
+   - Filtros inline por estado y buscador reactivo.
+   - Tabla interactiva con etiquetas de colores, fecha y menú de acciones (Editar, Eliminar).
    - Modal flotante con formulario validado para crear un nuevo registro.
+
+LOS 4 ESTADOS DE INTERFAZ OBLIGATORIOS:
+- Empty State ilustrado para cuando no existan registros.
+- Skeleton Loaders animados durante la carga de datos.
+- Notificaciones Toast flotantes en la esquina inferior derecha.
+- Banner de error con botón de reintento.
 
 SISTEMA DE DISEÑO:
 - Paleta: Dark Mode Slate (#0f172a, #1e293b), bordes (#334155), acentos en Índigo (#6366f1).
 - Acabados: Glassmorphism suave (backdrop-blur-md), esquinas rounded-xl, sombras suaves.
 - Tipografía: Inter / Plus Jakarta Sans con jerarquía estricta.`;
+
     } else {
-      if (filenameEl) filenameEl.textContent = '05_PROMPT_MAESTRO_AISTUDIO.md';
+      if (filenameEl) filenameEl.textContent = '07_PROMPT_MAESTRO_AISTUDIO.md';
       outputEl.textContent = `# ⚡ Prompt Maestro para Google AI Studio (aistudio.google.com/apps)
 ## Proyecto: ${appName}
 
@@ -465,7 +564,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 3. Si el usuario no está autenticado, muestra la pantalla de bienvenida con Login/Registro. Si está autenticado, muestra el Dashboard con sus datos.
 
 # CRUD Y FUNCIONALIDADES
-1. Listar registros de la tabla 'items' filtrando por 'user_id = auth.uid()'.
+1. Listar registros de la tabla 'items' filtrando por 'owner_id = auth.uid()'.
 2. Crear registros mediante formulario modal validado con persistencia en Supabase.
 3. Actualizar estado y eliminar registros con diálogo de confirmación.
 4. 4 Tarjetas KPIs dinámicas calculadas desde las consultas de datos.
@@ -473,7 +572,789 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     }
   },
 
-  // 3. Cargar presets de Google Stitch
+  // 3. Catálogo Maestro de 40 Estilos Frontend para Google Stitch
+  currentStyleCategory: 'all',
+  currentStyleSearch: '',
+
+  FRONTEND_STYLES: [
+    // --- BLOQUE 1: 20 ESTILOS PRINCIPALES ---
+    {
+      id: "minimalismo",
+      num: 1,
+      block: 1,
+      name: "Minimalismo (Minimalism)",
+      category: "modernos",
+      categoryLabel: "Moderno & Limpio",
+      icon: "⚪",
+      desc: "Diseño limpio y simple, con mucho espacio en blanco y pocos elementos esenciales.",
+      visualTraits: "Mucho espacio negativo, paleta neutra (#f8fafc / #0f172a), líneas finas de 1px, tipografía Inter ligera, sin sombras pesadas.",
+      bestFor: "Portafolios, apps de notas, herramientas de lectura y plataformas de lujo.",
+      promptSnippet: "ESTILO: Minimalista extremo, máximo espacio negativo, paleta monocromática blanco/gris pizarra (#f8fafc, #0f172a), líneas sutiles de 1px (#e2e8f0), tipografía Inter muy ligera, cero sombras pesadas."
+    },
+    {
+      id: "glasmorfismo",
+      num: 2,
+      block: 1,
+      name: "Glasmorfismo (Glassmorphism)",
+      category: "modernos",
+      categoryLabel: "Translúcido & Glass",
+      icon: "🪟",
+      desc: "Efectos de vidrio esmerilado, transparencias y desenfoques sobre fondos coloridos.",
+      visualTraits: "Fondos translúcidos con backdrop-blur-xl, bordes luminosos 1px border-white/15, reflejos de luz y sombras difusas.",
+      bestFor: "Dashboards analíticos, apps fintech premium, reproductores y paneles Web3.",
+      promptSnippet: "ESTILO: Glassmorphism refinado, tarjetas con fondo translúcido semi-esmerilado (backdrop-blur-xl con rgba(30,41,59,0.7)), bordes sutiles iluminados (border-white/10), acentos de luz degradados en esquinas."
+    },
+    {
+      id: "brutalismo",
+      num: 3,
+      block: 1,
+      name: "Brutalismo (Brutalism)",
+      category: "expresivo",
+      categoryLabel: "Audaz & Experimental",
+      icon: "⬛",
+      desc: "Estilo crudo y directo, con tipografías grandes, colores fuertes y sin adornos.",
+      visualTraits: "Colores primarios puros saturados (amarillo, negro, blanco), tipografía gigante en mayúsculas, cero curvas (rounded-none).",
+      bestFor: "Moda urbana, festivales culturales, revistas de arte y marcas disruptivas.",
+      promptSnippet: "ESTILO: Brutalismo digital puro, tipografías gigantescas y pesadas (Black/Bold), colores de alto contraste (amarillo ácido, negro profundo, blanco), bordes angulares sin redondeo, micro-bordes negros gruesos."
+    },
+    {
+      id: "neomorfismo",
+      num: 4,
+      block: 1,
+      name: "Neomorfismo (Neumorphism)",
+      category: "modernos",
+      categoryLabel: "Relieve Suave",
+      icon: "🔘",
+      desc: "Elementos con sombras y relieves suaves que parecen salir del fondo moldeado.",
+      visualTraits: "Mismo color de fondo y tarjetas, sombras duales (luz superior y sombra inferior), esquinas muy redondeadas rounded-2xl.",
+      bestFor: "Domótica / IoT, controles de audio, mandos virtuales y calculadoras.",
+      promptSnippet: "ESTILO: Neumorphism suave, elementos extruidos del fondo mediante doble sombra suave (box-shadow dual con luz superior y sombra profunda), botones táctiles con estados presionados (inset shadow), bordes ultra redondeados (rounded-2xl)."
+    },
+    {
+      id: "skeuomorfismo",
+      num: 5,
+      block: 1,
+      name: "Skeuomorfismo (Skeuomorphism)",
+      category: "interactivo",
+      categoryLabel: "Físico & Táctil",
+      icon: "📷",
+      desc: "Imita objetos y texturas del mundo real para que los elementos se vean familiares.",
+      visualTraits: "Texturas realistas (metal cepillado, cuero, cristal), biseles pronunciados, reflejos de luz natural y profundidad 3D.",
+      bestFor: "Apps de audio/música (sintetizadores, mezcladores), herramientas fotográficas y simuladores.",
+      promptSnippet: "ESTILO: Skeuomorfismo moderno, detalles táctiles realistas inspirados en hardware físico (perillas giratorias, texturas metálicas cepilladas, reflejos de luz direccional, bordes biselados con profundidad 3D)."
+    },
+    {
+      id: "material-design",
+      num: 6,
+      block: 1,
+      name: "Material Design (Material You)",
+      category: "saas",
+      categoryLabel: "Capas & Elevación",
+      icon: "📐",
+      desc: "Diseño basado en capas, elevación, sombras y componentes consistentes de Google.",
+      visualTraits: "Elevaciones estandarizadas en eje Z (dp), Floating Action Button (FAB), paleta tonal armónica y transiciones fluidas.",
+      bestFor: "Suites de productividad, apps empresariales Android/Web y herramientas corporativas.",
+      promptSnippet: "ESTILO: Material Design 3 (Material You), superficies en capas con elevación de sombras estandarizada (elevation-1 a 4), Floating Action Button (FAB) destacado, chips de selección, paleta tonal armónica."
+    },
+    {
+      id: "flat-design",
+      num: 7,
+      block: 1,
+      name: "Flat Design",
+      category: "saas",
+      categoryLabel: "Plano 2D",
+      icon: "☀️",
+      desc: "Diseño plano, sin sombras ni efectos 3D. Usa colores sólidos e iconos simples.",
+      visualTraits: "Colores sólidos vibrantes, iconografía geométrica simplificada, cero gradientes ni sombras complejas.",
+      bestFor: "Apps educativas, herramientas para niños, utilidades ligeras y paneles rápidos.",
+      promptSnippet: "ESTILO: Flat Design 2D limpio, cero gradientes ni sombras complejas, colores sólidos vivos y contrastados, iconografía geométrica simplificada, botones rectangulares sólidos con tipografía sans-serif nítida."
+    },
+    {
+      id: "fluent-design",
+      num: 8,
+      block: 1,
+      name: "Fluent Design",
+      category: "modernos",
+      categoryLabel: "Acrílico & Luz",
+      icon: "🔮",
+      desc: "Transparencias, profundidad y movimiento sutil para crear experiencias más naturales.",
+      visualTraits: "Material acrílico multicapa, efecto Reveal Highlight de luz direccional en hover, paleta neutra con acentos azules/cian.",
+      bestFor: "Suites ofimáticas, gestores de archivos y software de desarrollo profesional.",
+      promptSnippet: "ESTILO: Fluent Design System, transparencias acrílicas multicapa, efecto de luz direccional en hover (Reveal Highlight), profundidad sutil en capas, paleta neutra moderna con acentos azul Windows/Cian."
+    },
+    {
+      id: "cyberpunk",
+      num: 9,
+      block: 1,
+      name: "Cyberpunk",
+      category: "geek",
+      categoryLabel: "Futurista Neón",
+      icon: "🌆",
+      desc: "Estética futurista con neón, colores vibrantes y ambientes oscuros y tecnológicos.",
+      visualTraits: "Fondo negro carbón (#0a0a0f), resplandor neón cian (#00f0ff) y magenta (#ff003c), esquinas biseladas y líneas de escaneo.",
+      bestFor: "Gaming, esports, comunidades Web3, hardware y herramientas nocturnas.",
+      promptSnippet: "ESTILO: Cyberpunk Sci-Fi de alto contraste, fondo ultra oscuro (#0a0a0f), resplandor neón (cyan #00f0ff y magenta #ff0055), esquinas cortadas en bisel poligonal, detalles de rejilla luminosa y badges tipo HUD cibernético."
+    },
+    {
+      id: "retro-vintage",
+      num: 10,
+      block: 1,
+      name: "Retro / Vintage",
+      category: "geek",
+      categoryLabel: "Nostálgico & Cálido",
+      icon: "📻",
+      desc: "Inspirado en décadas pasadas, con colores apagados y elementos clásicos.",
+      visualTraits: "Tonos crema (#fefae0), mostaza (#dda15e), terracota (#bc6c25) y verde oliva, marcos finos dobles y tipografía clásica con serifa.",
+      bestFor: "Cafeterías, vinilos, productos artesanales, moda vintage y marcas tradicionales.",
+      promptSnippet: "ESTILO: Retro Vintage cálido, paleta clásica en tonos crema (#fefae0), mostaza (#dda15e), terracota (#bc6c25) y verde oliva (#283618), marcos finos dobles, tipografía con serifa editorial clásica y etiquetas decorativas."
+    },
+    {
+      id: "y2k",
+      num: 11,
+      block: 1,
+      name: "Y2K Aesthetic",
+      category: "geek",
+      categoryLabel: "Años 2000 & Brillos",
+      icon: "💖",
+      desc: "Estética de los años 90 y 2000, con brillos, formas curvas y colores llamativos.",
+      visualTraits: "Gradientes rosa chicle (#ff70a6) y azul pastel, destellos de estrellas (✦), formas curvas infladas tipo burbuja y fuentes lúdicas.",
+      bestFor: "Redes sociales juveniles, tiendas de moda Gen-Z, música pop y creadores.",
+      promptSnippet: "ESTILO: Y2K Aesthetic nostálgico, gradientes rosa chicle (#ff70a6) y azul pastel brillante, destellos de estrellas (✦), formas curvas infladas con reflejos brillantes tipo burbuja, tipografía redondeada y lúdica."
+    },
+    {
+      id: "memphis-design",
+      num: 12,
+      block: 1,
+      name: "Memphis Design",
+      category: "expresivo",
+      categoryLabel: "Geométrico & Pop",
+      icon: "🎉",
+      desc: "Formas geométricas, colores vivos y composiciones juguetonas y asimétricas.",
+      visualTraits: "Composiciones geométricas asimétricas, patrones de confeti/zigzag, paleta multicolor viva (coral, menta, amarillo, violeta).",
+      bestFor: "Eventos, herramientas creativas, diseño infantil y festivales de arte.",
+      promptSnippet: "ESTILO: Memphis Design ochentero, composiciones geométricas asimétricas con triángulos, zigzags y puntos dispersos, paleta multicolor viva (coral, menta, amarillo canario, violeta), patrones gráficos alegres."
+    },
+    {
+      id: "bento-grid",
+      num: 13,
+      block: 1,
+      name: "Bento Grid (Apple Style)",
+      category: "modernos",
+      categoryLabel: "Modular & Armónico",
+      icon: "🍱",
+      desc: "Contenido organizado en tarjetas y bloques modulares que facilitan la lectura.",
+      visualTraits: "Rejilla asimétrica modular con tarjetas rectangulares redondeadas (rounded-2xl), bordes finos sutiles y micro-gráficos integrados.",
+      bestFor: "Landing pages de tecnología, dashboards ejecutivos, páginas de features y portafolios.",
+      promptSnippet: "ESTILO: Bento Grid modular contemporáneo (estilo Apple/Vercel), rejilla asimétrica de tarjetas rectangulares redondeadas (rounded-2xl), bordes finos sutiles (border-slate-800), micro-gráficos y KPIs contextuales integrados en cada bloque."
+    },
+    {
+      id: "editorial-magazine",
+      num: 14,
+      block: 1,
+      name: "Editorial / Magazine",
+      category: "expresivo",
+      categoryLabel: "Tipografía & Columnas",
+      icon: "📰",
+      desc: "Tipografía protagonista y composición por columnas al estilo de revistas.",
+      visualTraits: "Tipografía serifada de gran escala (Playfair / Bodoni), maquetación en 3 columnas asimétricas, paleta marfil/negro con acentos sobrios.",
+      bestFor: "Publicaciones digitales, blogs de diseño/arquitectura, revistas de moda y noticias.",
+      promptSnippet: "ESTILO: Editorial Magazine refinado, tipografía serifada de gran escala para titulares (Playfair/Bodoni), maquetación en 3 columnas asimétricas tipo revista impresa, paleta sobria marfil/negro con acento borgoña, líneas divisorias finas."
+    },
+    {
+      id: "organic-natural",
+      num: 15,
+      block: 1,
+      name: "Organic / Natural",
+      category: "expresivo",
+      categoryLabel: "Biofílico & Tierra",
+      icon: "🌿",
+      desc: "Formas curvas, colores tierra y elementos que transmiten calidez y calma.",
+      visualTraits: "Formas curvas fluidas tipo pétalo, colores tierra y botánicos (verde salvia #84a98c, arcilla #cb997e, lino crema), atmósfera zen.",
+      bestFor: "Meditación, bienestar, cosmética natural, yoga y tiendas ecológicas.",
+      promptSnippet: "ESTILO: Orgánico y Natural (Biofílico), formas curvas y fluidas tipo pétalo, paleta de colores tierra y naturaleza (verde salvia #84a98c, arcilla terracota #cb997e, fondo lino crema #f8f7f4), atmósfera relajante y cálida."
+    },
+    {
+      id: "futurista",
+      num: 16,
+      block: 1,
+      name: "Futurista (Sci-Fi HUD)",
+      category: "geek",
+      categoryLabel: "Telemetría & Sci-Fi",
+      icon: "🚀",
+      desc: "Interfaces avanzadas con efectos tecnológicos, geometría y luces.",
+      visualTraits: "Telemetría militar, anillos circulares de radar/porcentaje, tipografía monospace (JetBrains Mono), fondo negro con cian (#00d2ff) y ámbar.",
+      bestFor: "Monitoreo satelital, IoT industrial, centros SOC de ciberseguridad y simuladores.",
+      promptSnippet: "ESTILO: Futurista Sci-Fi HUD, telemetría técnica con coordenadas, anillos circulares de porcentaje tipo radar, rejillas de datos con tipografía monoespaciada (JetBrains Mono), fondo negro puro con acentos en cian (#00d2ff) y ámbar de alerta."
+    },
+    {
+      id: "dashboard-saas",
+      num: 17,
+      block: 1,
+      name: "Dashboard / SaaS",
+      category: "saas",
+      categoryLabel: "Métricas & B2B",
+      icon: "📊",
+      desc: "Paneles funcionales con datos, métricas y componentes organizados.",
+      visualTraits: "4 tarjetas KPIs con deltas porcentuales, tabla de datos con filtros rápidos y paginación, sidebar colapsable, paleta Slate/Indigo.",
+      bestFor: "CRMs, ERPs, analíticas financieras, gestión de proyectos y administración de datos.",
+      promptSnippet: "ESTILO: Dashboard SaaS profesional de alta productividad, 4 tarjetas métricas con deltas de crecimiento, tabla de datos con filtros en tiempo real y paginación, barra lateral estructurada, paleta Slate/Indigo con badges de estado codificados por color."
+    },
+    {
+      id: "dark-ui",
+      num: 18,
+      block: 1,
+      name: "Dark UI (Modo Oscuro)",
+      category: "saas",
+      categoryLabel: "Alto Contraste",
+      icon: "🌙",
+      desc: "Fondos oscuros con alto contraste y acentos de color luminosos.",
+      visualTraits: "Fondo Slate 950 (#0b0f19), tarjetas Slate 900 con bordes finos (#1e293b), tipografía de alto contraste, acentos violeta/esmeralda luminoso.",
+      bestFor: "Herramientas de programación, trading, edición de video/audio y plataformas nocturnas.",
+      promptSnippet: "ESTILO: Dark Mode premium calibrado, fondo ultra oscuro Slate 950 (#0b0f19), tarjetas en Slate 900 con bordes finos (#1e293b), alto contraste visual en tipografías, acentos en violeta/esmeralda luminoso, cero reflejos molestos."
+    },
+    {
+      id: "aurora-gradient",
+      num: 19,
+      block: 1,
+      name: "Aurora / Gradient UI",
+      category: "modernos",
+      categoryLabel: "Atmosférico & Glow",
+      icon: "🌌",
+      desc: "Gradientes suaves y colores atmosféricos que crean profundidad y elegancia.",
+      visualTraits: "Halos luminosos difusos multicapa (tonos violeta, azul cobalto, magenta), tarjetas translúcidas que capturan la luz, profundidad cósmica.",
+      bestFor: "Apps de IA generativa, suites creativas, música en streaming y lanzamientos premium.",
+      promptSnippet: "ESTILO: Aurora Gradient UI, fondos con halos luminosos difusos multicapa (degradados suaves en tonos violeta, azul cobalto y magenta), tarjetas translúcidas que capturan la luz de fondo, sensación de profundidad espacial y elegancia cósmica."
+    },
+    {
+      id: "motion-interactive",
+      num: 20,
+      block: 1,
+      name: "Motion / Interactive UI",
+      category: "interactivo",
+      categoryLabel: "Microanimaciones",
+      icon: "✨",
+      desc: "Animaciones, microinteracciones y transiciones que mejoran la experiencia del usuario.",
+      visualTraits: "Microinteracciones evidentes (hover reactivo con brillo, transiciones suaves, badges pulsantes, barras de progreso elásticas).",
+      bestFor: "Apps móviles nativas/PWA, apps de hábitos, onboarding interactivo y gamificación.",
+      promptSnippet: "ESTILO: Motion-Driven Interactive UI, componentes con microinteracciones visuales evidentes (estados hover reactivos con brillo suave, transiciones fluidas de pestaña, badges pulsantes, barras de progreso dinámicas con resorte elástico)."
+    },
+
+    // --- BLOQUE 2: OTROS 20 ESTILOS ADICIONALES ---
+    {
+      id: "liquid-ui",
+      num: 21,
+      block: 2,
+      name: "Liquid UI",
+      category: "interactivo",
+      categoryLabel: "Fluido & Orgánico",
+      icon: "🌊",
+      desc: "Elementos fluidos y formas orgánicas que transmiten movimiento y dinamismo.",
+      visualTraits: "Curvas asimétricas líquidas, separadores con olas dinámicas en gradientes oceánicos, botones con formas orgánicas.",
+      bestFor: "Bebidas, hidratación, bienestar mental, festivales y experiencias sensoriales.",
+      promptSnippet: "ESTILO: Liquid UI fluido y ondulante, curvas asimétricas de aspecto líquido, separadores de sección con olas dinámicas en gradientes azul océano y violeta suave, botones con formas orgánicas no rígidas."
+    },
+    {
+      id: "claymorphism",
+      num: 22,
+      block: 2,
+      name: "Claymorphism",
+      category: "interactivo",
+      categoryLabel: "Arcilla 3D Inflada",
+      icon: "🧸",
+      desc: "Elementos con apariencia 3D suave y redondeada, que parecen de arcilla digital.",
+      visualTraits: "Tarjetas y botones con volumen inflado (sombras interiores y exteriores dobles), tonos pastel cálidos (lila, menta, durazno), bordes rounded-3xl.",
+      bestFor: "Apps infantiles, educación interactiva, juegos casuales y bienestar amigable.",
+      promptSnippet: "ESTILO: Claymorphism 3D inflado, tarjetas y botones con volumen de arcilla/plastilina digital (sombras interiores y exteriores dobles que crean relieve redondeado), paleta en tonos pastel suaves (lila, menta, durazno), bordes rounded-3xl."
+    },
+    {
+      id: "pixel-art",
+      num: 23,
+      block: 2,
+      name: "Pixel Art UI",
+      category: "geek",
+      categoryLabel: "Retro 8/16 Bits",
+      icon: "👾",
+      desc: "Estética retro inspirada en videojuegos clásicos de 8 y 16 bits.",
+      visualTraits: "Tipografía bitmap pixelada, bordes de botones con contornos negros pixelados sólidos, barras de estado en bloques arcade.",
+      bestFor: "Videojuegos indie, gamificación de desarrolladores, coleccionables y eventos retro.",
+      promptSnippet: "ESTILO: Pixel Art UI retro de 16 bits, tipografía tipográfica bitmap pixelada, bordes de botones con contornos negros pixelados sólidos, barras de estado en bloques segmentados tipo videojuego arcade, paleta de colores indexada vibrante."
+    },
+    {
+      id: "terminal-hacker",
+      num: 24,
+      block: 2,
+      name: "Terminal / Hacker UI",
+      category: "geek",
+      categoryLabel: "CLI & Consola",
+      icon: "💻",
+      desc: "Inspirado en terminales de código y CLI, ideal para proyectos tech y dashboards avanzados.",
+      visualTraits: "Fondo negro consola (#0d1117), texto verde fósforo (#22c55e), tipografía monospace (JetBrains Mono), prompt root@sys:~# y cajas de logs.",
+      bestFor: "DevOps, plataformas de seguridad, APIs de desarrolladores y bots algorítmicos.",
+      promptSnippet: "ESTILO: Terminal CLI Hacker UI, fondo negro consola (#0d1117), texto en verde fósforo brillante (#22c55e) y cian, tipografía monospace estricta (JetBrains Mono / Fira Code), prompt de comandos \"root@sys:~#\", cajas de logs con scroll."
+    },
+    {
+      id: "kinetic-typography",
+      num: 25,
+      block: 2,
+      name: "Kinetic Typography",
+      category: "expresivo",
+      categoryLabel: "Tipografía en Movimiento",
+      icon: "🔤",
+      desc: "La tipografía es la protagonista, con animaciones que transmiten mensajes.",
+      visualTraits: "Titulares masivos con fuentes grotescas extra-pesadas, textos en marquesinas horizontales contrastadas, diseño donde las letras crean la estructura.",
+      bestFor: "Agencias creativas, estudios de tipografía, portafolios y branding impactante.",
+      promptSnippet: "ESTILO: Kinetic Typography protagonista, titulares a escala masiva con fuentes grotescas extra-pesadas, textos en franjas horizontales contrastadas, diseño tipográfico de alto voltaje visual donde las letras construyen la estructura."
+    },
+    {
+      id: "maximalismo",
+      num: 26,
+      block: 2,
+      name: "Maximalismo (Maximalism)",
+      category: "expresivo",
+      categoryLabel: "Color & Texturas",
+      icon: "💥",
+      desc: "Muchos colores, patrones y elementos visuales que buscan impactar y llamar la atención.",
+      visualTraits: "Saturación de color sin restricciones, elementos y stickers gráficos superpuestos, patrones de fondo audaces, energía festiva.",
+      bestFor: "Festivales de música, moda urbana experimental, apps de streaming y juventud.",
+      promptSnippet: "ESTILO: Maximalismo visual audaz, saturación de color sin restricciones, elementos gráficos y stickers superpuestos, patrones contrastantes de fondo, energía vibrante y estética visual de alto voltaje festivo."
+    },
+    {
+      id: "hand-drawn",
+      num: 27,
+      block: 2,
+      name: "Hand-Drawn UI",
+      category: "expresivo",
+      categoryLabel: "Boceto a Mano",
+      icon: "✏️",
+      desc: "Apariencia dibujada a mano que transmite cercanía, creatividad y autenticidad.",
+      visualTraits: "Trazos de boceto imperfectos a mano alzada, flechas y subrayados garabateados, tarjetas tipo notas adhesivas, caligrafía humana.",
+      bestFor: "Lluvia de ideas, whiteboards (Excalidraw style), notas personales y recetas.",
+      promptSnippet: "ESTILO: Hand-Drawn UI artesanal (estilo Excalidraw), trazos de boceto imperfectos a mano alzada, flechas y subrayados garabateados, tarjetas con aspecto de notas adhesivas, caligrafía limpia pero humana y cercana."
+    },
+    {
+      id: "monochromatic",
+      num: 28,
+      block: 2,
+      name: "Monochromatic UI",
+      category: "saas",
+      categoryLabel: "Gama Única",
+      icon: "🔹",
+      desc: "Diseño basado en una sola gama de color con diferentes tonalidades y contrastes.",
+      visualTraits: "Estricto en gama única (ej. azul cobalto de #0f172a a #38bdf8), jerarquía lograda mediante contraste y peso tipográfico.",
+      bestFor: "Herramientas de concentración, software contable, suites médicas y marcas estrictas.",
+      promptSnippet: "ESTILO: Monochromatic UI estricto en gama de azul cobalto/índigo (desde #0f172a oscuro hasta #38bdf8 claro), jerarquía lograda exclusivamente mediante matices, pesos de contraste y opacidades de un solo color maestro."
+    },
+    {
+      id: "3d-ui",
+      num: 29,
+      block: 2,
+      name: "3D UI (Isométrico)",
+      category: "interactivo",
+      categoryLabel: "Volumen 3D Real",
+      icon: "🧊",
+      desc: "Elementos tridimensionales integrados que aportan profundidad y realismo a la interfaz.",
+      visualTraits: "Widgets e iconos con volumen 3D isométrico renderizado, tarjetas con sombras de profundidad de campo, estética inmersiva.",
+      bestFor: "Metaversos, plataformas Web3, tiendas de hardware y videojuegos.",
+      promptSnippet: "ESTILO: 3D UI tridimensional con volumen isométrico, iconos de widgets con aspecto de objetos 3D renderizados con reflejos suaves, tarjetas flotantes con sombras de profundidad de campo, estética envolvente e inmersiva."
+    },
+    {
+      id: "ai-generative",
+      num: 30,
+      block: 2,
+      name: "AI / Generative UI",
+      category: "interactivo",
+      categoryLabel: "Adaptativo & Chat",
+      icon: "🤖",
+      desc: "Interfaces dinámicas que se adaptan y generan contenido con ayuda de la inteligencia artificial.",
+      visualTraits: "Área conversacional multimodal, burbujas de respuesta con widgets interactivos on-demand, chips neuronales pulsantes.",
+      bestFor: "Copilotos con IA, asistentes médicos, atención al cliente inteligente y búsqueda semántica.",
+      promptSnippet: "ESTILO: AI Generative UI dinámica, área central tipo conversación multimodal con burbujas de respuesta que contienen tarjetas interactivas de acción rápida, indicadores de procesamiento neuronal (chips brillantes) y widgets contextuales."
+    },
+    {
+      id: "liquid-glass",
+      num: 31,
+      block: 2,
+      name: "Liquid Glass UI",
+      category: "modernos",
+      categoryLabel: "Cristal & Refracción",
+      icon: "💎",
+      desc: "Evolución del glassmorfismo con más brillo, reflejos y transparencias ultrafluidas.",
+      visualTraits: "Transparencias ultra-claras con refracción realista, destellos cromados especulares finos, backdrop-blur-2xl de ultra-lujo.",
+      bestFor: "Apps de lujo, reproductores multimedia futuristas, DeFi y alta tecnología.",
+      promptSnippet: "ESTILO: Liquid Glass UI hipermoderno, transparencias ultra-claras con refracción de luz realista, bordes con destellos cromados especulares finos, desenfoque profundo de fondo (backdrop-blur-2xl), estética cristalina de ultra-lujo."
+    },
+    {
+      id: "paper-ui",
+      num: 32,
+      block: 2,
+      name: "Paper UI",
+      category: "expresivo",
+      categoryLabel: "Textura de Papel",
+      icon: "📜",
+      desc: "Inspirado en el papel físico, con texturas, arrugas y sombras naturales.",
+      visualTraits: "Tarjetas con estética de hojas de archivo, sombras de pliegue natural, pestañas de carpetas superiores, paleta marfil cálido y carbón.",
+      bestFor: "Diarios personales, recetarios, editores literarios y archivo documental.",
+      promptSnippet: "ESTILO: Paper UI táctil, tarjetas con estética de hojas de papel de archivo con sombras de pliegue natural, pestañas de carpetas superiores, textura suave de fibra de papel, paleta marfil cálido, carbón y marrón cuero suave."
+    },
+    {
+      id: "gradient-mesh",
+      num: 33,
+      block: 2,
+      name: "Gradient Mesh UI",
+      category: "expresivo",
+      categoryLabel: "Malla Multicolor",
+      icon: "🌈",
+      desc: "Gradientes complejos que crean transiciones suaves y vibrantes entre colores.",
+      visualTraits: "Mallas complejas de degradados multidireccionales (fucsia, violeta, cian y naranja), tarjetas oscuras con acentos extraídos de la malla.",
+      bestFor: "Música, streaming audiovisual, diseño creativo y conferencias.",
+      promptSnippet: "ESTILO: Gradient Mesh UI vibrante, fondos con mallas complejas de degradados fluidos y multidireccionales (fucsia, violeta profundo, cian y naranja eléctrico), tarjetas oscuras con acentos de color extraídos de la malla."
+    },
+    {
+      id: "frosted-ui",
+      num: 34,
+      block: 2,
+      name: "Frosted UI (Vidrio Hielo)",
+      category: "modernos",
+      categoryLabel: "Hielo & Escarchado",
+      icon: "❄️",
+      desc: "Efecto escarchado con desenfoque intenso que da sensación de frío y profundidad.",
+      visualTraits: "Vidrio escarchado con desenfoque blanquecino denso, bordes en blanco hielo cristalino (#e0f2fe), paleta azul glacial (#0284c7).",
+      bestFor: "Clima, salud/crioterapia, bebidas frías y experiencias invernales.",
+      promptSnippet: "ESTILO: Frosted Ice UI gélido, tarjetas de vidrio escarchado con desenfoque denso blanquecino, bordes en blanco hielo cristalino (#e0f2fe), paleta azul glacial (#0284c7) y fondo con textura de condensación fría."
+    },
+    {
+      id: "neo-brutalism",
+      num: 35,
+      block: 2,
+      name: "Neo-Brutalism",
+      category: "expresivo",
+      categoryLabel: "Bordes 3px & Sombra 4px",
+      icon: "🟨",
+      desc: "Combinación entre brutalismo y toques modernos, con bordes grandes y contrastes.",
+      visualTraits: "Bordes negros sólidos de 3px, sombras duras desplazadas sin difuminar (shadow-[4px_4px_0px_#000]), colores lima/amarillo/blanco.",
+      bestFor: "Gumroad style, herramientas para creadores, marketing SaaS moderno y academias tech.",
+      promptSnippet: "ESTILO: Neo-Brutalismo moderno (estilo Gumroad), bordes negros sólidos y gruesos de 3px, sombras duras desplazadas sin difuminar (shadow-[4px_4px_0px_#000]), colores de alto impacto (lima brillante, amarillo, blanco puro), botones con relieve plano."
+    },
+    {
+      id: "scroll-based",
+      num: 36,
+      block: 2,
+      name: "Scroll-Based Design",
+      category: "interactivo",
+      categoryLabel: "Scrollytelling",
+      icon: "📜",
+      desc: "Diseño que utiliza el desplazamiento como herramienta principal para contar historias.",
+      visualTraits: "Paneles secuenciales de alto impacto, barra de progreso de lectura superior, tarjetas apilables con fijación vertical (sticky).",
+      bestFor: "Presentaciones de producto, reportes anuales interactivos e historias de impacto.",
+      promptSnippet: "ESTILO: Scroll-Based Design (Scrollytelling), diseño estructurado en paneles secuenciales de alto impacto con indicador visual de progreso de lectura, tarjetas apilables con fijación vertical y llamadas al scroll."
+    },
+    {
+      id: "microinteractions",
+      num: 37,
+      block: 2,
+      name: "Microinteractions UI",
+      category: "interactivo",
+      categoryLabel: "Feedback Háptico",
+      icon: "🎯",
+      desc: "Pequeñas interacciones que mejoran la experiencia y hacen la interfaz más humana y natural.",
+      visualTraits: "Checkmarks animados con rebote de éxito, toggles elásticos, badges pulsantes en vivo y tooltips enriquecidos.",
+      bestFor: "To-Do apps, plataformas de hábitos, e-learning y validaciones críticas.",
+      promptSnippet: "ESTILO: Microinteractions UI de alta fidelidad, elementos con feedback visual inmediato, checkmarks animados con rebote de éxito, toggles con físicas elásticas, badges pulsantes en tiempo real y tooltips enriquecidos."
+    },
+    {
+      id: "data-visualization",
+      num: 38,
+      block: 2,
+      name: "Data Visualization UI",
+      category: "saas",
+      categoryLabel: "Gráficos & BI",
+      icon: "📈",
+      desc: "Interfaces diseñadas para presentar datos de forma clara, visual e interactiva.",
+      visualTraits: "Gráficos de líneas con gradientes bajo la curva, tablas con sparklines en cada fila, filtros temporales facetados y paleta accesible.",
+      bestFor: "Business Intelligence, trading, analítica de servidores y salud poblacional.",
+      promptSnippet: "ESTILO: Data Visualization UI analítico denso, gráficos de líneas suavizadas con gradientes bajo la curva, tablas interactivas con sparklines integradas en cada fila, filtros temporales facetados y paleta de colores cromática accesible."
+    },
+    {
+      id: "voice-ui",
+      num: 39,
+      block: 2,
+      name: "Voice UI",
+      category: "interactivo",
+      categoryLabel: "Voz & Audio Waveform",
+      icon: "🎙️",
+      desc: "Interfaces que se controlan y navegan principalmente con comandos de voz.",
+      visualTraits: "Esfera luminosa central reactiva a la voz, ondas sonoras dinámicas (waveform), transcripción en vivo y botón mic con glow.",
+      bestFor: "Asistentes de voz con IA, práctica de idiomas, podcasting y accesibilidad.",
+      promptSnippet: "ESTILO: Voice UI conversacional, esfera luminosa central pulsante que simula energía vocal reactiva, visualizador de ondas sonoras (waveform audio), contenedor de transcripción en tiempo real y botón de micrófono flotante con efecto glow."
+    },
+    {
+      id: "adaptive-ui",
+      num: 40,
+      block: 2,
+      name: "Adaptive UI",
+      category: "saas",
+      categoryLabel: "Contextual & Inteligente",
+      icon: "📱",
+      desc: "Diseño que se adapta inteligentemente al contexto, dispositivo y comportamiento del usuario.",
+      visualTraits: "Layout modular con conmutador de densidad visual (Compacto / Normal / Expandido), soporte de alto contraste y tarjetas reconfigurables.",
+      bestFor: "Sistemas multidevice, software hospitalario, movilidad y accesibilidad universal.",
+      promptSnippet: "ESTILO: Adaptive UI inteligente y contextual, layout modular con conmutador de densidad visual (Modo Compacto / Modo Expandido), soporte de alto contraste accesible y tarjetas reconfigurables según el rol del usuario."
+    }
+  ],
+
+  // Inicializador integral del módulo Stitch
+  initStitchModule: function() {
+    this.populateStyleSelector();
+    this.renderStylesGrid();
+    this.updateCustomStitchPrompt();
+    this.loadStitchPreset();
+  },
+
+  // Rellenar el <select> con los 40 estilos
+  populateStyleSelector: function() {
+    const select = document.getElementById('stitch-custom-style');
+    if (!select) return;
+
+    select.innerHTML = `
+      <optgroup label="🏛️ 20 Estilos Principales">
+        ${this.FRONTEND_STYLES.filter(s => s.block === 1).map(s => `
+          <option value="${s.id}">${s.num}. ${s.name}</option>
+        `).join('')}
+      </optgroup>
+      <optgroup label="🚀 20 Estilos Adicionales">
+        ${this.FRONTEND_STYLES.filter(s => s.block === 2).map(s => `
+          <option value="${s.id}">${s.num}. ${s.name}</option>
+        `).join('')}
+      </optgroup>
+    `;
+    select.value = "glasmorfismo";
+  },
+
+  // Renderizar las tarjetas del catálogo de estilos
+  renderStylesGrid: function(filterCat, searchVal) {
+    const container = document.getElementById('stitch-styles-grid');
+    if (!container) return;
+
+    const cat = filterCat !== undefined ? filterCat : this.currentStyleCategory;
+    const search = (searchVal !== undefined ? searchVal : this.currentStyleSearch).toLowerCase().trim();
+
+    let filtered = this.FRONTEND_STYLES;
+
+    // Filtro por categoría
+    if (cat === 'principales') {
+      filtered = filtered.filter(s => s.block === 1);
+    } else if (cat === 'adicionales') {
+      filtered = filtered.filter(s => s.block === 2);
+    } else if (cat !== 'all') {
+      filtered = filtered.filter(s => s.category === cat);
+    }
+
+    // Filtro por búsqueda
+    if (search) {
+      filtered = filtered.filter(s => 
+        s.name.toLowerCase().includes(search) ||
+        s.desc.toLowerCase().includes(search) ||
+        s.visualTraits.toLowerCase().includes(search) ||
+        s.bestFor.toLowerCase().includes(search) ||
+        s.categoryLabel.toLowerCase().includes(search)
+      );
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; padding: 2.5rem; text-align: center; background: rgba(30, 41, 59, 0.5); border-radius: 12px; border: 1px dashed var(--border-color);">
+          <span style="font-size: 2.5rem;">🔍</span>
+          <h4 style="color: var(--text-primary); margin: 0.5rem 0;">No se encontraron estilos para "${search}"</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Prueba con otra palabra clave o haz clic en "Todos (40)".</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(s => `
+      <div class="style-card" id="style-card-${s.id}">
+        <div class="style-card-header">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span class="style-icon">${s.icon}</span>
+            <div>
+              <span class="style-number">Estilo #${s.num}</span>
+              <h4 class="style-name">${s.name}</h4>
+            </div>
+          </div>
+          <span class="style-category-tag">${s.categoryLabel}</span>
+        </div>
+
+        <p class="style-desc">${s.desc}</p>
+
+        <div class="style-details">
+          <div class="style-detail-row">
+            <strong>🎨 Atributos:</strong> <span>${s.visualTraits}</span>
+          </div>
+          <div class="style-detail-row" style="margin-top: 0.35rem;">
+            <strong>🎯 Ideal para:</strong> <span>${s.bestFor}</span>
+          </div>
+        </div>
+
+        <div class="style-card-actions">
+          <button class="btn-style-copy" onclick="window.Generators.copyStyleSnippet('${s.id}')" title="Copiar snippet de estilo para Stitch">
+            📋 Copiar Prompt
+          </button>
+          <button class="btn-style-apply" onclick="window.Generators.selectStyleInGenerator('${s.id}')" title="Aplicar al generador superior">
+            ✨ Usar en Generador
+          </button>
+        </div>
+      </div>
+    `).join('');
+  },
+
+  // Cambiar categoría activa
+  setStylesFilter: function(cat, btnEl) {
+    this.currentStyleCategory = cat;
+    document.querySelectorAll('.category-pill').forEach(btn => btn.classList.remove('active'));
+    if (btnEl) btnEl.classList.add('active');
+    this.renderStylesGrid();
+  },
+
+  // Búsqueda en tiempo real
+  searchStyles: function(query) {
+    this.currentStyleSearch = query;
+    this.renderStylesGrid();
+  },
+
+  // Copiar solo el fragmento de prompt del estilo
+  copyStyleSnippet: function(styleId) {
+    const style = this.FRONTEND_STYLES.find(s => s.id === styleId);
+    if (!style) return;
+
+    navigator.clipboard.writeText(style.promptSnippet).then(() => {
+      window.App.showToast(`📋 Snippet de estilo #${style.num} "${style.name}" copiado.`, "success");
+    }).catch(() => {
+      window.App.showToast("❌ No se pudo copiar al portapapeles.", "error");
+    });
+  },
+
+  // Seleccionar estilo y llevar al generador superior
+  selectStyleInGenerator: function(styleId) {
+    const style = this.FRONTEND_STYLES.find(s => s.id === styleId);
+    if (!style) return;
+
+    const select = document.getElementById('stitch-custom-style');
+    if (select) select.value = styleId;
+
+    this.updateCustomStitchPrompt();
+
+    const genCard = document.getElementById('stitch-generator-card');
+    if (genCard) {
+      genCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    window.App.showToast(`✨ Estilo #${style.num} "${style.name}" cargado en el generador.`, "success");
+  },
+
+  // Generador dinámico de prompts para Google Stitch
+  updateCustomStitchPrompt: function() {
+    const appName = document.getElementById('stitch-custom-appname')?.value || 'EduPulse SaaS';
+    const purpose = document.getElementById('stitch-custom-purpose')?.value || 'Plataforma interactiva de cursos';
+    const screenType = document.getElementById('stitch-custom-screen')?.value || 'dashboard';
+    const styleId = document.getElementById('stitch-custom-style')?.value || 'glasmorfismo';
+    const outputEl = document.getElementById('stitch-custom-output');
+
+    if (!outputEl) return;
+
+    const style = this.FRONTEND_STYLES.find(s => s.id === styleId) || this.FRONTEND_STYLES[1];
+
+    let layoutContent = "";
+    if (screenType === 'dashboard') {
+      layoutContent = `1. Sidebar Izquierdo:
+   - Logo estilizado de '${appName}' con icono moderno y badge 'PRO'.
+   - Navegación: Dashboard (activo), Mis Módulos, Analíticas de Rendimiento, Ajustes.
+   - Perfil de usuario en el pie con avatar circular, nombre de usuario y botón de cerrar sesión.
+
+2. Header Superior:
+   - Barra de búsqueda con comando rápido 'Ctrl + K'.
+   - Badge de notificaciones con punto indicador rojo.
+   - Botón principal de acción '+ Nuevo Registro' con resplandor y acento destacado.
+
+3. Área Central (Dashboard de Alta Densidad):
+   - 4 Tarjetas de Métricas (KPIs): Total Activos (48), Tasa de Cumplimiento (94.2%), Tiempo Promedio (2.3 días) y Miembros (16).
+   - Selector de pestañas: 'Vista Lista' / 'Vista Resumen'.
+   - Tabla interactiva con filtros facetados por estado, ordenación y menú de acciones (Editar, Eliminar).
+   - Modal flotante con formulario validado para crear un nuevo registro.`;
+    } else if (screenType === 'kanban') {
+      layoutContent = `1. Sidebar Izquierdo:
+   - Logo de '${appName}' y enlaces a Tableros, Sprints, Backlog y Configuración.
+   - Perfil del líder técnico en la base.
+
+2. Header Superior:
+   - Buscador de tarjetas por etiqueta o asignado.
+   - Filtro por Prioridad (Alta, Media, Baja) y botón '+ Nueva Tarea'.
+
+3. Tablero Kanban Interactivo (4 Columnas):
+   - Columnas: 'Por Hacer', 'En Progreso', 'En Revisión', 'Completado'.
+   - Tarjetas con títulos claros, avatares de responsables, etiquetas de color de sprint y barra de progreso.
+   - Modal de detalle de tarjeta con checklist interactivo y campo de comentarios.`;
+    } else if (screenType === 'marketplace') {
+      layoutContent = `1. Header Superior:
+   - Logo comercial, barra de búsqueda con autocompletado y botón de Carrito con badge contador.
+
+2. Barra Lateral de Filtros:
+   - Filtro por rango de precio (slider), categoría de producto y valoración en estrellas.
+
+3. Grid de Productos (4 Columnas):
+   - Tarjetas de producto con foto destacada, título, precio con descuento, badge de valoración (4.9 ★) y botón '+ Añadir al Carrito'.
+   - Modal flotante de Checkout con resumen de compra y desglose claro.`;
+    } else if (screenType === 'clinico') {
+      layoutContent = `1. Sidebar:
+   - Logo con cruz clínica estilizada y navegación (Agenda, Pacientes, Historial Clínico, Videoconsultas).
+
+2. Header:
+   - Buscador de pacientes por documento/nombre y botón '+ Agendar Cita'.
+
+3. Panel Clínico:
+   - 4 KPIs médicos: Citas de Hoy (8), Pacientes Activos (154), Videoconsultas (3), Calificación (4.9 / 5).
+   - Calendario semanal interactivo con bloques codificados por color según tipo de consulta.
+   - Panel lateral 'Pacientes en Espera' con foto, hora y botón destacado 'Iniciar Consulta'.`;
+    } else if (screenType === 'devops') {
+      layoutContent = `1. Sidebar:
+   - Logo con icono de terminal y enlaces a Clusters, Telemetría, Logs en Vivo, Alertas y API Keys.
+
+2. Header:
+   - Selector de cluster activo, selector de ventana temporal (15m, 1h, 24h) y estado general (punto verde 'ALL SYSTEMS OPERATIONAL').
+
+3. Consola de Telemetría:
+   - Gráficos de latencia p95/p99 y throughput en tiempo real.
+   - Consola de logs en vivo con tipografía monospace y selector de nivel (INFO, WARN, ERR).
+   - Tabla de microservicios con métricas de CPU, Memoria y estado de salud.`;
+    } else {
+      layoutContent = `1. Header Móvil / Desktop:
+   - Avatar del usuario, saludo personalizado '¡Hola, Juan!' y racha activa de días seguidos (🔥 12 Días).
+
+2. Grid de Hábitos y Metas Diarias:
+   - Tarjetas de hábitos interactivos con casillas de checkmark animadas y barra de progreso circular.
+   - Gráfico de consistencia semanal tipo mapa de calor.
+   - Modal de felicitaciones al completar todos los hábitos del día.`;
+    }
+
+    const promptText = `Diseña una interfaz web moderna, altamente profesional y completamente responsive para "${appName}", enfocada en: ${purpose}.
+
+ESTRUCTURA DE PANTALLA:
+${layoutContent}
+
+SISTEMA DE DISEÑO (ESTILO SELECCIONADO: #${style.num} ${style.name}):
+- ${style.promptSnippet}
+- Acabados: ${style.visualTraits}
+- Tipografía: Inter / JetBrains Mono con jerarquía visual estricta y excelente legibilidad.
+
+LOS 4 ESTADOS DE INTERFAZ OBLIGATORIOS:
+- Empty State: Ilustración y botón de llamado a la acción cuando no existan registros.
+- Loading State: Skeleton loaders animados con pulsación de gradiente durante la carga.
+- Success Feedback: Notificación Toast flotante en esquina inferior derecha.
+- Error State: Banner de advertencia con botón de reintento en caso de fallo.`;
+
+    outputEl.textContent = promptText;
+  },
+
+  // 4. Presets rápidos de Google Stitch
   loadStitchPreset: function() {
     const preset = document.getElementById('stitch-preset-select')?.value;
     const outputEl = document.getElementById('stitch-preset-output');
@@ -489,7 +1370,7 @@ Layout:
 - Tablero Kanban interactivo: Columnas (Por Hacer, En Progreso, En Revisión, Hecho) con tarjetas drag-and-drop, avatares y etiquetas de prioridad.
 - Modal Flotante: Formulario de creación de tarea con campos de título, descripción, prioridad, responsable y fecha límite.
 
-Estilo: Dark Slate (#0f172a, #1e293b), acentos en Índigo (#6366f1), Glassmorphism sutil, bordes rounded-xl y tipografía Inter.`;
+Estilo: Bento Grid + Glassmorphism Dark Slate (#0f172a, #1e293b), acentos en Índigo (#6366f1), bordes rounded-xl y tipografía Inter.`;
     } else if (preset === 'marketplace') {
       outputEl.textContent = `Diseña un Marketplace moderno y elegante para venta de productos digitales, plantillas y cursos.
 
@@ -579,7 +1460,7 @@ export function useSupabaseCrud(tableName = 'items') {
     }
   };
 
-  // 2. Crear nuevo registro asignando user_id
+  // 2. Crear nuevo registro asignando owner_id
   const createItem = async (itemData) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -587,7 +1468,7 @@ export function useSupabaseCrud(tableName = 'items') {
 
       const { data: newItem, error: insertErr } = await supabase
         .from(tableName)
-        .insert([{ ...itemData, user_id: user.id }])
+        .insert([{ ...itemData, owner_id: user.id }])
         .select()
         .single();
 
