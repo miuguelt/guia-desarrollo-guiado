@@ -426,6 +426,10 @@ window.MODULES_DATA = [
           <div id="gema3-selected-style-desc" style="color: #94a3b8; font-size: 0.82rem; line-height: 1.4;">
             <!-- Descripción inyectada dinámicamente -->
           </div>
+          <!-- Vista Previa Visual del Estilo Seleccionado -->
+          <div id="gema3-selected-style-preview" style="margin-top: 0.75rem;">
+            <!-- Inyectado dinámicamente por updateGema3TriggerPrompt -->
+          </div>
         </div>
 
         <!-- Bloque de Código del Mensaje para Gema 3 -->

@@ -2022,6 +2022,21 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       descEl.textContent = `Atributos: ${style.visualTraits} | Ideal para: ${style.bestFor}`;
     }
 
+    const previewEl = document.getElementById('gema3-selected-style-preview');
+    if (previewEl) {
+      previewEl.innerHTML = `
+        <div class="style-preview-wrapper" style="margin: 0; border: 1px solid rgba(129, 140, 248, 0.35); border-radius: 8px; overflow: hidden; background: rgba(10, 15, 29, 0.85); box-shadow: 0 4px 14px rgba(0,0,0,0.35);">
+          <div class="style-preview-header" style="background: rgba(30, 27, 75, 0.9); border-bottom: 1px solid rgba(129, 140, 248, 0.25); padding: 5px 12px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #c084fc; font-weight: 600; font-size: 0.8rem; display: flex; align-items: center; gap: 6px;">
+              <span>👁️</span> Vista Previa del Estilo Seleccionado: <strong>Estilo #${style.num} — ${style.name}</strong>
+            </span>
+            <span class="preview-mode-tag" style="background: rgba(129, 140, 248, 0.25); color: #c7d2fe; border: 1px solid #818cf8; font-size: 0.65rem; font-weight: 600;">UI Snippet Activo</span>
+          </div>
+          ${this.getStylePreviewHtml(style.id)}
+        </div>
+      `;
+    }
+
     if (!outputEl) return;
 
     const triggerText = `Hola Gema 3. He cargado en tus Conocimientos los 3 documentos de mi proyecto "${appName}":
