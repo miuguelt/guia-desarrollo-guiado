@@ -26,49 +26,63 @@ sequenceDiagram
 
 ---
 
-## 🛠️ Paso a Paso: Cómo Exportar desde Google Stitch
+## 🛠️ Paso a Paso: Cómo Exportar la Suite Multi-Pantalla desde Google Stitch
 
 1. **En Google Stitch (`stitch.withgoogle.com`):**
-   - Una vez que Stitch genera tu pantalla (ej. Dashboard o Tablero Kanban), haz clic en el botón de **"View Code" / "Inspect"** o copia el árbol de componentes generado.
-   - Si Stitch te proporciona el código HTML / Tailwind / JSX, cópialo en tu portapapeles.
-   - Si Stitch te proporciona una previsualización visual o interactiva, identifica los bloques principales:
-     * **Sidebar:** Enlaces, logo, perfil de usuario.
-     * **Header:** Barra de búsqueda, notificaciones, botón de acción primaria.
-     * **KPI Grid:** 4 tarjetas de métricas con iconos y badges de estado.
-     * **Área Central:** Tabla interactiva, tablero Kanban o formularios modales.
+   - Asegúrate de haber completado la suite de pantallas utilizando el botón **"+ Add Screen"** para cada vista:
+     * **SCR-01:** Pantalla de Login / Registro.
+     * **SCR-02:** Dashboard Principal (KPIs, gráficos y widgets).
+     * **SCR-03:** Explorador / Gestión de Registros (Tabla de datos y Kanban).
+     * **SCR-04:** Vista de Detalle 360 del Registro.
+     * **SCR-05:** Formulario de Creación por Pasos (Wizard).
+     * **SCR-06:** Pantalla de Configuración y Perfil de Usuario.
+   - En cada pantalla, haz clic en **"View Code" / "Inspect"** para extraer los tokens de Tailwind CSS compartidos (paleta de colores, curvatura `rounded-2xl`, efectos de desenfoque `backdrop-blur`).
 
 2. **En Google AI Studio (`aistudio.google.com/apps`):**
    - Inicia sesión con tu cuenta de Google en [aistudio.google.com/apps](https://aistudio.google.com/apps).
    - Haz clic en **"Create App"** o **"New Web App"**.
-   - En la caja de instrucciones o prompt principal, pega el **Prompt de Ensamble Maestro** que se muestra a continuación.
+   - En la caja de instrucciones, pega el **Prompt de Ensamble Multi-Vista** que se muestra a continuación.
 
 ---
 
-## 📜 Prompt Base para que el Aprendiz Cree su Primer Proyecto en AI Studio
+## 📜 Prompt Base para que el Aprendiz Ensamble su App Multi-Vista en AI Studio
 
-Copia esta plantilla base para ordenar a Google AI Studio que construya la aplicación incorporando el diseño de Stitch y la conexión a Supabase:
+Copia esta plantilla base para ordenar a Google AI Studio que construya la aplicación incorporando todas las pantallas diseñadas en Stitch y la conexión a Supabase:
 
 ```markdown
 # OBJETIVO DEL PROYECTO
-Construye la aplicación web SPA profesional "[NOMBRE_DEL_PROYECTO]" utilizando React 18/19, Tailwind CSS y Lucide Icons, conectada a una base de datos PostgreSQL en Supabase.
+Construye la aplicación web SPA profesional y completa "[NOMBRE_DEL_PROYECTO]" utilizando React 18/19, Tailwind CSS y Lucide Icons, conectada a una base de datos PostgreSQL en Supabase y con navegación multi-vista interactiva entre todas las pantallas diseñadas en Stitch.
 
-# 1. DISEÑO VISUAL Y COMPONENTES (IMPORTADO DE GOOGLE STITCH)
-Replica con total fidelidad la siguiente estructura visual generada en Google Stitch:
-- Estilo: Dark Mode moderno con paleta Slate (bg: '#0f172a', cards: '#1e293b', border: '#334155'), acentos en Índigo ('#6366f1') y texto claro ('#f8fafc').
-- Sidebar Izquierdo:
+# 1. DISEÑO VISUAL Y COMPONENTES (SUITE MULTIPANTALLA DE STITCH)
+Replica con total fidelidad el sistema de diseño visual generado en Google Stitch:
+- Estilo: [Nombre del Estilo, ej. Bento Grid + Glassmorphism / Dark Mode].
+- Paleta unificada: Fondo general (`#0f172a`), tarjetas de contenido (`#1e293b`), bordes sutiles (`#334155`) y acentos de acción (`#6366f1`).
+- Tipografía: Inter y JetBrains Mono.
+
+# 2. ENRUTAMIENTO MULTI-VISTA (ROUTER SPA EN REACT)
+Implementa un router reactivo interno en `App.jsx` mediante la máquina de estados `currentView`:
+- `'auth'`: Login / Registro (si no hay sesión en Supabase Auth).
+- `'dashboard'`: Panel con KPIs y gráficos.
+- `'items-list'`: Explorador de registros con tabla interactiva y conmutador a tablero Kanban.
+- `'item-detail'`: Ficha técnica profunda del registro (`selectedItemId`) con tabs y acciones.
+- `'item-create'`: Formulario guiado por pasos (Wizard) para registrar nuevos datos.
+- `'settings'`: Configuración de perfil y preferencias.
+
+# 3. SIDEBAR Y HEADER PERSISTENTES
+- **Sidebar Izquierdo:**
   * Logo con icono brillante y nombre del proyecto.
-  * Navegación con enlaces interactivos: Dashboard, Mis Registros, Analíticas, Configuración.
-  * Perfil del usuario activo en el pie con botón para cerrar sesión.
-- Header Superior:
-  * Buscador rápido con atajo de teclado 'Ctrl+K'.
-  * Notificaciones con indicador numérico.
-  * Botón principal "+ Nuevo Registro" con gradiente moderno.
-- Dashboard Principal:
-  * 4 Tarjetas de Métricas (KPIs) con valores dinámicos calculados desde Supabase.
-  * Vista principal conmutables entre Lista de Datos y Tablero Kanban.
-  * Modal flotante con formulario validado para crear y editar registros.
+  * Botones de navegación interactivos con indicador de ruta activa:
+    - Dashboard (`LayoutDashboard`) -> activa `'dashboard'`
+    - Registros (`Layers`) -> activa `'items-list'`
+    - Nuevo Registro (`PlusCircle`) -> activa `'item-create'`
+    - Configuración (`Settings`) -> activa `'settings'`
+  * Perfil del usuario activo en la base con botón para cerrar sesión (`LogOut`).
+- **Header Superior:**
+  * Breadcrumbs dinámicas que reflejan la vista activa (ej. `Inicio > Registros > Detalle`).
+  * Buscador rápido con atajo `Ctrl+K`.
+  * Botón destacado "+ Nuevo Registro".
 
-# 2. CONEXIÓN A SUPABASE Y VARIABLES DE ENTORNO
+# 4. CONEXIÓN A SUPABASE Y VARIABLES DE ENTORNO
 Configura el cliente oficial de Supabase con las siguientes credenciales:
 ```javascript
 import { createClient } from '@supabase/supabase-js';
@@ -76,24 +90,28 @@ import { createClient } from '@supabase/supabase-js';
 const SUPABASE_URL = "https://desxxxxxxxxxswwwwc.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_BG-ADvvcccccccxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
 ```
 
-# 3. GESTIÓN DE AUTENTICACIÓN
-- Si el usuario no ha iniciado sesión, muestra una pantalla de bienvenida moderna con formulario de Login y Registro (email y contraseña) conectado a `supabase.auth.signInWithPassword` y `supabase.auth.signUp`.
-- Si el usuario está autenticado, renderiza el Dashboard principal con sus datos personales y escucha el estado de la sesión mediante `supabase.auth.onAuthStateChange`.
+# 5. GESTIÓN DE AUTENTICACIÓN Y SESIÓN
+- Si el usuario no ha iniciado sesión, renderiza la vista `AuthView` (Login / Registro).
+- Al iniciar sesión con éxito, guarda la sesión y redirige automáticamente al `'dashboard'`.
+- Escucha activamente el estado de la sesión mediante `supabase.auth.onAuthStateChange`.
 
-# 4. OPERACIONES CRUD EN TIEMPO REAL
-- Consultar proyectos: `supabase.from('projects').select('*, tasks(*)').order('created_at', { ascending: false })`
-- Crear nuevo proyecto: `supabase.from('projects').insert([{ title, description, owner_id: user.id, status: 'planning' }])`
-- Actualizar estado de tarea: `supabase.from('tasks').update({ status: nuevoEstado }).eq('id', taskId)`
-- Eliminar proyecto: `supabase.from('projects').delete().eq('id', projectId)`
+# 6. OPERACIONES CRUD EN TIEMPO REAL VINCULADAS A auth.uid()
+- Consultar registros: `supabase.from('[tabla]').select('*').order('created_at', { ascending: false })`
+- Crear registro: `supabase.from('[tabla]').insert([{ ...datos, owner_id: user.id }])`
+- Actualizar registro: `supabase.from('[tabla]').update(cambios).eq('id', selectedItemId)`
+- Eliminar registro: `supabase.from('[tabla]').delete().eq('id', itemId)`
 
-# 5. EXPERIENCIA DE USUARIO (UX) Y MANEJO DE ERRORES
-- Implementa Skeleton Loaders mientras cargan los datos.
-- Muestra notificaciones Toast para confirmar acciones (ej. "Proyecto creado con éxito", "Error al guardar").
-- Maneja excepciones de red y errores de RLS (código 42501) con alertas accesibles y botón de reintento.
-- Añade diálogos de confirmación antes de eliminar cualquier elemento.
+# 7. EXPERIENCIA DE USUARIO (LOS 4 ESTADOS DE UI)
+- Skeleton Loaders animados mientras cargan los datos en cada pantalla.
+- Notificaciones Toast flotantes en la esquina inferior derecha para confirmar acciones.
+- Empty States ilustrados cuando no haya registros creados.
+- Alertas de error con botón "Reintentar" si falla la red o las políticas RLS.
+- Diálogo modal de confirmación antes de eliminar cualquier elemento.
 ```
 
 ---

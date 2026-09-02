@@ -63,41 +63,149 @@ Escenario: Intento de agendar en un horario ya ocupado
 
 ---
 
-## 2️⃣ Prompt Generado para Google Stitch (`stitch.withgoogle.com`)
+## 2️⃣ Suite de Prompts Multi-Pantalla para Google Stitch (`stitch.withgoogle.com`)
 
+> **💡 Protocolo de Prototipado para el Aprendiz:**  
+> En [stitch.withgoogle.com](https://stitch.withgoogle.com), ingresa el **Prompt 1** (Auth). Luego haz clic en el botón **'+ Add Screen'** e ingresa el **Prompt 2** (Dashboard). Repite **'+ Add Screen'** para los Prompts 3, 4, 5 y 6. Así construirás la experiencia médica multi-vista completa con identidad unificada.
+
+---
+
+### 🔹 Pantalla 1 (Stitch): Auth & Onboarding con Selección de Rol (SCR-01)
 ```markdown
-Diseña una interfaz web moderna, limpia, accesible y de alta confianza para "HealthPulse Telemed", una plataforma SaaS médica para doctores, clínicas y pacientes.
+Diseña una pantalla de Login y Registro médica con estética Glassmorphism + Dark Mode para "HealthPulse Telemed".
 
-ESTRUCTURA DE PANTALLA (DASHBOARD DEL DOCTOR):
+ESTRUCTURA (SPLIT-SCREEN 50/50):
+1. Columna Izquierda (Propuesta de Valor Médica):
+   - Logo estilizado con cruz médica moderna en gradiente Cian (#06b6d4) a Esmeralda (#10b981) y nombre "HealthPulse".
+   - Titular: "Telemedicina y gestión clínica inteligente en tiempo real".
+   - Tarjeta flotante translúcida: "Plataforma certificada con estándar HIPAA y cifrado end-to-end".
+   - Fondo Slate 950 (#0a0e17) con halos de luz difusos en verde esmeralda y cian.
+2. Columna Derecha (Formulario de Acceso y Registro):
+   - Selector de Rol: Selector visual entre "Soy Médico / Especialista" y "Soy Paciente".
+   - Selector de pestañas: "Iniciar Sesión" y "Crear Cuenta".
+   - Campos: Correo electrónico, Contraseña segura, Nombre completo y Especialidad (si es médico).
+   - Botón principal de acción con gradiente Cian/Esmeralda: "Ingresar a mi Portal Clínico →".
+
+SISTEMA DE DISEÑO:
+- Fondo Slate 900 (#0f172a), tarjetas Slate 800 (#1e293b con backdrop-blur-md), acentos en Cian (#06b6d4) y Esmeralda (#10b981).
+```
+
+---
+
+### 🔹 Pantalla 2 (Stitch): Dashboard Principal del Doctor (SCR-02)
+```markdown
+Diseña la pantalla de Dashboard Principal del Doctor para "HealthPulse Telemed".
+
+ESTRUCTURA DE PANTALLA:
 1. Sidebar Izquierdo:
-   - Logo médico estilizado con cruz moderna en gradiente Cian (#06b6d4) a Esmeralda (#10b981) y nombre "HealthPulse".
-   - Navegación con iconos Lucide: Dashboard (activo), Agenda de Citas, Expedientes Clínicos, Videoconsultas, Facturación, Configuración.
-   - Perfil en el pie: avatar del Dr. Carlos Mendoza, especialidad "Medicina Interna", badge "Verificado" y botón de cerrar sesión.
-
+   - Logo "HealthPulse" con cruz en gradiente Cian a Esmeralda.
+   - Navegación con iconos Lucide: Dashboard (ACTIVO - iluminado), Agenda de Citas, Expedientes de Pacientes, Nueva Consulta, Ajustes de Clínica.
+   - Perfil en la base: avatar del Dr. Carlos Mendoza, especialidad "Medicina Interna", badge "Verificado" y botón de logout.
 2. Header Superior:
-   - Buscador rápido con placeholder "Buscar paciente por nombre o documento... (Ctrl + K)".
-   - Botón principal de acción: "+ Agendar Cita" con gradiente Cian/Esmeralda.
-   - Indicador de notificaciones con punto de alerta y selector de tema claro/oscuro.
-
-3. Fila Superior de Métricas (4 Tarjetas KPIs):
-   - Tarjeta 1: "Citas Hoy" → Valor 8 (6 confirmadas, 2 pendientes), icono Calendar.
-   - Tarjeta 2: "Pacientes Activos" → Valor 154 (+12 este mes), icono Users.
-   - Tarjeta 3: "Ingresos del Mes" → Valor $4,250 USD (+8.5%), icono DollarSign.
-   - Tarjeta 4: "Calificación Promedio" → Valor 4.9 / 5 estrellas (120 reseñas), icono Star.
-
+   - Buscador rápido: "Buscar paciente por nombre o documento... (Ctrl + K)".
+   - Botón primario de acción: "+ Agendar Cita" con gradiente Cian/Esmeralda.
+   - Indicador de notificaciones y selector de tema claro/oscuro.
+3. Fila de 4 Tarjetas KPIs:
+   - "Citas Hoy": Valor 8 (6 confirmadas, 2 pendientes), icono Calendar.
+   - "Pacientes Activos": Valor 154 (+12 este mes), icono Users.
+   - "Ingresos del Mes": Valor $4,250 USD (+8.5%), icono DollarSign.
+   - "Calificación": Valor 4.9 / 5 estrellas (120 reseñas), icono Star.
 4. Sección Central (Dos Columnas):
-   - Columna Izquierda (70%): Calendario semanal interactivo de citas con código de colores según estado (Confirmada: Verde, Pendiente: Ámbar, Teleconsulta: Azul).
+   - Columna Izquierda (70%): Calendario semanal interactivo de citas con código de colores (Confirmada: Verde, Pendiente: Ámbar, Telemedicina: Azul).
    - Columna Derecha (30%): Panel "Próximos Pacientes en Espera" con foto, motivo de consulta, hora y botón destacado "Iniciar Videoconsulta" con icono Video.
 
-5. Modales Flotantes:
-   - Modal de Registro de Cita: formulario con selector de paciente, médico, especialidad, fecha/hora y tipo (presencial/telemedicina).
-   - Modal de Historial Clínico: editor de diagnóstico, receta médica y plan de tratamiento.
-
-SISTEMA DE DISEÑO (ESTILO #2 GLASMORFISMO + #17 DASHBOARD / SAAS):
-- Paleta: Fondo Slate 900 (#0f172a), tarjetas Slate 800 (#1e293b), bordes (#334155), acentos en Cian (#06b6d4) y Esmeralda (#10b981), texto (#f8fafc).
-- Acabados: Glassmorphism sutil (backdrop-blur-md), esquinas rounded-xl, microinteracciones hover suaves.
-- Tipografía: Inter / Plus Jakarta Sans con excelente contraste para el entorno médico.
+SISTEMA DE DISEÑO:
+- Mismo estilo Glassmorphism refinado, bordes finos (#334155), esquinas rounded-xl y tipografía Inter.
 ```
+
+---
+
+### 🔹 Pantalla 3 (Stitch): Explorador / Agenda de Citas Médicas (SCR-03)
+```markdown
+Diseña la pantalla de Explorador y Agenda Completa de Citas para "HealthPulse Telemed".
+
+ESTRUCTURA DE PANTALLA:
+1. Sidebar Izquierdo: Idéntico al Dashboard, con el ítem "Agenda de Citas" en estado ACTIVO.
+2. Header Superior: Breadcrumbs "HealthPulse / Agenda y Turnos" y botón "+ Agendar Cita".
+3. Barra de Control y Filtros Clínicos:
+   - Buscador de citas por nombre de paciente o fecha.
+   - Filtro por modalidad: "Todas", "Presencial", "Telemedicina".
+   - Filtro por estado: "Confirmadas", "Pendientes", "Completadas", "Canceladas".
+   - Conmutador de vista: "Vista Calendario Semanal" y "Vista Tabla de Turnos".
+4. Tabla de Citas del Día / Semana:
+   - Columnas: Paciente (avatar + nombre + edad), Fecha y Hora, Tipo de Consulta (badge con icono Video o Edificio), Motivo de consulta, Estado y Acciones (Iniciar Consulta, Reprogramar, Cancelar).
+   - Paginador inferior con resumen de citas filtradas.
+
+SISTEMA DE DISEÑO:
+- Coherencia visual absoluta con las pantallas 1 y 2.
+```
+
+---
+
+### 🔹 Pantalla 4 (Stitch): Expediente Clínico y Detalle 360 del Paciente (SCR-04)
+```markdown
+Diseña la pantalla de Expediente Clínico 360 de un Paciente ("Laura Sofía Restrepo, 34 años") para "HealthPulse Telemed".
+
+ESTRUCTURA DE PANTALLA:
+1. Header con Navegación de Retorno:
+   - Botón: "← Volver a Lista de Pacientes".
+   - Migas de pan: "HealthPulse / Pacientes / Laura Sofía Restrepo".
+   - Botones: "Editar Datos", "+ Agregar Nota Médica", "Descargar Expediente PDF".
+2. Cabecera Hero del Paciente:
+   - Avatar grande, nombre completo, documento de identidad, tipo de sangre (O+), alergias destacadas en badge rojo ("Penicilina") y teléfono de emergencia.
+3. Distribución Principal en Pestañas (Tabs):
+   - Tab 1: "Historial de Consultas" (Línea de tiempo cronológica con diagnósticos CIE-10 previos y notas clínicas).
+   - Tab 2: "Recetas y Prescripciones" (Lista de medicamentos activos, dosis, frecuencia y vigencia).
+   - Tab 3: "Exámenes y Laboratorios" (Tarjetas de resultados con estado "Normal / Alterado" y botón para previsualizar).
+   - Tab 4: "Antecedentes y Alergias" (Formulario estructurado de antecedentes patológicos y familiares).
+
+SISTEMA DE DISEÑO:
+- Misma paleta médica Slate con acentos esmeralda y tipografía de alta legibilidad.
+```
+
+---
+
+### 🔹 Pantalla 5 (Stitch): Wizard para Agendar Nueva Cita / Consulta (SCR-05)
+```markdown
+Diseña la pantalla de Formulario Wizard para Agendar Cita Médica en "HealthPulse Telemed".
+
+ESTRUCTURA DE PANTALLA:
+1. Header: Breadcrumbs "HealthPulse / Citas / Agendar Nueva" y botón "✕ Cancelar".
+2. Stepper Superior (Progreso en 3 Pasos):
+   - Paso 1: "Seleccionar Paciente & Modalidad" (Completado con check verde).
+   - Paso 2: "Especialista & Horario" (ACTIVO con anillo iluminado en Cian).
+   - Paso 3: "Motivo & Confirmación" (Pendiente).
+3. Área Central del Formulario (Tarjeta espaciosa en vidrio esmerilado):
+   - Selector de Modalidad: Dos tarjetas visuales clickeables: "Consulta Presencial en Sede" vs "Videoconsulta Online".
+   - Selector de Médico y Especialidad con avatares y valor de la consulta.
+   - Selector visual de fecha interactivo con cuadrícula de franjas horarias disponibles en verde ("09:00 AM", "10:30 AM", "02:00 PM").
+   - Campo de texto para motivo de consulta y síntomas principales.
+4. Barra Inferior: Botón "Atrás" y Botón primario destacado "+ Confirmar y Agendar Cita".
+
+SISTEMA DE DISEÑO:
+- Mismo estilo Glassmorphism y paleta institucional.
+```
+
+---
+
+### 🔹 Pantalla 6 (Stitch): Configuración de Clínica y Perfil Médico (SCR-06)
+```markdown
+Diseña la pantalla de Configuración de la Clínica y Perfil Médico para "HealthPulse Telemed".
+
+ESTRUCTURA DE PANTALLA:
+1. Sidebar Izquierdo: Con el ítem "Ajustes de Clínica" en estado ACTIVO.
+2. Contenido en Pestañas:
+   - Pestaña 1: "Perfil Profesional" (Foto médica, nombre, número de registro médico, especialidades y biografía).
+   - Pestaña 2: "Horarios de Atención" (Configurador de días de la semana con rangos de hora mañana/tarde y duración de consulta).
+   - Pestaña 3: "Tarifas y Telemedicina" (Valores de consulta presencial vs videoconsulta y enlace de sala virtual).
+   - Pestaña 4: "Seguridad y Notificaciones" (Alertas por SMS/Email y cambio de contraseña).
+3. Botón flotante: "Guardar Cambios Clínicos" con confirmación Toast accesible.
+
+SISTEMA DE DISEÑO:
+- Coherencia total con todas las pantallas previas.
+```
+
+---
 
 ---
 
@@ -237,14 +345,52 @@ CREATE POLICY "Médicos actualizan registros creados por ellos"
 
 ---
 
-## 4️⃣ Prompt Maestro para Google AI Studio (`aistudio.google.com/apps`)
+## 4️⃣ Prompt Maestro Multi-Vista para Google AI Studio (`aistudio.google.com/apps`)
 
 ```markdown
 # OBJETIVO DE LA APLICACIÓN
-Construye la aplicación web SPA completa y lista para producción "HealthPulse Telemed" utilizando React 18/19, Tailwind CSS, Lucide Icons y el cliente oficial de '@supabase/supabase-js' versión 2.x. La aplicación es una plataforma de citas médicas y telemedicina para clínicas, doctores y pacientes, conectada a PostgreSQL en Supabase.
+Construye la aplicación web SPA completa, modular y lista para producción "HealthPulse Telemed" utilizando React 18/19, Tailwind CSS, Lucide Icons y el cliente oficial de '@supabase/supabase-js' versión 2.x. La aplicación es una plataforma de telemedicina y gestión clínica para doctores y pacientes, conectada a PostgreSQL en Supabase y estructurada con una arquitectura de navegación multi-vista fluida.
 
-# CONFIGURACIÓN Y CLIENTE DE SUPABASE
-Crea el archivo 'src/lib/supabaseClient.js':
+# 1. ARQUITECTURA DE ENRUTAMIENTO MULTI-VISTA (ROUTER SPA EN REACT)
+Implementa un enrutador por estado reactivo en `App.jsx` para evitar colapsar la app en una sola pantalla:
+- Estado de vista activa: `const [currentView, setCurrentView] = useState('dashboard');`
+- Estados posibles:
+  * `'auth'`: Login / Registro si no hay sesión en Supabase Auth.
+  * `'dashboard'`: Panel principal del doctor con KPIs, resumen del día y pacientes en espera.
+  * `'appointments'`: Agenda interactiva con vista calendario y tabla de turnos.
+  * `'patient-detail'`: Expediente clínico 360 del paciente seleccionado (`selectedPatientId`).
+  * `'appointment-create'`: Formulario wizard para agendar una nueva cita médica.
+  * `'settings'`: Configuración de horarios de clínica, tarifas y perfil médico.
+- Estado de selección: `const [selectedPatientId, setSelectedPatientId] = useState(null);`
+- Reglas de transición:
+  * Clic en ítem del Sidebar -> `setCurrentView(vista)`.
+  * Clic en paciente o cita -> `setSelectedPatientId(p.id)` y `setCurrentView('patient-detail')`.
+  * Clic en "+ Agendar Cita" -> `setCurrentView('appointment-create')`.
+  * Clic en "← Volver a Citas" desde detalle o formulario -> `setCurrentView('appointments')`.
+
+# 2. SIDEBAR Y HEADER PERSISTENTES
+- **Sidebar Izquierdo:**
+  * Logo médico "HealthPulse" con cruz en gradiente Cian (#06b6d4) a Esmeralda (#10b981).
+  * Enlaces activos claramente resaltados:
+    - Dashboard (`LayoutDashboard`) -> `currentView === 'dashboard'`
+    - Agenda de Citas (`Calendar`) -> `currentView === 'appointments'`
+    - Nueva Consulta (`PlusCircle`) -> `currentView === 'appointment-create'`
+    - Ajustes de Clínica (`Settings`) -> `currentView === 'settings'`
+  * Perfil del médico activo en la base (Dr. Carlos Mendoza, "Medicina Interna") y botón de logout (`LogOut`).
+- **Header Superior:**
+  * Migas de pan dinámicas (*breadcrumbs*): `HealthPulse / [Sección] / [Vista]`.
+  * Buscador rápido de pacientes `Ctrl+K`.
+  * Botón de acción rápida: "+ Agendar Cita".
+
+# 3. COMPONENTES INDEPENDIENTES POR PANTALLA
+1. `AuthView`: Login / Registro con selector de rol (Médico o Paciente) conectado a Supabase Auth.
+2. `DashboardView`: 4 tarjetas KPI dinámicas (Citas Hoy, Pacientes Activos, Ingresos del Mes, Calificación), calendario semanal resumido y panel de pacientes en espera con botón de teleconsulta.
+3. `AppointmentsView`: Explorador completo de citas con filtros por modalidad (presencial/telemedicina) y estado, más toggle tabla/calendario.
+4. `PatientDetailView`: Carga el expediente del paciente por `selectedPatientId`, tabs de Historial Médico, Recetas activas, Exámenes y botón para agregar notas clínicas.
+5. `AppointmentCreateView`: Wizard de 3 pasos (Paciente, Doctor/Especialidad y Fecha/Horario) con validaciones e inserción en tabla `appointments`.
+6. `SettingsView`: Formulario de configuración de horarios de atención, valores de consulta y perfil médico en `public.profiles`.
+
+# 4. CONFIGURACIÓN Y CLIENTE DE SUPABASE
 ```javascript
 import { createClient } from '@supabase/supabase-js';
 
@@ -256,28 +402,15 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 ```
 
-# AUTENTICACIÓN Y ROLES
-1. Implementa un AuthProvider que escuche 'supabase.auth.onAuthStateChange'.
-2. Pantalla de Login y Registro que permita registrarse como Médico o como Paciente.
-3. Si el usuario no está autenticado, muestra la página de bienvenida con Login/Registro. Si está autenticado, renderiza el Dashboard correspondiente a su rol.
-
-# ESQUEMA DE DATOS
+# 5. ESQUEMA DE DATOS
 Interactúa con las tablas existentes en Supabase:
 - `profiles`: `id (UUID PK)`, `email`, `full_name`, `role ('doctor'|'patient'|'admin')`, `specialty`, `phone`, `avatar_url`
 - `appointments`: `id (UUID PK)`, `doctor_id (FK)`, `patient_id (FK)`, `appointment_date`, `status ('pending'|'confirmed'|'completed'|'cancelled')`, `type ('in_person'|'telemedicine')`, `meeting_link`, `notes`
 - `medical_records`: `id (UUID PK)`, `patient_id (FK)`, `doctor_id (FK)`, `diagnosis`, `prescription`, `treatment_plan`
 
-# COMPONENTES Y VISTAS (DISEÑO STITCH)
-1. **Sidebar:** Logo médico en gradiente Cian/Esmeralda, navegación con iconos, perfil del doctor activo y botón de logout.
-2. **Header:** Buscador reactivo de pacientes (Ctrl+K), botón "+ Agendar Cita" y notificaciones.
-3. **4 Tarjetas KPIs dinámicas:** Citas de Hoy, Pacientes Activos, Ingresos del Mes, Calificación.
-4. **Agenda Interactiva:** Calendario semanal con citas coloreadas por estado y filtros rápidos.
-5. **Panel Lateral:** Lista de pacientes en espera con botón para iniciar teleconsulta.
-6. **Modales:** Agendar Cita y Crear Nota de Historial Clínico con validación de campos obligatorios.
-
-# EXPERIENCIA DE USUARIO
-- Skeleton Loaders durante la carga de consultas a Supabase.
-- Notificaciones Toast ante cada acción exitosa ("✓ Cita agendada con éxito", "✓ Historial guardado") y ante errores.
+# 6. EXPERIENCIA DE USUARIO Y LOS 4 ESTADOS
+- Skeleton Loaders durante la carga de consultas a Supabase en cada vista.
+- Notificaciones Toast ante cada acción ("✓ Cita agendada con éxito", "✓ Historial guardado").
 - Diálogos de confirmación antes de cancelar citas.
 - Estilo Dark Mode elegante con paleta Slate 900, acentos en Cian (#06b6d4) y Esmeralda (#10b981).
 ```

@@ -177,14 +177,80 @@ window.MODULES_DATA = [
           <h4 style="color: #a5b4fc; margin-bottom: 0.5rem;">📁 El Flujo Canónico de Archivos entre Gemas:</h4>
           <ol style="margin-left: 1.25rem; line-height: 1.8; color: var(--text-secondary);">
             <li><strong>💎 Gema 1 (Arquitecto de Producto):</strong> Genera la Tetralogía Documental: <code>01_PLAN_PROYECTO.md</code>, <code>02_PRD_PRODUCTO.md</code>, <code>03_USER_FLOWS_UX.md</code> y <code>04_TRD_ARQUITECTURA_TECNICA.md</code>.</li>
-            <li><strong>💎 Gema 2 (Arquitecto Supabase):</strong> Recibe el <code>04_TRD</code> en 'Conocimientos' y produce <code>05_ESQUEMA_SUPABASE_COMPLETO.sql</code> con RLS y triggers.</li>
-            <li><strong>💎 Gema 3 (Diseñador Stitch):</strong> Recibe el <code>02_PRD</code> y el <code>03_USER_FLOWS</code> para generar <code>06_PROMPTS_GOOGLE_STITCH.md</code> con los 4 estados de pantalla.</li>
-            <li><strong>💎 Gema 4 (Orquestador AI Studio):</strong> Recibe el TRD, el SQL y los prompts de Stitch para compilar la SPA completa en <code>07_PROMPT_MAESTRO_AISTUDIO.md</code>.</li>
+            <li><strong>💎 Gema 2 (Arquitecto Supabase):</strong> Recibe <code>02_PRD</code> (reglas de negocio) y <code>04_TRD</code> (ERD) en 'Conocimientos' y produce <code>05_ESQUEMA_SUPABASE_COMPLETO.sql</code> con RLS 100%, triggers y 9 bloques estructurados.</li>
+            <li><strong>💎 Gema 3 (Diseñador Stitch):</strong> Recibe <code>01_PLAN</code>, <code>02_PRD</code> y <code>03_USER_FLOWS</code> en 'Conocimientos' y se combina con el estilo que elijas en el <strong>Módulo 5 (Catálogo de 40 Estilos)</strong> para generar <code>06_PROMPTS_GOOGLE_STITCH.md</code> con suite multivista completa, token visual y los 4 estados de pantalla. <button onclick="window.App.switchModule('stitch-ui')" class="btn-secondary" style="padding: 2px 8px; font-size: 0.75rem; border-color: #c084fc; color: #e9d5ff; vertical-align: middle; margin-left: 6px; cursor: pointer;">🎨 Elegir Estilo en Módulo 5 ➔</button></li>
+            <li><strong>💎 Gema 4 (Orquestador AI Studio):</strong> Recibe los 6 artefactos previos (Plan, PRD, User Flow, TRD, SQL y Stitch) para compilar la SPA completa en <code>07_PROMPT_MAESTRO_AISTUDIO.md</code> con trazabilidad total.</li>
           </ol>
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" style="border: 1px solid rgba(56, 189, 248, 0.4); background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(12, 74, 110, 0.25));">
+        <div class="card-header">
+          <h3 class="card-title" style="color: #38bdf8;">🎯 Destino Final: ¿Qué Documento va a Cada Herramienta?</h3>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+          Una duda habitual del aprendiz es: <em>"¿Dónde subo exactamente cada archivo una vez generados por las Gemas?"</em> Recuerda: los documentos <code>01</code> a <code>04</code> son la especificación (SSoT), mientras que los documentos <code>05</code>, <code>06</code> y <code>07</code> son los que se ejecutan en las herramientas reales:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+          <!-- Card Stitch -->
+          <div style="background: rgba(59, 7, 100, 0.35); border: 1px solid #c084fc; border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <span style="font-size: 1.5rem;">🎨</span>
+              <h4 style="color: #e9d5ff; margin: 0; font-size: 1.1rem;">Google Stitch</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: #a855f7; font-weight: 600; margin-bottom: 0.5rem;">stitch.withgoogle.com</p>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.6rem; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">📄 DOCUMENTO EXACTO:</span>
+              <strong style="color: #c084fc; font-size: 0.9rem;">06_PROMPTS_GOOGLE_STITCH.md</strong>
+            </div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 0.75rem;">
+              <strong>¿Cómo se usa?</strong> Stitch <u>no tiene botón para subir archivos</u>. Abres el archivo, copias el <strong>Prompt 1</strong> (Auth) y lo pegas. Luego haces clic en <strong>'+ Add Screen'</strong> y pegas el <strong>Prompt 2</strong> (Dashboard). Repites sucesivamente para cada pantalla.
+            </p>
+            <div style="font-size: 0.78rem; color: #fca5a5; background: rgba(239, 68, 68, 0.15); padding: 0.5rem; border-radius: 4px; border-left: 3px solid #ef4444;">
+              ❌ <strong>NO subas:</strong> scripts SQL, el TRD ni el PRD completo. Stitch solo procesa prompts de diseño visual.
+            </div>
+          </div>
+
+          <!-- Card Supabase -->
+          <div style="background: rgba(20, 83, 45, 0.35); border: 1px solid #4ade80; border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <span style="font-size: 1.5rem;">🐘</span>
+              <h4 style="color: #bbf7d0; margin: 0; font-size: 1.1rem;">Supabase</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: #22c55e; font-weight: 600; margin-bottom: 0.5rem;">supabase.com/dashboard</p>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.6rem; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">📄 DOCUMENTO EXACTO:</span>
+              <strong style="color: #4ade80; font-size: 0.9rem;">05_ESQUEMA_SUPABASE_COMPLETO.sql</strong>
+            </div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 0.75rem;">
+              <strong>¿Cómo se usa?</strong> Entra a tu proyecto en Supabase ➔ menú lateral <strong>SQL Editor</strong> ➔ clic en <strong>'New Query'</strong>. Copias todo el contenido del archivo SQL, lo pegas en el editor y presionas <strong>'Run'</strong>.
+            </p>
+            <div style="font-size: 0.78rem; color: #fca5a5; background: rgba(239, 68, 68, 0.15); padding: 0.5rem; border-radius: 4px; border-left: 3px solid #ef4444;">
+              ❌ <strong>NO pegues:</strong> archivos Markdown (.md), código React ni prompts de Stitch. Supabase solo ejecuta SQL PostgreSQL.
+            </div>
+          </div>
+
+          <!-- Card AI Studio -->
+          <div style="background: rgba(12, 74, 110, 0.35); border: 1px solid #38bdf8; border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+              <span style="font-size: 1.5rem;">⚡</span>
+              <h4 style="color: #bae6fd; margin: 0; font-size: 1.1rem;">Google AI Studio</h4>
+            </div>
+            <p style="font-size: 0.82rem; color: #0ea5e9; font-weight: 600; margin-bottom: 0.5rem;">aistudio.google.com/apps</p>
+            <div style="background: rgba(0,0,0,0.3); border-radius: 6px; padding: 0.6rem; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">📄 DOCUMENTO EXACTO:</span>
+              <strong style="color: #38bdf8; font-size: 0.9rem;">07_PROMPT_MAESTRO_AISTUDIO.md</strong>
+            </div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 0.75rem;">
+              <strong>¿Cómo se usa?</strong> Abre el archivo en tu editor, reemplaza <code>[TU_SUPABASE_URL]</code> y <code>[TU_SUPABASE_ANON_KEY]</code> con tus credenciales reales de Supabase. Entra a AI Studio, crea una nueva App y pega el prompt completo en la caja de instrucciones.
+            </p>
+            <div style="font-size: 0.78rem; color: #fca5a5; background: rgba(239, 68, 68, 0.15); padding: 0.5rem; border-radius: 4px; border-left: 3px solid #ef4444;">
+              ❌ <strong>NO compiles:</strong> sin haber ejecutado primero el script SQL en Supabase ni dejes los placeholders de credenciales sin rellenar.
+            </div>
+          </div>
+        </div>
+      </div>
         <div class="card-header">
           <h3 class="card-title">🛠️ Configurador de Gemas Especializadas</h3>
         </div>
@@ -319,54 +385,67 @@ window.MODULES_DATA = [
         </p>
       </div>
 
-      <!-- Generador Dinámico de Prompts para Stitch -->
-      <div class="card" id="stitch-generator-card">
-        <div class="card-header">
-          <h3 class="card-title">⚡ Generador Personalizado de Prompts para Google Stitch</h3>
-        </div>
-        <p>Configura tu pantalla y selecciona tu estilo favorito entre los 40 disponibles para generar tu prompt a la medida:</p>
-
-        <div class="form-grid" style="margin-top: 1rem;">
-          <div class="form-group">
-            <label class="form-label">Nombre de la Aplicación:</label>
-            <input type="text" id="stitch-custom-appname" class="form-control" value="EduPulse SaaS" oninput="window.Generators.updateCustomStitchPrompt()" />
+      <!-- ========================================================================= -->
+      <!-- 💎 CONSOLA MAESTRA DE ACTIVACIÓN: GEMA 3 ➔ CATÁLOGO 40 ESTILOS ➔ STITCH -->
+      <!-- ========================================================================= -->
+      <div class="card" id="gema3-activation-card" style="border: 2px solid #818cf8; background: linear-gradient(135deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.95)); box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);">
+        <div class="card-header" style="flex-wrap: wrap; gap: 0.5rem; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="font-size: 1.6rem;">💎</span>
+            <div>
+              <h3 class="card-title" style="color: #c084fc; margin: 0;">Consola de Activación: Gema 3 ➔ Catálogo ➔ Google Stitch</h3>
+              <span style="font-size: 0.8rem; color: #a5b4fc;">La Vía Oficial para tu Proyecto Formativo Completo</span>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Propósito / Objetivo:</label>
-            <input type="text" id="stitch-custom-purpose" class="form-control" value="Plataforma de cursos interactivos y métricas de progreso de estudiantes" oninput="window.Generators.updateCustomStitchPrompt()" />
-          </div>
+          <span class="brand-badge" style="background: rgba(129, 140, 248, 0.2); color: #a5b4fc; border: 1px solid #818cf8;">Paso 3 del Pipeline SDLC</span>
         </div>
 
+        <p style="color: #cbd5e1; font-size: 0.9rem; line-height: 1.5; margin: 0.75rem 0 1rem 0;">
+          Esta consola es el <strong>puente operativo</strong> entre la <strong>Gema 3 en Google Gemini</strong> y el <strong>Catálogo de 40 Estilos</strong>. Selecciona aquí o en cualquier tarjeta del catálogo abajo tu estilo visual favorito; la consola preparará el <strong>mensaje de disparo exacto</strong> para que la Gema 3 redacte tu archivo canónico <code style="color: #38bdf8;">06_PROMPTS_GOOGLE_STITCH.md</code> con la suite completa de 7 pantallas.
+        </p>
+
+        <!-- Selector Rápido de Estilo y Proyecto -->
         <div class="form-grid" style="margin-top: 0.5rem;">
           <div class="form-group">
-            <label class="form-label">Tipo de Pantalla / Módulo:</label>
-            <select id="stitch-custom-screen" class="form-control" onchange="window.Generators.updateCustomStitchPrompt()">
-              <option value="dashboard">Dashboard Principal con 4 KPIs, Gráficos y Tabla Interactiva</option>
-              <option value="kanban">Tablero Kanban de Tareas con Columnas y Filtros por Prioridad</option>
-              <option value="marketplace">Catálogo de Productos / Marketplace con Grid, Filtros y Carrito</option>
-              <option value="clinico">Panel Médico / Citas con Agenda Semanal y Pacientes en Espera</option>
-              <option value="devops">Consola DevOps / Telemetría con Logs en Vivo y Gráficos de Red</option>
-              <option value="habits">App Móvil / PWA de Hábitos con Rachas, Metas y Gamificación</option>
-            </select>
+            <label class="form-label" style="color: #a5b4fc; font-weight: 600;">Nombre de tu Aplicación / Proyecto Real:</label>
+            <input type="text" id="gema3-app-name" class="form-control" value="EduPulse SaaS" oninput="window.Generators.updateGema3TriggerPrompt()" placeholder="Ej. VetCare, FinTrack, EducaPro..." />
           </div>
-
           <div class="form-group">
-            <label class="form-label">Estilo Visual Frontend (De los 40 Estilos):</label>
-            <select id="stitch-custom-style" class="form-control" onchange="window.Generators.updateCustomStitchPrompt()">
-              <!-- Opciones inyectadas dinámicamente -->
+            <label class="form-label" style="color: #a5b4fc; font-weight: 600;">Estilo Visual Elegido (De los 40 Estilos):</label>
+            <select id="gema3-style-select" class="form-control" onchange="window.Generators.updateGema3TriggerPrompt()">
+              <!-- Inyectado dinámicamente -->
             </select>
           </div>
         </div>
 
-        <!-- Vista Previa en Vivo del Estilo Seleccionado -->
-        <div id="stitch-custom-style-preview" style="margin-top: 1rem;"></div>
-
-        <div class="code-container" style="margin-top: 1.25rem;">
-          <div class="code-header">
-            <span>PROMPT_STITCH_PERSONALIZADO.md</span>
-            <button class="btn-copy" onclick="window.App.copyCode('stitch-custom-output')">📋 Copiar Prompt para Google Stitch</button>
+        <!-- Ficha Resumen del Estilo Activo -->
+        <div style="margin-top: 0.75rem; padding: 0.85rem 1rem; background: rgba(15, 23, 42, 0.75); border: 1px solid rgba(129, 140, 248, 0.3); border-radius: 8px;">
+          <div id="gema3-selected-style-badge" style="color: #e0e7ff; font-size: 0.95rem; font-weight: 600; margin-bottom: 0.35rem;">
+            <!-- Badge inyectado dinámicamente -->
           </div>
-          <pre class="code-content" id="stitch-custom-output" style="max-height: 380px;"></pre>
+          <div id="gema3-selected-style-desc" style="color: #94a3b8; font-size: 0.82rem; line-height: 1.4;">
+            <!-- Descripción inyectada dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Bloque de Código del Mensaje para Gema 3 -->
+        <div class="code-container" style="margin-top: 1rem;">
+          <div class="code-header" style="background: #1e1b4b; border-color: rgba(129, 140, 248, 0.3);">
+            <span style="color: #c084fc; font-weight: 600;">📨 MENSAJE_DE_ACTIVACION_PARA_GEMA_3.txt</span>
+            <button class="btn-copy" onclick="window.App.copyCode('gema3-trigger-output')" style="background: #4f46e5; border-color: #6366f1; color: white;">📋 Copiar Mensaje para Gema 3</button>
+          </div>
+          <pre class="code-content" id="gema3-trigger-output" style="max-height: 320px; font-size: 0.84rem;"></pre>
+        </div>
+
+        <!-- Circuito de 4 Pasos para el Aprendiz -->
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(6, 78, 59, 0.2); border: 1px solid #10b981; border-radius: 8px;">
+          <h4 style="color: #34d399; margin: 0 0 0.5rem 0; font-size: 0.95rem;">👣 Circuito de Acción para el Aprendiz (Sin Saltos ni Pérdida de Contexto):</h4>
+          <ol style="margin: 0; padding-left: 1.25rem; font-size: 0.85rem; color: #cbd5e1; line-height: 1.7;">
+            <li><strong>Paso 1:</strong> Haz clic en el botón morado <strong>"Copiar Mensaje para Gema 3"</strong> arriba (o haz clic en <em>"💎 Activar en Gema 3"</em> en cualquier tarjeta del catálogo abajo).</li>
+            <li><strong>Paso 2:</strong> Abre tu <strong>Gema 3 en Gemini</strong> (donde ya cargaste <code>01_PLAN</code>, <code>02_PRD</code> y <code>03_USER_FLOWS</code>). Pega este mensaje y presiona Enviar. La Gema 3 te entregará el archivo <code>06_PROMPTS_GOOGLE_STITCH.md</code>. Guárdalo en tu carpeta local <code>docs/</code>.</li>
+            <li><strong>Paso 3:</strong> Entra a <a href="https://stitch.withgoogle.com" target="_blank" style="color: #34d399; font-weight: 600; text-decoration: underline;">stitch.withgoogle.com</a> ➔ Haz clic en <em>'New Project'</em> ➔ Pega el <strong>Prompt 1</strong> (Auth) ➔ Presiona Enter ➔ Haz clic en <strong>'+ Add Screen'</strong> ➔ Pega el <strong>Prompt 2</strong> (Dashboard) y repite sucesivamente con las 7 pantallas.</li>
+            <li><strong>Paso 4:</strong> Sube <code>06_PROMPTS_GOOGLE_STITCH.md</code> a la <strong>Gema 4</strong> para que Google AI Studio compile tu aplicación React conectada a Supabase con esta misma estética visual.</li>
+          </ol>
         </div>
       </div>
 
@@ -406,6 +485,67 @@ window.MODULES_DATA = [
         </div>
       </div>
 
+      <!-- ========================================================================= -->
+      <!-- 🧪 SANDBOX RÁPIDO: GENERADOR DE PANTALLA AISLADA EN NAVEGADOR (OPCIONAL) -->
+      <!-- ========================================================================= -->
+      <div class="card" id="stitch-generator-card" style="border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.05);">
+        <div class="card-header" style="flex-wrap: wrap; gap: 0.5rem; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.4rem;">🧪</span>
+            <div>
+              <h3 class="card-title" style="color: #fbbf24; margin: 0;">Sandbox de Pruebas: Generador de Pantalla Aislada</h3>
+              <span style="font-size: 0.8rem; color: #fde68a;">Laboratorio Rápido en Navegador (Sin pasar por Gemini)</span>
+            </div>
+          </div>
+          <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid #f59e0b;">Laboratorio Rápido</span>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin: 0.5rem 0 1rem 0;">
+          💡 <strong>Nota Didáctica:</strong> Si estás construyendo tu proyecto formativo completo, usa la <strong>Consola de Activación de Gema 3</strong> en la parte superior. Este formulario inferior es un entorno de pruebas rápido para generar un prompt individual y probar cómo responde Stitch ante una vista particular:
+        </p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Nombre de Prueba:</label>
+            <input type="text" id="stitch-custom-appname" class="form-control" value="EduPulse SaaS" oninput="window.Generators.updateCustomStitchPrompt()" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Propósito / Objetivo:</label>
+            <input type="text" id="stitch-custom-purpose" class="form-control" value="Plataforma de cursos interactivos y métricas de progreso de estudiantes" oninput="window.Generators.updateCustomStitchPrompt()" />
+          </div>
+        </div>
+
+        <div class="form-grid" style="margin-top: 0.5rem;">
+          <div class="form-group">
+            <label class="form-label">Tipo de Pantalla / Módulo:</label>
+            <select id="stitch-custom-screen" class="form-control" onchange="window.Generators.updateCustomStitchPrompt()">
+              <option value="dashboard">Dashboard Principal con 4 KPIs, Gráficos y Tabla Interactiva</option>
+              <option value="kanban">Tablero Kanban de Tareas con Columnas y Filtros por Prioridad</option>
+              <option value="marketplace">Catálogo de Productos / Marketplace con Grid, Filtros y Carrito</option>
+              <option value="clinico">Panel Médico / Citas con Agenda Semanal y Pacientes en Espera</option>
+              <option value="devops">Consola DevOps / Telemetría con Logs en Vivo y Gráficos de Red</option>
+              <option value="habits">App Móvil / PWA de Hábitos con Rachas, Metas y Gamificación</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Estilo Visual Frontend:</label>
+            <select id="stitch-custom-style" class="form-control" onchange="window.Generators.updateCustomStitchPrompt()">
+              <!-- Inyectado dinámicamente -->
+            </select>
+          </div>
+        </div>
+
+        <div id="stitch-custom-style-preview" style="margin-top: 1rem;"></div>
+
+        <div class="code-container" style="margin-top: 1rem;">
+          <div class="code-header">
+            <span>PROMPT_SANDBOX_INDIVIDUAL.md</span>
+            <button class="btn-copy" onclick="window.App.copyCode('stitch-custom-output')">📋 Copiar Prompt Individual</button>
+          </div>
+          <pre class="code-content" id="stitch-custom-output" style="max-height: 280px;"></pre>
+        </div>
+      </div>
+
       <!-- Presets Rápidos -->
       <div class="card">
         <div class="card-header">
@@ -440,32 +580,225 @@ window.MODULES_DATA = [
     title: "6. Guía de Importación: De Google Stitch a Google AI Studio",
     tag: "Fase 4: Trasvase UI",
     icon: "🔄",
-    desc: "Aprende el método exacto para extraer el diseño y los componentes de Stitch y llevarlos a aistudio.google.com/apps.",
+    desc: "Aprende el método exacto para trasladar la suite visual de Stitch a AI Studio Apps con enrutamiento reactivo y Supabase.",
     content: `
+      <!-- Introducción y Diagrama Conceptual -->
+      <div class="card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(16, 185, 129, 0.1)); border-color: #10b981;">
+        <div class="card-header">
+          <h3 class="card-title">🌉 El Puente Crítico: Del Prototipo Visual al Software Funcional</h3>
+        </div>
+        <p style="color: var(--text-secondary); line-height: 1.6;">
+          Google Stitch (<code>stitch.withgoogle.com</code>) genera prototipos visuales impresionantes con Tailwind CSS, pero son pantallas estáticas y desconectadas. 
+          El rol de esta fase es <strong>trasladar la suite completa de pantallas, su sistema de diseño y sus tokens visuales a Google AI Studio Apps (<code>aistudio.google.com/apps</code>)</strong>, dotando a la interfaz de enrutamiento SPA reactivo, estado global y persistencia real en PostgreSQL con Supabase.
+        </p>
+      </div>
+
+      <!-- Paso a Paso Detallado: Los 3 Momentos de la Importación -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">📥 Paso a Paso: Exportación de Stitch a AI Studio</h3>
+          <h3 class="card-title">📥 Metodología de Trasvase en 3 Momentos</h3>
         </div>
         
-        <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
-          <div style="padding: 1rem; background: rgba(30, 41, 59, 0.7); border-radius: 8px; border: 1px solid var(--border-color);">
-            <h4 style="color: #38bdf8;">Paso 1: Genera y Ajusta la UI en Google Stitch</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
-              Pega tu prompt en <a href="https://stitch.withgoogle.com/?pli=1" target="_blank" style="color:#38bdf8;">stitch.withgoogle.com</a>. Ajusta los estilos, temas y componentes visuales hasta que la pantalla se vea profesional.
+        <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
+          <div style="padding: 1.25rem; background: rgba(30, 41, 59, 0.7); border-radius: 10px; border-left: 4px solid #10b981; border: 1px solid var(--border-color);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h4 style="color: #34d399; font-size: 1.05rem; margin: 0;">1️⃣ En Google Stitch: Diseña la Suite Multi-Pantalla Completa</h4>
+              <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #10b981;">stitch.withgoogle.com</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; margin-bottom: 0.75rem;">
+              No diseñes únicamente el Dashboard. Utiliza el botón <strong>"+ Add Screen"</strong> en Stitch para generar la suite canónica de 6 pantallas de tu aplicación:
             </p>
+            <ul style="color: var(--text-secondary); font-size: 0.9rem; margin-left: 1.25rem; line-height: 1.6;">
+              <li><strong>SCR-01 (Auth):</strong> Login y Registro con inputs estilizados.</li>
+              <li><strong>SCR-02 (Dashboard):</strong> Métricas clave (KPIs), gráficas y accesos directos.</li>
+              <li><strong>SCR-03 (Explorador):</strong> Tabla de datos con filtros y vista conmutable a tablero Kanban.</li>
+              <li><strong>SCR-04 (Detalle 360):</strong> Ficha profunda del registro seleccionado con pestañas de auditoría.</li>
+              <li><strong>SCR-05 (Wizard Creación):</strong> Formulario guiado paso a paso con validaciones visuales.</li>
+              <li><strong>SCR-06 (Configuración):</strong> Ajustes de perfil, avatar y preferencias de usuario.</li>
+            </ul>
           </div>
 
-          <div style="padding: 1rem; background: rgba(30, 41, 59, 0.7); border-radius: 8px; border: 1px solid var(--border-color);">
-            <h4 style="color: #38bdf8;">Paso 2: Copia la Especificación de Componentes</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
-              Copia el código JSX/HTML o la descripción jerárquica de componentes (Sidebar, Header, KPI Cards, DataTable, Modales).
+          <div style="padding: 1.25rem; background: rgba(30, 41, 59, 0.7); border-radius: 10px; border-left: 4px solid #38bdf8; border: 1px solid var(--border-color);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h4 style="color: #38bdf8; font-size: 1.05rem; margin: 0;">2️⃣ Extracción Quirúrgica: Tokens de Diseño vs. Código Crudo</h4>
+              <span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid #38bdf8;">Inspección</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5;">
+              <strong>⚠️ Error común del aprendiz:</strong> Copiar miles de líneas de HTML estático y pegarlo en AI Studio genera desorden y rompe la lógica reactiva.<br>
+              <strong>✅ La técnica correcta:</strong> Haz clic en <em>"View Code" / "Inspect"</em> en Stitch y extrae únicamente los <strong>tokens visuales compartidos</strong>:
             </p>
+            <div style="margin-top: 0.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem;">
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05);">
+                <strong style="color: #f8fafc;">🎨 Paleta:</strong> Fondos (<code>#0f172a</code>), Cards (<code>#1e293b</code>), Acento (<code>#6366f1</code>).
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05);">
+                <strong style="color: #f8fafc;">📐 Bordes:</strong> <code>rounded-2xl</code>, <code>border-slate-800</code>.
+              </div>
+              <div style="background: rgba(15, 23, 42, 0.6); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.05);">
+                <strong style="color: #f8fafc;">✨ Efectos:</strong> <code>backdrop-blur-xl</code>, sombras <code>shadow-2xl</code>.
+              </div>
+            </div>
           </div>
 
-          <div style="padding: 1rem; background: rgba(30, 41, 59, 0.7); border-radius: 8px; border: 1px solid var(--border-color);">
-            <h4 style="color: #38bdf8;">Paso 3: Abre Google AI Studio Apps e Inyecta el Prompt Maestro</h4>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.25rem;">
-              Ve a <a href="https://aistudio.google.com/apps" target="_blank" style="color:#38bdf8;">aistudio.google.com/apps</a>, crea una nueva aplicación y proporciona el prompt con el diseño de Stitch + el cliente de Supabase.
+          <div style="padding: 1.25rem; background: rgba(30, 41, 59, 0.7); border-radius: 10px; border-left: 4px solid #818cf8; border: 1px solid var(--border-color);">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+              <h4 style="color: #818cf8; font-size: 1.05rem; margin: 0;">3️⃣ En AI Studio: Enrutamiento SPA por Máquina de Estados</h4>
+              <span class="badge" style="background: rgba(129, 140, 248, 0.2); color: #818cf8; border: 1px solid #818cf8;">aistudio.google.com/apps</span>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5;">
+              En Google AI Studio Apps, ordenamos ensamblar la app utilizando un enrutador interno por variable reactiva <code>currentView</code> en <code>App.jsx</code>. Esto garantiza que la navegación entre las 6 pantallas sea instantánea, sin recargar el navegador ni depender de paquetes externos frágiles:
+            </p>
+            <div style="background: #0d1117; padding: 0.75rem 1rem; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; color: #38bdf8; margin-top: 0.5rem; overflow-x: auto;">
+              const [currentView, setCurrentView] = useState('dashboard'); // 'auth' | 'dashboard' | 'items-list' | 'item-detail' | 'item-create' | 'settings'<br>
+              const [selectedItemId, setSelectedItemId] = useState(null);
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sandbox Auth Alert -->
+      <div class="card" style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);">
+        <div class="card-header" style="margin-bottom: 0.5rem;">
+          <h3 class="card-title" style="color: #fbbf24; font-size: 1.05rem;">⚠️ Paso Previo Crítico: Configurar Auth en Supabase Sandbox</h3>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5;">
+          Antes de probar el login/registro en Google AI Studio Apps, ve a tu panel de Supabase:
+        </p>
+        <ol style="color: var(--text-secondary); font-size: 0.9rem; margin-left: 1.5rem; line-height: 1.6; margin-top: 0.5rem;">
+          <li>Navega a <strong>Authentication</strong> ➔ <strong>Providers</strong> ➔ <strong>Email</strong>.</li>
+          <li>Desactiva la casilla <strong>"Confirm email"</strong> (ponla en <code>OFF</code>) y haz clic en <strong>Save</strong>.</li>
+        </ol>
+        <p style="color: #fbbf24; font-size: 0.85rem; margin-top: 0.5rem; font-weight: 500;">
+          💡 ¿Por qué? Por defecto, Supabase exige verificar el correo. Si no lo desactivas, los usuarios creados en pruebas quedarán bloqueados sin poder entrar a la aplicación.
+        </p>
+      </div>
+
+      <!-- Prompt Maestro de Ensamble con Botón Copiar -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📜 Prompt Maestro de Ensamble Multi-Vista para AI Studio</h3>
+        </div>
+        <p>Copia y adapta este prompt para ordenar a Google AI Studio que ensamble las pantallas de Stitch con React y Supabase:</p>
+
+        <div class="code-container" style="margin-top: 1rem;">
+          <div class="code-header">
+            <span>PROMPT_ENSAMBLE_AISTUDIO.md</span>
+            <button class="btn-copy" onclick="window.App.copyCode('prompt-ensamble-output')">📋 Copiar Prompt de Ensamble</button>
+          </div>
+          <pre class="code-content" id="prompt-ensamble-output" style="max-height: 380px;"># OBJETIVO DEL PROYECTO
+Construye la aplicación web SPA profesional "[NOMBRE_PROYECTO]" en React 18/19 con Tailwind CSS y Lucide Icons, conectada a PostgreSQL en Supabase y con navegación multi-vista entre todas las pantallas de Stitch.
+
+# 1. DISEÑO VISUAL Y COMPONENTES (SUITE MULTIPANTALLA DE STITCH)
+Replica con fidelidad el sistema de diseño visual generado en Google Stitch:
+- Estilo: Bento Grid + Glassmorphism / Dark Mode.
+- Paleta: Fondo ('#0f172a'), Cards ('#1e293b'), Bordes ('#334155'), Acento ('#6366f1').
+- Tipografía: Inter (sans) y JetBrains Mono (código y números).
+
+# 2. ENRUTAMIENTO MULTI-VISTA (ROUTER SPA EN REACT)
+Implementa en App.jsx la máquina de estados reactiva 'currentView':
+- 'auth': Login y Registro (renderizar si no hay sesión en Supabase Auth).
+- 'dashboard': Métricas KPI, widgets y accesos rápidos.
+- 'items-list': Explorador con tabla interactiva, filtros, búsqueda y switch a Kanban.
+- 'item-detail': Ficha técnica profunda (selectedItemId) con tabs y acciones.
+- 'item-create': Formulario Wizard guiado por pasos.
+- 'settings': Configuración del perfil de usuario.
+
+# 3. LAYOUT PERSISTENTE (SIDEBAR Y HEADER)
+- Sidebar: Logo interactivo, botones con indicador de vista activa, perfil y LogOut.
+- Header: Breadcrumbs dinámicas (ej. Inicio > Registros > Detalle), Ctrl+K y botón "+ Nuevo".
+
+# 4. CONEXIÓN A SUPABASE
+Inicializa el cliente de Supabase con persistSession: true, autoRefreshToken: true.
+- supabase.auth.onAuthStateChange para gestionar la sesión en tiempo real.
+- Todas las inserciones deben asignar owner_id: user.id (auth.uid()).
+
+# 5. EXPERIENCIA DE USUARIO (LOS 4 ESTADOS DE UI)
+- Skeleton Loaders animados durante peticiones asíncronas.
+- Toasts flotantes para confirmar creación/edición/eliminación.
+- Empty States ilustrados cuando no existan registros.
+- Alertas de error con botón 'Reintentar' si falla la red o RLS.
+- Modal de confirmación destructiva antes de eliminar.</pre>
+        </div>
+      </div>
+
+      <!-- Tabla de Equivalencias de Tokens de Stitch a Tailwind -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🎨 Tabla de Traducción: Tokens de Stitch a Clases Tailwind</h3>
+        </div>
+        <p>Asegura la fidelidad estética al transferir cualquiera de los estilos del catálogo de Stitch a tu código en AI Studio:</p>
+
+        <div style="overflow-x: auto; margin-top: 1rem;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+            <thead>
+              <tr style="background: rgba(15, 23, 42, 0.9); border-bottom: 2px solid var(--border-color);">
+                <th style="padding: 0.75rem 1rem; color: #38bdf8;">Estilo en Stitch</th>
+                <th style="padding: 0.75rem 1rem; color: #34d399;">Clases Clave Tailwind CSS</th>
+                <th style="padding: 0.75rem 1rem; color: #f8fafc;">Efecto Visual Resultante</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: #818cf8;">Glasmorfismo</td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;"><code>bg-slate-900/60 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl</code></td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Vidrio esmerilado translúcido con reflejos sutiles.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: #818cf8;">Bento Grid</td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;"><code>grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-auto rounded-2xl</code></td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Rejilla modular asimétrica de alto impacto.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: #818cf8;">Neo-Brutalism</td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;"><code>border-[3px] border-black shadow-[4px_4px_0px_#000] font-black rounded-lg bg-yellow-300</code></td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Bordes negros gruesos y sombras sólidas sin difuminar.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: #818cf8;">Terminal / Hacker</td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;"><code>bg-[#0d1117] text-emerald-400 font-mono border border-emerald-500/30 rounded-md</code></td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Consola CLI oscura con texto verde fósforo monocromático.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(51, 65, 85, 0.4);">
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: #818cf8;">Cyberpunk</td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;"><code>bg-[#0a0a0f] border-cyan-500/60 shadow-[0_0_20px_rgba(6,182,212,0.3)] text-cyan-300</code></td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Fondo negro azabache con resplandor neón cian y magenta.</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem 1rem; font-weight: 600; color: #818cf8;">Claymorphism</td>
+                <td style="padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;"><code>rounded-3xl bg-indigo-100 shadow-[inset_0_4px_8px_rgba(255,255,255,0.6),0_12px_24px_rgba(99,102,241,0.2)]</code></td>
+                <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">Relieve 3D suave tipo plastilina/arcilla inflada.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Protocolo de Parches Quirúrgicos -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">🩹 Protocolo de Parches Quirúrgicos (Evita el Context Rot)</h3>
+        </div>
+        <p style="color: var(--text-secondary); line-height: 1.6;">
+          Cuando necesites ajustar un detalle en AI Studio, <strong>NUNCA pidas "reescribe la app" o "vuelve a hacer todo"</strong>. Eso destruye el contexto acumulado y genera inconsistencias. Aplica la fórmula de prompt quirúrgico:
+        </p>
+        
+        <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+            <span style="color: #38bdf8; font-weight: 600; font-size: 0.9rem;">🎯 Para ajustar diseño visual:</span>
+            <p style="color: var(--text-secondary); font-size: 0.88rem; font-family: var(--font-mono); margin-top: 0.35rem;">
+              "En el componente <code>KpiGrid</code>, ajusta las tarjetas para que tengan fondo <code>#1e293b</code>, borde <code>#334155</code> y efecto <code>backdrop-blur-sm</code> manteniendo intactas las props de datos."
+            </p>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+            <span style="color: #34d399; font-weight: 600; font-size: 0.9rem;">🔒 Para resolver errores de RLS o inserción:</span>
+            <p style="color: var(--text-secondary); font-size: 0.88rem; font-family: var(--font-mono); margin-top: 0.35rem;">
+              "Revisa la función <code>handleCreateProject</code>: asegúrate de obtener el <code>user.id</code> con <code>supabase.auth.getUser()</code> y asignarlo explícitamente a <code>owner_id</code> antes del <code>insert</code>."
+            </p>
+          </div>
+          <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
+            <span style="color: #fbbf24; font-weight: 600; font-size: 0.9rem;">⏳ Para agregar Skeleton Loaders:</span>
+            <p style="color: var(--text-secondary); font-size: 0.88rem; font-family: var(--font-mono); margin-top: 0.35rem;">
+              "En la vista de <code>ProjectsList</code>, muestra un <code>SkeletonCard</code> de 3 filas animadas mientras <code>loading === true</code> antes de renderizar la tabla."
             </p>
           </div>
         </div>
@@ -646,8 +979,114 @@ window.MODULES_DATA = [
     `
   },
   {
+    id: "evaluador-canvas",
+    title: "10. Herramienta en Canvas para Evaluación Integral de Documentación SDLC",
+    tag: "Auditoría & Calidad",
+    icon: "🎛️",
+    desc: "Crea una herramienta interactiva en Canvas (ChatGPT/Claude/Gemini) para auditar los 7 artefactos de tu proyecto, evaluar la cobertura de las 7 fases del SDLC y detectar vacíos antes de codificar.",
+    content: `
+      <div class="card" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.85)); border-color: #38bdf8;">
+        <div class="card-header">
+          <h3 class="card-title">🎛️ Auditoría Pre-Desarrollo con Canvas</h3>
+          <span class="xp-badge" style="background: #0284c7;">Control de Calidad 360°</span>
+        </div>
+        <p>
+          Antes de pedirle a Google AI Studio o Cursor que compile tu aplicación, debes asegurarte de que tu documentación no tenga vacíos.
+          En este módulo aprenderás a pedirle a tu chat de IA en modo <strong>Canvas / Artifacts</strong> que construya una <strong>aplicación interactiva de auditoría en vivo</strong>.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">📊 Rúbrica de Auditoría: Las 7 Fases del SDLC</h3>
+        </div>
+        <p>La herramienta en Canvas evalúa tus 7 artefactos contra las 7 fases del ciclo de vida de software:</p>
+
+        <div class="pipeline-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-top: 1rem;">
+          <div class="pipeline-card">
+            <span class="step-number">1. Requisitos</span>
+            <h4 class="step-title">In-Scope & BDD</h4>
+            <p class="step-desc">Límites estrictos de MVP y criterios de aceptación Gherkin en <code>01_PLAN</code> y <code>02_PRD</code>.</p>
+          </div>
+          <div class="pipeline-card">
+            <span class="step-number">2. Diseño UI</span>
+            <h4 class="step-title">4 Estados UI</h4>
+            <p class="step-desc">Empty, Skeleton, Toast y Error en cada vista de <code>03_USER_FLOWS</code> y <code>06_STITCH</code>.</p>
+          </div>
+          <div class="pipeline-card">
+            <span class="step-number">3. Arquitectura</span>
+            <h4 class="step-title">RLS al 100%</h4>
+            <p class="step-desc">UUIDs, Row Level Security estricto y triggers automáticos en <code>04_TRD</code> y <code>05_SQL</code>.</p>
+          </div>
+          <div class="pipeline-card">
+            <span class="step-number">4. Fullstack</span>
+            <h4 class="step-title">Modularidad</h4>
+            <p class="step-desc">Estructura Feature-Driven y cliente Supabase singleton en <code>07_AISTUDIO</code>.</p>
+          </div>
+          <div class="pipeline-card">
+            <span class="step-number">5. Testing</span>
+            <h4 class="step-title">Playwright & QA</h4>
+            <p class="step-desc">Validación E2E derivada de los escenarios Gherkin para flujos críticos.</p>
+          </div>
+          <div class="pipeline-card">
+            <span class="step-number">6. CI/CD</span>
+            <h4 class="step-title">Seguridad Secrets</h4>
+            <p class="step-desc">Solo SUPABASE_ANON_KEY en cliente y pipeline en Vercel/GitHub Actions.</p>
+          </div>
+          <div class="pipeline-card">
+            <span class="step-number">7. Operaciones</span>
+            <h4 class="step-title">Observabilidad</h4>
+            <p class="step-desc">Monitoreo de errores con Sentry y prevención activa de God Files.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">⚡ Prompt Maestro para Generar la Herramienta en Canvas</h3>
+          <button class="btn-primary" onclick="navigator.clipboard.writeText(document.getElementById('canvas-prompt-text').innerText); window.App.showToast('¡Prompt de Canvas copiado al portapapeles!', 'success');">
+            📋 Copiar Prompt Completo
+          </button>
+        </div>
+        <p>Copia el siguiente prompt y pégalo en tu chat con <strong>ChatGPT Canvas</strong>, <strong>Claude Artifacts</strong> o <strong>Google AI Studio</strong>:</p>
+
+        <div class="code-block" style="margin-top: 1rem; max-height: 280px; overflow-y: auto;">
+          <pre id="canvas-prompt-text"><code># DIRECTIVA DE CREACIÓN: HERRAMIENTA AUDITORA INTERACTIVA SDLC EN CANVAS
+
+Actúa como un Arquitecto de Software Principal y Auditor de Calidad SDLC. 
+Crea en Canvas una aplicación web interactiva completa (Single-Page Application) en un solo bloque de código (HTML5 + Tailwind CSS CDN + JavaScript moderno Vanilla) que funcione como una Consola de Auditoría y Evaluación Integral de Documentación SDLC.
+
+## PROPÓSITO DE LA HERRAMIENTA
+La herramienta permitirá al aprendiz de software evaluar los 7 artefactos canónicos generados por la cadena de Gemas de Gemini:
+1. 01_PLAN_PROYECTO.md
+2. 02_PRD_PRODUCTO.md
+3. 03_USER_FLOWS_UX.md
+4. 04_TRD_ARQUITECTURA_TECNICA.md
+5. 05_ESQUEMA_SUPABASE_COMPLETO.sql
+6. 06_PROMPTS_GOOGLE_STITCH.md
+7. 07_PROMPT_MAESTRO_AISTUDIO.md
+
+## REQUERIMIENTOS FUNCIONALES DE LA INTERFAZ
+1. Tacómetro de Madurez SDLC (0% a 100%) con semáforo dinámico (Crítico &lt;60%, Aceptable 60-84%, Listo &gt;=85%).
+2. Selector y editor para los 7 artefactos con botón para Cargar Caso Demo.
+3. Matriz visual de las 7 Fases del SDLC mostrando puntuación, aciertos (✓) y vacíos detectados (✕).
+4. Alertas rojas de seguridad (ej. falta de Row Level Security RLS o claves UUID).
+5. Generador de Prompts Quirúrgicos de Remediación listos para copiar y pegar en las Gemas.
+
+Entrega el código completo, autocontenido y estilizado con Tailwind CSS (tema oscuro elegante).</code></pre>
+        </div>
+
+        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="12_EVALUADOR_CALIDAD_SDLC_CANVAS.md" target="_blank" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
+            <span>📖 Ver Guía y Código Fuente Completo (Markdown)</span>
+          </a>
+        </div>
+      </div>
+    `
+  },
+  {
     id: "evaluacion",
-    title: "10. Laboratorio de Ejercicios y Evaluación",
+    title: "11. Laboratorio de Ejercicios y Evaluación",
     tag: "Evaluación & XP",
     icon: "🎯",
     desc: "Demuestra tus conocimientos en encadenamiento de Gemas, prototipado en Stitch, seguridad RLS y conexión a Supabase.",

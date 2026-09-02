@@ -873,10 +873,42 @@ textarea.form-control {
 }
 
 .style-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: auto;
+}
+
+.style-card-subactions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  margin-top: auto;
+  gap: 0.45rem;
+}
+
+.btn-style-gema3 {
+  background: linear-gradient(135deg, #6366f1, #9333ea);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+  width: 100%;
+}
+
+.btn-style-gema3:hover {
+  background: linear-gradient(135deg, #4f46e5, #7e22ce);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
+  color: #ffffff;
 }
 
 .btn-style-copy {

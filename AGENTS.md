@@ -99,3 +99,35 @@ Si se detecta un bug en AI Studio, el aprendiz NUNCA debe pedir "reescribe la ap
 "En el archivo [NombreDelArchivo.jsx], ajusta ÚNICAMENTE la función [nombreDeFuncion] para que [comportamiento esperado].
 No modifiques el estado global, ni los estilos de otros componentes, ni la inicialización del cliente de Supabase."
 ```
+
+---
+
+## 5. ## Formato Canónico y Estándar de Diseño de Guías SENA (GFPI-F-135 V04)
+
+### 📋 Principios de Diseño Institucional Limpio y Sobrio
+Para toda generación o edición de guías de aprendizaje en formato PDF:
+1. **Estética Sobria y Minimalista:** Se prohíben artificios de interfaces web o modo oscuro (bloques de código en azul marino oscuro, badges redondeados de colores llamativos, barras decorativas de gradiente). El formato debe ser idéntico al estándar institucional impreso del SENA.
+2. **Tipografía Oficial:** Familia sans-serif limpia (`Arial`, `Calibri` o `Helvetica`). Textos en color negro (`#000000` o `#111827`) con espaciado equilibrado y justificado.
+3. **Títulos de Sección Canónicos:** Texto en mayúsculas, negrita, tamaño sobrio (10pt-11pt), **sin líneas inferiores de color**.
+4. **Cabecera y Pie en Cada Página:**
+   - Logotipo oficial del SENA en verde institucional (`#39A900`), centrado en la parte superior.
+   - Código canónico del documento: **`GFPI-F-135 V04`** centrado en el pie de página.
+5. **Estructura Exacta de Metadatos en Actividades (3.1 a 3.4):**
+   Toda actividad de aprendizaje debe incluir rigurosamente sus campos de metadatos institucionales antes del desarrollo procedimental:
+   - `Descripción de la actividad:`
+   - `Ambiente requerido:`
+   - `Estrategias o técnicas didácticas activas:`
+   - `Materiales de formación:`
+   - `Material de apoyo:`
+   - `Evidencias de aprendizaje:` (obligatorio en 3.3 y 3.4)
+   - `Instrumentos de evaluación:` (obligatorio en 3.3 y 3.4)
+   - `Duración de la actividad: ... horas.`
+6. **Tablas Técnicas de Dos Columnas (Paso a Paso Procedimental):**
+   - Borde sutil y limpio (`1px solid #333333`).
+   - Fondos de celda blancos con tipografía técnica legible.
+   - Bloques de código con fondo gris claro limpio (`#f8f9fa`), borde sutil (`#d1d5db`), texto oscuro (`#111827`), fuente monoespaciada (`Consolas`, `Courier New`) de alto contraste para impresión profesional.
+   - Cajas `Tip:` sobrias con borde izquierdo verde SENA (`#008837`) y fondo verde muy claro (`#f0fdf4`).
+7. **Tablas de Evaluación y Control (Secciones 4, 7 y 8):**
+   - Encabezados con fondo negro sólido (`#000000`) o gris oscuro institucional (`#1e293b`), texto blanco en negrita y alineación centrada.
+   - Rejilla interior con borde fino uniforme de 1px.
+

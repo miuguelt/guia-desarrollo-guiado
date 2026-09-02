@@ -1,0 +1,1572 @@
+# -*- coding: utf-8 -*-
+"""
+Generador Maestro de Guía de Aprendizaje SENA GFPI-F-135 V04
+Tema: Desarrollo de Software Guiado por Inteligencia Artificial (Framework PIC 2026)
+Ecosistema: Gemini Gems -> Google Stitch -> Supabase PostgreSQL -> Google AI Studio Apps
+Autor: Miguel Ángel Tejedor Mendoza - Instructor ADSO
+"""
+
+import os
+import pathlib
+import subprocess
+import io
+import reportlab.lib.pagesizes as pagesizes
+from reportlab.pdfgen import canvas
+import pypdf
+
+def build_html_content():
+    return """<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Guía de Aprendizaje SENA - Desarrollo Guiado por IA</title>
+<style>
+  @page {
+    size: letter;
+    margin-top: 24mm;
+    margin-bottom: 20mm;
+    margin-left: 18mm;
+    margin-right: 18mm;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 8.5pt;
+    line-height: 1.34;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .text-center { text-align: center; }
+  .text-justify { text-align: justify; }
+  .text-bold { font-weight: bold; }
+  .uppercase { text-transform: uppercase; }
+  
+  .header-titles {
+    text-align: center;
+    margin-bottom: 11px;
+    padding-top: 2px;
+  }
+  
+  .header-titles .sub-title {
+    font-size: 8.8pt;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #222;
+    margin: 0 0 2px 0;
+  }
+  
+  .header-titles .main-title {
+    font-size: 9.6pt;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    color: #000;
+    margin: 0;
+  }
+
+  h1.section-title {
+    font-size: 9.5pt;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    border-bottom: none;
+    padding-bottom: 0;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h2.subsection-title {
+    font-size: 9pt;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  h3.subsubsection-title {
+    font-size: 8.6pt;
+    font-weight: bold;
+    color: #000000;
+    margin-top: 7px;
+    margin-bottom: 3px;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  p {
+    margin: 0 0 5px 0;
+    text-align: justify;
+  }
+
+  ul, ol {
+    margin: 0 0 6px 0;
+    padding-left: 17px;
+  }
+
+  li {
+    margin-bottom: 2.5px;
+    text-align: justify;
+  }
+
+  .meta-field {
+    margin-bottom: 2.5px;
+    font-size: 8.1pt;
+    text-align: justify;
+    padding-left: 14px;
+  }
+  .meta-label {
+    font-weight: bold;
+    color: #000000;
+  }
+
+  /* 2-column instructional tables matching SENA reference */
+  table.step-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 5px 0 8px 0;
+    font-size: 8.1pt;
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+
+  table.step-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  table.step-table td {
+    border: 1px solid #000000;
+    padding: 5px 7px;
+    vertical-align: top;
+  }
+
+  table.step-table td.col-desc {
+    width: 48%;
+    background-color: #ffffff;
+    text-align: justify;
+  }
+
+  table.step-table td.col-visual {
+    width: 52%;
+    background-color: #ffffff;
+  }
+
+  /* Full width tables for evaluation & control */
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6px 0 9px 0;
+    font-size: 7.8pt;
+    page-break-inside: auto;
+    break-inside: auto;
+  }
+
+  table.data-table tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  table.data-table th {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid #000000;
+    padding: 4.5px 4px;
+    font-size: 7.7pt;
+  }
+
+  table.data-table td {
+    border: 1px solid #000000;
+    padding: 4px 5px;
+    vertical-align: top;
+  }
+
+  /* Code Blocks - Limpio, claro y legible para impresión */
+  pre.code-block {
+    background-color: #f8f9fa;
+    color: #111827;
+    font-family: "Consolas", "Courier New", Courier, monospace;
+    font-size: 7.1pt;
+    line-height: 1.25;
+    padding: 4px 6px;
+    border: 1px solid #d1d5db;
+    border-radius: 2px;
+    margin: 2px 0;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .code-inline {
+    font-family: "Consolas", monospace;
+    background-color: #f3f4f6;
+    color: #111827;
+    padding: 1px 3px;
+    border-radius: 2px;
+    font-size: 7.5pt;
+    border: 1px solid #e5e7eb;
+  }
+
+  /* Tip Callouts */
+  .tip-box {
+    margin: 5px 0 8px 0;
+    padding: 4.5px 7px;
+    background-color: #f0fdf4;
+    border-left: 3.5px solid #008837;
+    font-size: 8.1pt;
+    color: #14532d;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .tip-box b {
+    color: #008837;
+  }
+
+  .alert-box {
+    margin: 5px 0 8px 0;
+    padding: 4.5px 7px;
+    background-color: #fef2f2;
+    border-left: 3.5px solid #dc2626;
+    font-size: 8.1pt;
+    color: #991b1b;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .badge-tag {
+    display: inline-block;
+    background-color: #e0f2fe;
+    color: #0369a1;
+    font-weight: bold;
+    font-size: 7.2pt;
+    padding: 1px 4px;
+    border-radius: 2px;
+    margin-right: 3px;
+  }
+
+  .badge-state {
+    display: inline-block;
+    padding: 1px 4px;
+    border-radius: 2px;
+    font-size: 7pt;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .state-empty { background: #fef3c7; color: #92400e; }
+  .state-loading { background: #e0e7ff; color: #3730a3; }
+  .state-success { background: #dcfce7; color: #166534; }
+  .state-error { background: #fee2e2; color: #991b1b; }
+
+</style>
+</head>
+<body>
+
+  <!-- ==================== PÁGINA 1 ==================== -->
+  <div class="header-titles">
+    <div class="sub-title">PROCESO DE GESTIÓN DE FORMACIÓN PROFESIONAL INTEGRAL</div>
+    <div class="main-title">FORMATO GUÍA DE APRENDIZAJE</div>
+  </div>
+
+  <div style="font-size: 8.1pt; line-height: 1.28;">
+    <h1 class="section-title" style="margin-top: 8px; margin-bottom: 4px;">1. IDENTIFICACIÓN DE LA GUIA DE APRENDIZAJE</h1>
+    <div style="margin-bottom: 7px;">
+      <ul style="margin: 0 0 4px 0;">
+        <li><span class="meta-label">Denominación del Programa de Formación:</span> Análisis y Desarrollo de Software (ADSO).</li>
+        <li><span class="meta-label">Código del Programa de Formación:</span> 228118</li>
+        <li><span class="meta-label">Nombre del Proyecto Formativo:</span> Construcción de software a la medida con arquitectura cloud, interfaces modernas y desarrollo guiado por inteligencia artificial para el sector productivo empresarial.</li>
+        <li><span class="meta-label">Fase del Proyecto:</span> Ejecución</li>
+        <li><span class="meta-label">Actividad de Proyecto Formativo:</span> AP03 — CODIFICAR Y DESPLEGAR LOS MÓDULOS DEL SISTEMA DE INFORMACIÓN APLICANDO METODOLOGÍAS DE DESARROLLO GUIADO POR INTELIGENCIA ARTIFICIAL.</li>
+        <li><span class="meta-label">Competencia:</span> 220501096 — Desarrollar la solución de software de acuerdo con el diseño y metodologías de desarrollo.</li>
+        <li><span class="meta-label">Resultados de Aprendizaje a Alcanzar:</span>
+          <ul style="margin: 2px 0 2px 0;">
+            <li><b>220501096-01:</b> Modelar la arquitectura y requisitos del software aplicando metodologías BDD y la Tetralogía Documental Canónica.</li>
+            <li><b>220501096-02:</b> Construir la base de datos relacional y las políticas de seguridad por fila (RLS) en Supabase PostgreSQL como Fuente Única de Verdad (SSoT).</li>
+            <li><b>220501096-03:</b> Diseñar e iterar prototipos de interfaz de usuario en Google Stitch incorporando el catálogo de estilos y los 4 estados obligatorios de pantalla.</li>
+            <li><b>220501096-04:</b> Codificar e integrar aplicaciones fullstack reactivas en Google AI Studio Apps garantizando persistencia en tiempo real y arquitectura modular.</li>
+          </ul>
+        </li>
+        <li><span class="meta-label">Duración de la Guía de Aprendizaje:</span> 120 horas (Trabajo directo con instructor: 36 horas; Trabajo autónomo y colaborativo en proyecto: 84 horas).</li>
+      </ul>
+    </div>
+
+    <h1 class="section-title" style="margin-top: 8px; margin-bottom: 4px;">2. PRESENTACIÓN</h1>
+    <ul style="margin: 0 0 4px 0;">
+      <li>Motivar hacia la actividad de aprendizaje en consideración a las fortalezas que aportará en el desarrollo de habilidades y destrezas.</li>
+      <li>Guiar y organizar el aprendizaje de manera que se oriente al desarrollo integral del aprendiz.</li>
+      <li>Motivar a la acción, al trabajo autónomo sistemático y organizado.</li>
+      <li>Relacionar conocimientos previos con los nuevos para la construcción significativa de los mismos.</li>
+      <li>Promover el aprendizaje colaborativo y el crecimiento integral del grupo.</li>
+    </ul>
+    <p style="margin: 0 0 4px 0;">
+      Estimado aprendiz, la industria global del software atraviesa la transformación más profunda de las últimas décadas. La emergencia de modelos fundacionales de Inteligencia Artificial Generativa ha redefinido el rol del programador: ya no somos meros transcriptores manuales de sintaxis, sino <b>arquitectos de sistemas, directores de contexto y garantes de la seguridad y calidad del software</b>.
+    </p>
+    <p style="margin: 0 0 4px 0;">
+      Sin embargo, el uso indiscriminado de la inteligencia artificial sin un marco metodológico riguroso suele conducir al fracaso conocido como <i>"Vibe Coding"</i> o desarrollo por improvisación. Cuando un desarrollador solicita código a una IA sin delimitar el alcance, sin un esquema relacional formal y sin especificar los estados de interfaz, el sistema inevitablemente alucina: inventa datos simulados (<i>mocks</i> en memoria), genera componentes monolíticos inmantenibles (<i>God Files</i>), expone credenciales secretas y degrada su coherencia conceptual (<i>Understanding Rot</i> y <i>Context Rot</i>).
+    </p>
+    <p style="margin: 0 0 4px 0;">
+      Para formar profesionales con estándares de producción de nivel internacional, esta guía adopta el <b>Marco PIC 2026 (Precision, Isolation & Context Framework)</b> y la <b>Tetralogía Documental Canónica (Plan, PRD, User Flow y TRD)</b>, articulando un pipeline tecnológico de cuatro plataformas sinérgicas:
+    </p>
+    <ul style="margin: 0 0 4px 0;">
+      <li><b>Google Gemini (Gemas Especializadas):</b> Mentor socrático para ingeniería de requisitos, modelado relacional y especificaciones técnicas sin alucinaciones.</li>
+      <li><b>Google Stitch (stitch.withgoogle.com):</b> Prototipado visual con tokens de diseño y especificación contractual de los 4 estados de UI.</li>
+      <li><b>Supabase PostgreSQL:</b> Backend como Servicio (BaaS) que actúa como <i>Fuente Única de Verdad (SSoT)</i> con RLS al 100%, triggers y UUIDs.</li>
+      <li><b>Google AI Studio (aistudio.google.com/apps):</b> Compilación fullstack reactiva que traduce los planos en código modular conectado en tiempo real.</li>
+    </ul>
+    <p style="margin: 0 0 0 0;">
+      A través de esta guía, usted construirá paso a paso una aplicación web completa y profesional para su Proyecto Formativo, erradicando la improvisación y dominando las competencias de ingeniería de software más demandadas en el sector productivo. ¡Bienvenido a la era del Desarrollo Guiado por IA!
+    </p>
+  </div>
+
+  <!-- ==================== PÁGINA 2: ACTIVIDADES DE APRENDIZAJE 3.1 ==================== -->
+  <div class="page-break"></div>
+
+  <h1 class="section-title">3. FORMULACIÓN DE LAS ACTIVIDADES DE APRENDIZAJE</h1>
+  <p><b>• Descripción de la(s) Actividad(es)</b></p>
+
+  <h2 class="subsection-title">3.1 Actividades de reflexión inicial:</h2>
+  <div class="meta-field"><span class="meta-label">Descripción de la actividad:</span> Análisis reflexivo individual y grupal sobre el impacto de construir software con IA guiada por planos formales frente a la improvisación no asistida. Identificación de anti-patrones en el desarrollo con herramientas generativas.</div>
+  <div class="meta-field"><span class="meta-label">Ambiente requerido:</span> Ambiente de formación de informática con conexión a Internet y proyector / pantalla interactiva.</div>
+  <div class="meta-field"><span class="meta-label">Estrategias o técnicas didácticas activas:</span> Estudio de caso problematizador, Aprendizaje Basado en Problemas (ABP), lluvia de ideas y debate socrático guiado.</div>
+  <div class="meta-field"><span class="meta-label">Materiales de formación:</span> Estaciones de trabajo, navegador web moderno, libreta técnica de notas.</div>
+  <div class="meta-field"><span class="meta-label">Material de apoyo:</span> Documento de caso de estudio: <i>"El Espejismo del Prompt Mágico: Anatomía de un SaaS Fallido"</i>.</div>
+  <div class="meta-field"><span class="meta-label">Duración de la actividad:</span> 6 horas.</div>
+
+  <h3 class="subsubsection-title">3.1.1 Estudio de Caso: "El Espejismo del Prompt Mágico"</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Situación Problematizadora:</b><br>
+        Un desarrollador junior solicita a un modelo de IA generativa comercial: <i>"Crea una aplicación web moderna para citas médicas con login, doctores y pagos"</i>.<br><br>
+        El modelo entrega en segundos una pantalla visualmente atractiva en React. Sin embargo, al realizar pruebas de usuario surgen los siguientes fallos críticos:
+        <ul style="margin-top: 3px; padding-left: 14px;">
+          <li>Los datos de citas se almacenan en un arreglo temporal con <span class="code-inline">useState([])</span>. Al recargar la página (<kbd>F5</kbd>), todos los datos desaparecen.</li>
+          <li>Cualquier usuario puede ver y modificar las historias clínicas de otros pacientes al carecer de políticas de seguridad en base de datos (RLS inexistente).</li>
+          <li>Al solicitar un ajuste menor en la interfaz, la IA reescribe todo el archivo generando errores de sintaxis y eliminando funcionalidades previamente operativas.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #b91c1c;">Anti-patrón: Simulación en Memoria vs SSoT</div>
+        <pre class="code-block">// CÓDIGO DEFECTUOSO GENERADO POR IMPROVISACIÓN:
+const [citas, setCitas] = useState([
+  { id: 1, doctor: "Dr. Mock", fecha: "Hoy" },
+  { id: 2, doctor: "Dra. Fake", fecha: "Mañana" }
+]); // ALUCINACIÓN: Datos hardcodeados no persistentes
+
+const agendarCita = (nuevaCita) => {
+  // ERROR CRÍTICO: No persiste en PostgreSQL
+  setCitas([...citas, nuevaCita]);
+  alert("Cita creada con éxito"); 
+};
+// CONSECUENCIA: Pérdida total de datos en recarga y
+// violación flagrante de privacidad entre usuarios.</pre>
+        <div class="alert-box" style="margin: 3px 0 0 0;">
+          <b>Fallo Estructural:</b> Ausencia de Fuente Única de Verdad (SSoT), falta de arquitectura relacional y omisión de especificación de requisitos BDD.
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h3 class="subsubsection-title">3.1.2 Preguntas Orientadoras para la Socialización</h3>
+  <p>De forma individual, responda las siguientes interrogantes en su bitácora técnica para posteriormente debatirlas en plenaria grupal:</p>
+  <ol>
+    <li>¿Por qué los modelos de lenguaje tienden a generar datos simulados (<span class="code-inline">useState</span>, <span class="code-inline">setTimeout</span>) cuando no se les suministra un esquema SQL formal?</li>
+    <li>¿Qué implicaciones legales y éticas tendría desplegar en una clínica real una aplicación que carece de Row Level Security (RLS) en su motor de persistencia?</li>
+    <li>Si un arquitecto tradicional no inicia una edificación sin planos estructurales, ¿por qué muchos programadores intentan codificar software solicitándole código a la IA sin un Plan, un PRD, un User Flow y un TRD?</li>
+  </ol>
+
+  <div class="tip-box">
+    <b>Conclusión Pedagógica:</b> La Inteligencia Artificial no reemplaza la disciplina de la ingeniería; por el contrario, amplifica exponencialmente las decisiones arquitectónicas del desarrollador. Una buena especificación documental produce código de nivel empresarial; la ausencia de especificación produce alucinaciones costosas.
+  </div>
+
+  <!-- ==================== PÁGINA 3: ACTIVIDADES DE CONTEXTUALIZACIÓN 3.2 ==================== -->
+  <div class="page-break"></div>
+
+  <h2 class="subsection-title">3.2 Actividades de contextualización e identificación de conocimientos necesarios para el aprendizaje:</h2>
+  <div class="meta-field"><span class="meta-label">Descripción de la actividad:</span> Apropiación conceptual de los fundamentos del Marco PIC 2026, la Tetralogía Documental Canónica, el principio de SSoT en bases de datos relacionales con RLS y el diseño reactivo de 4 estados de pantalla.</div>
+  <div class="meta-field"><span class="meta-label">Ambiente requerido:</span> Ambiente de desarrollo de software con acceso a plataformas web.</div>
+  <div class="meta-field"><span class="meta-label">Estrategias o técnicas didácticas activas:</span> Exposición dialogada del instructor, organizadores gráficos conceptuales, análisis comparativo de matrices y lectura crítica guiada.</div>
+  <div class="meta-field"><span class="meta-label">Materiales de formación:</span> Equipos con conexión a Internet, diagramas de arquitectura en formato digital.</div>
+  <div class="meta-field"><span class="meta-label">Material de apoyo:</span> Documentos técnicos <span class="code-inline">README.md</span>, <span class="code-inline">AGENTS.md</span> y <span class="code-inline">CADENA_DE_GEMAS_Y_CONOCIMIENTOS.md</span>.</div>
+  <div class="meta-field"><span class="meta-label">Duración de la actividad:</span> 14 horas.</div>
+
+  <h3 class="subsubsection-title">3.2.1 Matriz Comparativa de Paradigmas de Desarrollo</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 20%;">Criterio</th>
+        <th style="width: 25%;">Desarrollo Tradicional Manual</th>
+        <th style="width: 27%;">Improvisación ("Vibe Coding")</th>
+        <th style="width: 28%;">Desarrollo Guiado por IA (Marco PIC 2026)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Punto de Partida</b></td>
+        <td>Requisitos estáticos en cascada o historias de usuario en tableros.</td>
+        <td>Prompts abiertos y vagos en interfaces de chat estándar.</td>
+        <td><b>Tetralogía Documental Canónica</b> (Plan, PRD, User Flow, TRD).</td>
+      </tr>
+      <tr>
+        <td><b>Velocidad de Iteración</b></td>
+        <td>Lenta; escritura manual de código boilerplate y configuración.</td>
+        <td>Aparentemente rápida al inicio, colapsa en la integración.</td>
+        <td><b>Óptima y predecible;</b> código modular compilado en minutos con IA.</td>
+      </tr>
+      <tr>
+        <td><b>Fuente de Verdad (SSoT)</b></td>
+        <td>Servidor backend / ORM tradicional manual.</td>
+        <td>Inexistente o ambigua; abundancia de datos mockeados.</td>
+        <td><b>Supabase PostgreSQL:</b> RLS al 100%, triggers y UUIDs nativos.</td>
+      </tr>
+      <tr>
+        <td><b>Consistencia Visual UX</b></td>
+        <td>Depende de bibliotecas CSS o maquetadores manuales.</td>
+        <td>Interfaces incoherentes sin estados de error ni carga.</td>
+        <td><b>Google Stitch:</b> Tokens visuales y 4 estados de pantalla obligatorios.</td>
+      </tr>
+      <tr>
+        <td><b>Tolerancia a Errores</b></td>
+        <td>Alta depuración manual mediante breakpoints y logs.</td>
+        <td>Degradación continua (<i>Context Drift</i>) al corregir bugs.</td>
+        <td><b>Protocolo de Parches Quirúrgicos</b> y verificación <i>Maker-Checker</i>.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsubsection-title">3.2.2 El Pipeline de los 7 Artefactos Canónicos</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        El estándar de desarrollo guiado establece que antes de solicitar código ejecutable a un modelo de lenguaje, se deben compilar estrictamente los 7 artefactos de la cadena:<br><br>
+        1. <b>[01_PLAN]</b> <b>Plan de Proyecto:</b> Alcance del MVP (In-Scope vs Out-of-Scope), dependencias y sprints.<br>
+        2. <b>[02_PRD]</b> <b>PRD:</b> Personas, Requerimientos Funcionales (RF) con sintaxis Gherkin BDD y Reglas de Negocio.<br>
+        3. <b>[03_FLOW]</b> <b>User Flow UX:</b> Diagramas de navegación y los 4 estados de interfaz.<br>
+        4. <b>[04_TRD]</b> <b>TRD:</b> Stack tecnológico exacto, modelo ERD y seguridad.<br>
+        5. <b>[05_SQL]</b> <b>Esquema Supabase:</b> DDL relacional, RLS y triggers.<br>
+        6. <b>[06_STITCH]</b> <b>Prompts Google Stitch:</b> Estilos y maquetación UI.<br>
+        7. <b>[07_AI_STUDIO]</b> <b>Prompt Maestro:</b> Orquestación fullstack.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #008837;">Flujo Encadenado de Artefactos</div>
+        <pre class="code-block">┌────────────────────────────────────────────────────────┐
+│  1. GEMA ARQUITECTO SDLC (Gemini)                      │
+│     ➔ Genera: 01_PLAN + 02_PRD + 03_FLOW + 04_TRD      │
+└──────────────────────────┬─────────────────────────────┘
+                           │
+         ┌─────────────────┴─────────────────┐
+         ▼                                   ▼
+┌───────────────────────┐         ┌───────────────────────┐
+│ 2. GEMA DBA SUPABASE  │         │ 3. GEMA STITCH UI/UX  │
+│    Alimenta: 04_TRD   │         │    Alimenta: 02 y 03  │
+│    ➔ 05_ESQUEMA.sql   │         │    ➔ 06_STITCH.md     │
+└──────────┬────────────┘         └──────────┬────────────┘
+           │                                 │
+           └────────────────┬────────────────┘
+                            ▼
+┌────────────────────────────────────────────────────────┐
+│  4. GEMA ORQUESTADOR FULLSTACK (AI Studio)             │
+│     Alimenta: 04_TRD + 05_SQL + 06_STITCH              │
+│     ➔ Genera: 07_PROMPT_MAESTRO_AISTUDIO.md            │
+│     ➔ Compila: SPA React 19 + Supabase en Vivo          │
+└────────────────────────────────────────────────────────┘</pre>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Regla de Oro del Marco PIC:</b> Cada documento de la Tetralogía resuelve una única dimensión del problema (Aislamiento de Contexto). Al ingresarlos en la memoria de "Conocimientos" de Gemini o AI Studio, el modelo opera con precisión quirúrgica y cero alucinaciones.
+  </div>
+
+  <!-- ==================== PÁGINA 4: APROPIACIÓN 3.3.1 (CADENA DE GEMAS) ==================== -->
+  <div class="page-break"></div>
+
+  <h2 class="subsection-title">3.3 Actividades de apropiación:</h2>
+  <div class="meta-field"><span class="meta-label">Descripción de la actividad:</span> Ejecución práctica y guiada de las fases del pipeline: creación de la cadena de Gemas en Gemini, elaboración de la Tetralogía Canónica, prototipado en Google Stitch, modelado DDL con RLS en Supabase y orquestación fullstack en Google AI Studio Apps.</div>
+  <div class="meta-field"><span class="meta-label">Ambiente requerido:</span> Laboratorio de desarrollo con cuentas habilitadas en Google Gemini, Google AI Studio, Google Stitch y Supabase Cloud.</div>
+  <div class="meta-field"><span class="meta-label">Estrategias o técnicas didácticas activas:</span> Taller práctico guiado paso a paso, codificación estructurada, demostración técnica y pair-programming.</div>
+  <div class="meta-field"><span class="meta-label">Materiales de formación:</span> Navegador web, cliente SQL / Dashboard Supabase, editor de texto o IDE.</div>
+  <div class="meta-field"><span class="meta-label">Evidencias de aprendizaje:</span> Artefactos documentales generados, script SQL ejecutado con RLS verificado y aplicación web reactiva funcional.</div>
+  <div class="meta-field"><span class="meta-label">Instrumentos de evaluación:</span> Lista de verificación de producto y rúbrica técnica de desempeño.</div>
+  <div class="meta-field"><span class="meta-label">Duración de la actividad:</span> 60 horas.</div>
+
+  <h3 class="subsubsection-title">3.3.1 Configuración de la Cadena de 4 Gemas Especializadas en Gemini</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Paso 1: Acceso a Gemini Gems:</b><br>
+        Ingrese a <span class="code-inline">gemini.google.com</span>, despliegue el menú lateral izquierdo y seleccione <b>"Explorar Gemas" ➔ "Nueva Gema"</b>.<br><br>
+        <b>Configuración de la GEMA 1:</b>
+        <ul>
+          <li><b>Nombre:</b> <span class="code-inline">01 — Arquitecto de Producto & SDLC</span></li>
+          <li><b>Descripción:</b> Transforma ideas iniciales en los 4 documentos canónicos (Plan, PRD, User Flow, TRD) mediante diálogo socrático riguroso.</li>
+          <li><b>Conocimientos (Knowledge):</b> Vacío al inicio (es el punto de origen del pipeline).</li>
+        </ul>
+        Copie el System Prompt maestro adjunto en el campo de instrucciones de la Gema.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #008837;">System Prompt Maestro: Gema 1 (Arquitecto)</div>
+        <pre class="code-block"># ROL Y MISIÓN
+Eres un Lead Software Architect y Senior Product Manager.
+Tu misión es guiar al aprendiz paso a paso mediante diálogo
+socrático para generar la Tetralogía Documental Canónica.
+NUNCA inventes requerimientos: pregunta siempre al usuario.
+
+# REGLAS DE TRABAJO EN 4 PASOS
+1. PLAN: Delimita MVP In-Scope vs Out-of-Scope y Sprints.
+   -> Genera: 01_PLAN_PROYECTO.md
+2. PRD: Perfiles y Requerimientos Funcionales en Gherkin.
+   -> Genera: 02_PRD_PRODUCTO.md
+3. USER FLOW: Diagrama Mermaid y 4 estados de pantalla
+   (Empty, Loading Skeleton, Success Toast, Error Alert).
+   -> Genera: 03_USER_FLOWS_UX.md
+4. TRD: Stack tecnológico exacto, modelo ERD y RLS.
+   -> Genera: 04_TRD_ARQUITECTURA_TECNICA.md
+
+# FORMATO DE SALIDA: Bloques Markdown descargables.</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Paso 2: Cadena y Distribución de Conocimientos:</b><br>
+        A medida que la GEMA 1 finaliza los documentos, el aprendiz descarga los archivos <span class="code-inline">.md</span> y los añade en la sección <b>"Conocimientos" (Knowledge)</b> de las gemas hijas especializadas:<br><br>
+        <ul>
+          <li><b>GEMA 2 (DBA Supabase):</b> Se alimenta de <span class="code-inline">04_TRD_ARQUITECTURA_TECNICA.md</span> para generar el script SQL DDL con RLS al 100%.</li>
+          <li><b>GEMA 3 (Diseñador Stitch UI):</b> Se alimenta de <span class="code-inline">02_PRD</span> y <span class="code-inline">03_USER_FLOWS</span> para producir los prompts visuales.</li>
+          <li><b>GEMA 4 (Orquestador AI Studio):</b> Recibe <span class="code-inline">04_TRD</span>, <span class="code-inline">05_SQL</span> y <span class="code-inline">06_STITCH</span> para ensamblar el prompt maestro fullstack.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Panel de Conocimientos en Google Gemini</div>
+        <div style="border: 1px dashed #94a3b8; padding: 5px; background: #fff; border-radius: 4px;">
+          <div style="font-size: 7.9pt; font-weight: bold; color: #334155; margin-bottom: 3px;">📂 Archivos en Conocimientos de la Gema:</div>
+          <div style="font-size: 7.7pt; color: #008837; margin-bottom: 2px;">✔ 01_PLAN_PROYECTO.md (14 KB)</div>
+          <div style="font-size: 7.7pt; color: #008837; margin-bottom: 2px;">✔ 02_PRD_PRODUCTO.md (22 KB)</div>
+          <div style="font-size: 7.7pt; color: #008837; margin-bottom: 2px;">✔ 03_USER_FLOWS_UX.md (18 KB)</div>
+          <div style="font-size: 7.7pt; color: #008837; margin-bottom: 3px;">✔ 04_TRD_ARQUITECTURA_TECNICA.md (25 KB)</div>
+          <div style="font-size: 7.2pt; color: #64748b; font-style: italic;">"Los archivos adjuntos proporcionan contexto permanente y evitan el olvido conceptual durante largas sesiones."</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Tip de Productividad:</b> No intente generar todo el sistema en una sola conversación de chat libre. La división del trabajo en Gemas especializadas previene la saturación del contexto de la IA y garantiza código libre de alucinaciones.
+  </div>
+
+  <!-- ==================== PÁGINA 5: APROPIACIÓN 3.3.2 (PLAN & PRD) ==================== -->
+  <div class="page-break"></div>
+
+  <h3 class="subsubsection-title">3.3.2 Elaboración Paso a Paso de la Tetralogía Documental Canónica</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Documento 1: Plan de Proyecto (01_PLAN_PROYECTO.md)</b><br>
+        Es la brújula del desarrollo. Delimita el alcance mínimo viable para que la IA no intente construir funcionalidades accesorias innecesarias.<br><br>
+        <b>Estructura Obligatoria:</b>
+        <ul>
+          <li><b>Visión del MVP:</b> Propósito central en una frase.</li>
+          <li><b>Límites de Alcance (Scope Boundaries):</b>
+            <ul>
+              <li><b>[IN-SCOPE]</b> Autenticación Supabase (Email/Password), CRUD de entidad principal, Dashboard con KPIs en tiempo real y UI en 4 estados.</li>
+              <li><b>[OUT-OF-SCOPE]</b> Pagos internacionales (Stripe), notificaciones push móviles, analítica con ML predictivo (pospuestos para v2.0).</li>
+            </ul>
+          </li>
+          <li><b>Matriz de Dependencias:</b> DDL SQL y RLS ➔ Auth ➔ Prototipos Stitch ➔ Compilación AI Studio.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Fragmento del Plan de Proyecto</div>
+        <pre class="code-block"># 🗓️ PLAN DE PROYECTO: HEALTHPULSE TELEMED
+## 1. VISIÓN DEL MVP
+Plataforma SaaS para que médicos independientes
+gestionen pacientes, citas y notas clínicas seguras.
+
+## 2. LÍMITES DEL ALCANCE
+- IN-SCOPE (MVP Día 1-3):
+  * Autenticación con roles (doctor, patient).
+  * CRUD de Citas (Appointments) vinculadas a user.id.
+  * Dashboard con 4 KPIs en tiempo real.
+  * UI con Skeleton Screens y Toast Notifications.
+- OUT-OF-SCOPE (Versión 2.0):
+  * Pasarela de pagos con tarjeta de crédito.
+  * Salas de videoconferencia WebRTC nativas.</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Documento 2: PRD con Sintaxis Gherkin BDD (02_PRD_PRODUCTO.md)</b><br>
+        El PRD documenta el comportamiento esperado del sistema mediante el lenguaje formal <b>Gherkin (Dado / Cuando / Entonces)</b>, eliminando cualquier ambigüedad de interpretación para la IA.<br><br>
+        Cada Requerimiento Funcional (RF) debe contar con:
+        <ul>
+          <li><b>Código y Nombre:</b> Ej. <span class="code-inline">RF-02: Agendamiento de Citas</span></li>
+          <li><b>Prioridad MoSCoW:</b> Must Have / Should Have.</li>
+          <li><b>Actor:</b> Rol autorizado para ejecutar la acción.</li>
+          <li><b>Criterio de Aceptación Gherkin:</b> Escenario de éxito y escenario de excepción o validación de error.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Especificación BDD en Gherkin</div>
+        <pre class="code-block">#### RF-02: Agendamiento de Cita Médica
+- Prioridad: Must Have | Actor: Paciente autenticado
+
+Escenario: Paciente agenda cita con éxito
+  DADO que el paciente ha iniciado sesión
+  Y selecciona al médico "Dr. Carlos Mendoza"
+  Y elige la fecha "2026-10-12" a las "10:00 AM"
+  CUANDO hace clic en el botón "Confirmar Cita"
+  ENTONCES el sistema inserta la fila en 'appointments'
+  Y el campo 'owner_id' toma el valor de auth.uid()
+  Y la interfaz emite un Toast verde "Cita agendada"
+  Y la tabla de citas se actualiza reactivamente.
+
+Escenario: Conflicto de horario no disponible
+  DADO que el horario seleccionado ya se encuentra ocupado
+  CUANDO el paciente intenta seleccionarlo
+  ENTONCES el bloque se muestra deshabilitado en gris
+  Y el sistema bloquea el botón de confirmación.</pre>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ==================== PÁGINA 6: APROPIACIÓN 3.3.2 (USER FLOWS & TRD) ==================== -->
+  <div class="page-break"></div>
+
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Documento 3: User Flows, Catálogo de Pantallas & 4 Estados de UI (03_USER_FLOWS_UX.md)</b><br>
+        El User Flow traza la navegación contractual del sistema. Para erradicar el <b>"Efecto Monovista"</b>, el aprendiz debe definir obligatoriamente un <b>Catálogo de Pantallas (Screen Inventory)</b> con mínimo 5 a 8 vistas independientes:<br>
+        <ul style="margin: 2px 0 4px 14px; padding: 0;">
+          <li><b>SCR-01:</b> Auth & Onboarding (Login / Registro / Recuperación).</li>
+          <li><b>SCR-02:</b> Dashboard Principal (4 KPIs en vivo + resumen).</li>
+          <li><b>SCR-03:</b> Explorador de Registros (Tabla + selector Kanban).</li>
+          <li><b>SCR-04:</b> Detalle 360 del Registro (Ficha técnica profunda).</li>
+          <li><b>SCR-05:</b> Formulario de Creación (Wizard modular).</li>
+          <li><b>SCR-06:</b> Configuración & Perfil de Usuario.</li>
+        </ul>
+        Para cada pantalla se especifican contractualmente sus 4 estados:
+        <ol style="margin-top: 2px; padding-left: 14px;">
+          <li><b>1. Empty State:</b> Consulta retorna 0 filas. Ilustración amigable + CTA.</li>
+          <li><b>2. Skeleton Screen:</b> Réplica pulsante animada mientras carga Supabase.</li>
+          <li><b>3. Toast Feedback:</b> Notificación flotante accesible de confirmación.</li>
+          <li><b>4. Error & Retry:</b> Manejo de excepciones (red/RLS) con botón reintentar.</li>
+        </ol>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Navegación Global Multi-Vista (Mermaid)</div>
+        <pre class="code-block">graph TD
+  A[🟢 Visitante] --> B{¿Sesión activa?}
+  B -- No --> C[SCR-01: Auth Login/Registro]
+  B -- Sí --> D[SCR-02: Dashboard 4 KPIs]
+  C -->|Login Exitoso| D
+  
+  subgraph APP[SPA MULTI-VISTA - SIDEBAR NAVEGABLE]
+    D <-->|Nav: Registros| E[SCR-03: Explorador / Tabla]
+    D <-->|Nav: Ajustes| H[SCR-06: Perfil & Config]
+    E -->|Clic Fila / Ver Ficha| F[SCR-04: Detalle 360]
+    F -->|Volver| E
+    E -->|Botón '+ Nuevo'| G[SCR-05: Formulario Wizard]
+    G -->|Guardado Exitoso| E
+  end</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Documento 4: TRD y Arquitectura Técnica (04_TRD_ARQUITECTURA_TECNICA.md)</b><br>
+        El TRD fija los contratos técnicos invariantes para evitar que la IA utilice versiones obsoletas o paquetes incompatibles:<br><br>
+        <ul>
+          <li><b>Stack Frontend:</b> React 19 SPA, Tailwind CSS v3.4+, Lucide React Icons, cliente <span class="code-inline">@supabase/supabase-js</span> v2.x.</li>
+          <li><b>Arquitectura de Directorios:</b> Modular basada en características (Feature-Driven), separando servicios (<span class="code-inline">services/</span>), contexto (<span class="code-inline">context/</span>), componentes UI base (<span class="code-inline">components/ui/</span>) y componentes de dominio (<span class="code-inline">components/features/</span>).</li>
+          <li><b>Límite de Contexto:</b> Ningún componente puede superar las <b>250 líneas de código</b> para evitar <i>Context Rot</i>.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Estructura Modular Estandarizada</div>
+        <pre class="code-block">src/
+├── lib/
+│   └── supabaseClient.js      # Singleton con persistencia
+├── context/
+│   └── AuthContext.jsx        # Provider y hook useAuth()
+├── services/
+│   ├── profileService.js      # Consultas a public.profiles
+│   └── appointmentService.js  # CRUD sobre appointments
+├── components/
+│   ├── layout/                # Sidebar, Header, KPI Cards
+│   ├── ui/                    # Skeletons, Toasts, Modales
+│   └── features/              # Tablas de datos, Formularios
+├── types/                     # Definición de tipos y esquemas
+└── App.jsx                    # Enrutamiento condicional</pre>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Tip de Arquitectura:</b> Al modularizar el código en archivos de menos de 250 líneas, la IA puede realizar modificaciones incrementales mediante parches precisos sin alterar ni romper el resto del sistema.
+  </div>
+
+  <!-- ==================== PÁGINA 7: APROPIACIÓN 3.3.3 (GOOGLE STITCH) ==================== -->
+  <div class="page-break"></div>
+
+  <h3 class="subsubsection-title">3.3.3 Prototipado Visual Multi-Pantalla con Google Stitch</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Paso 1: Generación con Gema 3 y Protocolo Multi-Pantalla en Stitch:</b><br>
+        El aprendiz selecciona su estilo visual en el <b>Catálogo de 40 Estilos Frontend</b> (ej. <i>#13 Bento Grid</i> o <i>#2 Glassmorphism</i>) y solicita a la <b>Gema 3</b> generar el archivo canónico <span class="code-inline">06_PROMPTS_GOOGLE_STITCH.md</span> alimentándola con el Plan, PRD y User Flow.<br>
+        Posteriormente, ingresa a <span class="code-inline">stitch.withgoogle.com</span>. Como <i>Google Stitch genera una sola pantalla por prompt</i>, para erradicar el <b>"Efecto Monovista"</b> se construye la <b>Suite Multi-Pantalla</b> dentro del mismo proyecto:<br>
+        <ol style="margin-top: 3px; padding-left: 14px;">
+          <li><b>Pantalla 1 (Auth):</b> Pegar Prompt 1 de Login/Registro.</li>
+          <li><b>Botón '+ Add Screen':</b> En Stitch, hacer clic en <i>'+ Add Screen'</i> para crear la siguiente vista independiente.</li>
+          <li><b>Pantalla 2 (Dashboard):</b> Pegar Prompt 2 (KPIs y widgets).</li>
+          <li><b>Pantalla 3 (Explorador):</b> Clic <i>'+ Add Screen'</i> y pegar Prompt 3 (Tabla interactiva de citas).</li>
+          <li><b>Pantalla 4 (Detalle 360):</b> Clic <i>'+ Add Screen'</i> y pegar Prompt 4 (Expediente clínico profundo).</li>
+          <li><b>Pantalla 5 (Wizard):</b> Clic <i>'+ Add Screen'</i> y pegar Prompt 5 (Formulario de agendamiento por pasos).</li>
+          <li><b>Pantalla 6 (Configuración):</b> Clic <i>'+ Add Screen'</i> y pegar Prompt 6 (Ajustes del perfil y clínica).</li>
+          <li><b>Consistencia Visual:</b> Reutilizar el mismo estilo del catálogo de 40 estilos y los mismos códigos HEX en todas las vistas.</li>
+        </ol>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #008837;">Suite de Prompts para Google Stitch (+ Add Screen)</div>
+        <pre class="code-block">/* PROMPT 1: AUTH & ONBOARDING (SCR-01) */
+Diseña pantalla de Login/Registro split-screen para
+"HealthPulse" (médico vs paciente), fondo Slate 900.
+--------------------------------------------------
+/* PROMPT 2: DASHBOARD MÉDICO (SCR-02) */
+Diseña Dashboard con Sidebar activo en 'Dashboard',
+4 KPIs (Citas Hoy, Pacientes), gráfico y cola en espera.
+--------------------------------------------------
+/* PROMPT 3: AGENDA Y EXPLORADOR DE CITAS (SCR-03) */
+Sidebar activo en 'Citas', Header con breadcrumbs,
+tabla de turnos, filtros (presencial/telemedicina).
+--------------------------------------------------
+/* PROMPT 4: EXPEDIENTE CLÍNICO 360 (SCR-04) */
+Header con botón '← Volver', ficha médica del paciente,
+tabs: Historial, Recetas activas, Exámenes de lab.
+--------------------------------------------------
+/* PROMPT 5: WIZARD DE NUEVA CITA (SCR-05) */
+Stepper de 3 pasos (Paciente, Doctor, Horario en verde).
+--------------------------------------------------
+/* PROMPT 6: CONFIGURACIÓN Y HORARIOS (SCR-06) */
+Sidebar activo en 'Ajustes', formulario de horarios.</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Paso 2: Extracción de Tokens de Diseño de la Suite:</b><br>
+        Una vez generada la suite completa de pantallas en Google Stitch, inspeccione los componentes e identifique:
+        <ul>
+          <li>Clases utilitarias de Tailwind CSS compartidas (<span class="code-inline">bg-slate-900</span>, <span class="code-inline">backdrop-blur-md</span>, <span class="code-inline">rounded-2xl</span>).</li>
+          <li>Paleta cromática institucional unificada para fondos, tarjetas y acentos.</li>
+          <li>Estructura del Sidebar persistente con el indicador de ruta activa para transferirlo al Router de Google AI Studio.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Tokens Visuales Extraídos de la Suite</div>
+        <div style="background: #fff; border: 1px solid #cbd5e1; border-radius: 4px; padding: 5px; font-size: 7.7pt;">
+          <div style="margin-bottom: 3px;"><b>Paleta Primaria:</b> <span style="display:inline-block; width:10px; height:10px; background:#0891b2; vertical-align:middle; border-radius:2px;"></span> Cian (#0891b2) | <span style="display:inline-block; width:10px; height:10px; background:#059669; vertical-align:middle; border-radius:2px;"></span> Esmeralda (#059669)</div>
+          <div style="margin-bottom: 3px;"><b>Superficies:</b> Fondo general <span class="code-inline">bg-slate-900</span>, Tarjetas translúcidas <span class="code-inline">bg-slate-800/80</span> con borde <span class="code-inline">border-slate-700/60</span>.</div>
+          <div><b>Tipografía:</b> Inter / Sans-serif con jerarquía clara (<span class="code-inline">text-sm font-medium</span> para etiquetas, <span class="code-inline">text-2xl font-bold</span> para KPIs).</div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Tip de Prototipado:</b> En Google Stitch, puede solicitar iteraciones parciales diciendo: <i>"Rediseña únicamente la tarjeta KPI de ingresos para incluir un gráfico sparkline de tendencia semanal manteniendo el resto intacto"</i>.
+  </div>
+
+  <!-- ==================== PÁGINA 8: APROPIACIÓN 3.3.4 (SUPABASE DDL & TRIGGERS) ==================== -->
+  <div class="page-break"></div>
+
+  <h3 class="subsubsection-title">3.3.4 Modelado y Despliegue de Base de Datos en Supabase (Backend & SSoT)</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Paso 1: Configuración Inicial del Proyecto Supabase:</b><br>
+        1. Ingrese a <span class="code-inline">supabase.com</span> y cree un nuevo proyecto en la organización formativa.<br>
+        2. Ingrese a <b>Authentication ➔ Providers ➔ Email</b> y desactive la opción:
+        <div style="background:#f1f5f9; padding:3px 5px; margin:3px 0; border:1px solid #cbd5e1; font-weight:bold; font-size:7.8pt;">
+          Confirm email: OFF
+        </div>
+        <i>(Permite registrar usuarios de prueba y realizar login inmediato sin requerir confirmación por correo en desarrollo).</i><br><br>
+        3. Diríjase a <b>SQL Editor ➔ New Query</b> para ejecutar el script DDL de creación de tablas, disparadores y políticas de seguridad RLS.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #008837;">Trigger de Sincronización Automática de Perfiles</div>
+        <pre class="code-block">-- 1. Función para actualizar fecha de modificación
+CREATE OR REPLACE FUNCTION handle_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- 2. Función Trigger: Sincronizar auth.users -> public.profiles
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+  INSERT INTO public.profiles (id, full_name, email, role)
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', 'Usuario'),
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'role', 'user')
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Paso 2: Tablas Relacionales y Disparador de Usuarios:</b><br>
+        Se crea la tabla <span class="code-inline">public.profiles</span> vinculada a <span class="code-inline">auth.users</span> con eliminación en cascada, y se adjunta el trigger <span class="code-inline">AFTER INSERT ON auth.users</span>.<br><br>
+        Posteriormente se crean las tablas del dominio (ej. <span class="code-inline">appointments</span>) asignando llaves UUID generadas por <span class="code-inline">gen_random_uuid()</span> y vinculando el propietario con <span class="code-inline">owner_id UUID REFERENCES public.profiles(id)</span>.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">DDL de Tablas Principales</div>
+        <pre class="code-block">-- 3. Tabla de Perfiles de Usuario
+CREATE TABLE public.profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  full_name VARCHAR(150) NOT NULL,
+  email VARCHAR(150) NOT NULL,
+  role VARCHAR(30) DEFAULT 'patient' CHECK (role IN ('doctor', 'patient', 'admin')),
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- 4. Tabla de Dominio (Citas Médicas)
+CREATE TABLE public.appointments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  owner_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  doctor_name VARCHAR(100) NOT NULL,
+  patient_name VARCHAR(100) NOT NULL,
+  scheduled_at TIMESTAMPTZ NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'completed', 'canceled')),
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);</pre>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Regla Inviolable de Base de Datos:</b> Toda tabla debe utilizar llaves primarias de tipo UUID con <span class="code-inline">gen_random_uuid()</span> para impedir ataques de enumeración secuencial en la API pública.
+  </div>
+
+  <!-- ==================== PÁGINA 9: APROPIACIÓN 3.3.4 (RLS & CLIENTE SINGLETON) ==================== -->
+  <div class="page-break"></div>
+
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Paso 3: Activación Obligatoria de Row Level Security (RLS) al 100%:</b><br>
+        En Supabase, exponer una tabla sin RLS permite que cualquier persona con la anon key acceda o elimine datos ajenos.<br><br>
+        <b>Procedimiento Inviolable:</b>
+        <ol style="margin-top: 3px; padding-left: 14px;">
+          <li>Habilitar RLS en cada tabla pública mediante <span class="code-inline">ALTER TABLE [tabla] ENABLE ROW LEVEL SECURITY;</span></li>
+          <li>Crear políticas granulares e independientes para las 4 operaciones del CRUD (<span class="code-inline">SELECT</span>, <span class="code-inline">INSERT</span>, <span class="code-inline">UPDATE</span>, <span class="code-inline">DELETE</span>).</li>
+          <li>Garantizar que en la inserción se asigne <span class="code-inline">auth.uid()</span> al <span class="code-inline">owner_id</span> y en la lectura/modificación se valide estrictamente <span class="code-inline">USING (auth.uid() = owner_id)</span>.</li>
+        </ol>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #b91c1c;">Script SQL de Políticas RLS Granulares</div>
+        <pre class="code-block">-- HABILITACIÓN ESTRICTA DE RLS
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.appointments ENABLE ROW LEVEL SECURITY;
+
+-- POLÍTICAS PARA PROFILES
+CREATE POLICY "Permitir lectura de perfiles autenticados"
+  ON public.profiles FOR SELECT
+  TO authenticated USING (true);
+
+CREATE POLICY "Los usuarios solo editan su propio perfil"
+  ON public.profiles FOR UPDATE
+  TO authenticated USING (auth.uid() = id);
+
+-- POLÍTICAS PARA APPOINTMENTS (SSoT Y AISLAMIENTO)
+CREATE POLICY "Usuarios leen solo sus citas propias"
+  ON public.appointments FOR SELECT
+  TO authenticated USING (auth.uid() = owner_id);
+
+CREATE POLICY "Usuarios insertan citas vinculadas a su UID"
+  ON public.appointments FOR INSERT
+  TO authenticated WITH CHECK (auth.uid() = owner_id);
+
+CREATE POLICY "Usuarios actualizan únicamente sus citas"
+  ON public.appointments FOR UPDATE
+  TO authenticated USING (auth.uid() = owner_id);
+
+CREATE POLICY "Usuarios eliminan únicamente sus citas"
+  ON public.appointments FOR DELETE
+  TO authenticated USING (auth.uid() = owner_id);</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Paso 4: Obtención de Credenciales de Conexión:</b><br>
+        Diríjase a <b>Project Settings ➔ API</b> y copie exclusivamente los siguientes valores:
+        <ul>
+          <li><b>Project URL:</b> La URL base de su proyecto (ej. <span class="code-inline">https://xyzcompany.supabase.co</span>).</li>
+          <li><b>Project API Keys ➔ anon (public):</b> Clave pública segura para clientes frontend.</li>
+        </ul>
+        <div class="alert-box" style="margin-top: 4px;">
+          <b>ALERTA DE SEGURIDAD CRÍTICA:</b> NUNCA use ni exponga la clave <b>service_role</b> en el código de frontend. La service_role bypasses (ignora) todas las políticas de RLS y le otorgaría control total al usuario sobre toda la base de datos.
+        </div>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Inicialización Segura del Cliente Supabase</div>
+        <pre class="code-block">// Archivo: src/lib/supabaseClient.js
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://su-proyecto.supabase.co';
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'su-anon-key-publica';
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});</pre>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Verificación Técnica:</b> En el panel de Supabase ➔ <b>Table Editor</b>, verifique que todas las tablas tengan el candado verde <i>"RLS Enabled"</i> antes de proceder a la generación de la interfaz en Google AI Studio.
+  </div>
+
+  <!-- ==================== PÁGINA 10: APROPIACIÓN 3.3.5 (AI STUDIO FULLSTACK & AUTH) ==================== -->
+  <div class="page-break"></div>
+
+  <h3 class="subsubsection-title">3.3.5 Construcción y Orquestación Fullstack en Google AI Studio Apps</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Paso 1: Acceso a Google AI Studio Apps:</b><br>
+        Ingrese a <span class="code-inline">aistudio.google.com/apps</span> con su cuenta de Google. Esta suite permite crear y desplegar aplicaciones web en tiempo real mediante Gemini 1.5 Pro / Flash.<br><br>
+        <b>Estructura del Prompt Maestro Multi-Vista:</b>
+        El Prompt Maestro unifica los 4 documentos canónicos, el esquema SQL ejecutado en Supabase y la suite de pantallas de Stitch:
+        <ol style="margin-top: 3px; padding-left: 14px;">
+          <li><b>Arquitectura Multi-Vista (SPA Router):</b> Enrutador por estado <span class="code-inline">currentView</span> y Sidebar interactivo para navegar entre todas las vistas sin recargar.</li>
+          <li><b>Componentes Desacoplados por Pantalla:</b> Módulos independientes para Dashboard, Listado, Detalle 360, Wizard y Ajustes.</li>
+          <li><b>Credenciales Seguras:</b> Inyección de URL y ANON KEY en singleton.</li>
+          <li><b>Implementación de los 4 Estados UI:</b> Código explícito para Skeleton, Empty State, Toast y Error Alert.</li>
+          <li><b>Manejo de Errores RLS:</b> Captura de excepciones de base de datos (código <span class="code-inline">42501</span>).</li>
+        </ol>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #008837;">Prompt Maestro Multi-Vista para AI Studio</div>
+        <pre class="code-block">Actúa como Lead Fullstack Engineer. Construye la SPA
+"HealthPulse Telemed" con ARQUITECTURA MULTI-VISTA.
+
+STACK Y CONEXIÓN:
+- React 19 + Tailwind CSS + Lucide + @supabase/supabase-js.
+- Conecta a Supabase con URL y ANON_KEY.
+
+ROUTER MULTI-VISTA Y SIDEBAR ACTIVO (App.jsx):
+- Estado: currentView ('dashboard' | 'citas' | 'detalle' |
+  'nueva-cita' | 'ajustes') y selectedId.
+- Sidebar con enlaces activos y navegación a TODAS las vistas.
+- Header con breadcrumbs dinámicas según la pantalla activa.
+
+VISTAS MODULARES INDEPENDIENTES:
+1. DashboardView: 4 KPIs en vivo + cola de espera.
+2. AppointmentsView: Tabla interactiva + selector Kanban.
+3. PatientDetailView: Expediente 360 con tabs e historial.
+4. AppointmentCreateView: Wizard por pasos con validación.
+5. SettingsView: Perfil médico y horarios de atención.
+
+REGLAS SSoT Y 4 ESTADOS:
+- 100% de datos desde Supabase. Skeleton loader en cargas,
+  Toasts accesibles al mutar y Empty states ilustrados.</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Paso 2: Implementación del Contexto de Autenticación:</b><br>
+        El archivo <span class="code-inline">src/context/AuthContext.jsx</span> debe proveer el estado de la sesión, el usuario autenticado y escuchar activamente los cambios de estado mediante <span class="code-inline">supabase.auth.onAuthStateChange</span>.<br><br>
+        De esta manera, cuando el usuario inicia sesión o cierra sesión, toda la aplicación reacciona de forma automática protegiendo las vistas privadas.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">src/context/AuthContext.jsx</div>
+        <pre class="code-block">import React, { createContext, useContext, useEffect, useState } from 'react';
+import { supabase } from '../lib/supabaseClient';
+
+const AuthContext = createContext({});
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return (
+    &lt;AuthContext.Provider value={{ user, loading }}&gt;
+      {!loading &amp;&amp; children}
+    &lt;/AuthContext.Provider&gt;
+  );
+};
+export const useAuth = () => useContext(AuthContext);</pre>
+      </td>
+    </tr>
+  </table>
+
+  <!-- ==================== PÁGINA 11: APROPIACIÓN 3.3.5 (SERVICIOS Y 4 ESTADOS) + 3.3.6 ==================== -->
+  <div class="page-break"></div>
+
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Paso 3: Capa de Servicios Modulares (appointmentService.js):</b><br>
+        Queda estrictamente prohibido realizar consultas dispersas a Supabase dentro de los componentes visuales de React. Toda comunicación con la base de datos debe encapsularse en un archivo de servicio dedicado con manejo estructurado de errores (<span class="code-inline">try / catch</span>).<br><br>
+        Observe cómo la función de inserción asigna automáticamente el <span class="code-inline">owner_id</span> del usuario activo para cumplir con la política de seguridad RLS de Supabase.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">src/services/appointmentService.js</div>
+        <pre class="code-block">import { supabase } from '../lib/supabaseClient';
+
+export const appointmentService = {
+  async getAll() {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .order('scheduled_at', { ascending: true });
+    if (error) throw error;
+    return data;
+  },
+
+  async create(appointmentData, userId) {
+    const { data, error } = await supabase
+      .from('appointments')
+      .insert([{ ...appointmentData, owner_id: userId }])
+      .select()
+      .single();
+    if (error) throw error;
+    return data;
+  },
+
+  async delete(appointmentId) {
+    const { error } = await supabase
+      .from('appointments')
+      .delete()
+      .eq('id', appointmentId);
+    if (error) throw error;
+  }
+};</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Paso 4: Componentes con los 4 Estados de Pantalla:</b><br>
+        En el componente de vista (<span class="code-inline">AppointmentList.jsx</span>), se manejan las variables reactivas de estado:
+        <ul>
+          <li><span class="code-inline">isLoading</span>: Renderiza el componente de carga <span class="code-inline">&lt;AppointmentSkeleton /&gt;</span>.</li>
+          <li><span class="code-inline">error</span>: Renderiza la alerta de error con botón de reintento.</li>
+          <li><span class="code-inline">appointments.length === 0</span>: Renderiza el <span class="code-inline">&lt;EmptyState /&gt;</span> con mensaje e invitación a crear.</li>
+          <li><span class="code-inline">appointments.length &gt; 0</span>: Renderiza la tabla completa con datos de Supabase.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Renderizado Condicional de Estados en React</div>
+        <pre class="code-block">if (isLoading) {
+  return &lt;AppointmentTableSkeleton rows={4} /&gt;;
+}
+
+if (error) {
+  return (
+    &lt;div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700"&gt;
+      &lt;p className="font-bold"&gt;Error al sincronizar con Supabase:&lt;/p&gt;
+      &lt;p className="text-sm"&gt;{error.message}&lt;/p&gt;
+      &lt;button onClick={loadAppointments} className="mt-2 px-3 py-1 bg-red-600 text-white text-xs rounded"&gt;
+        Reintentar conexión
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+if (appointments.length === 0) {
+  return &lt;EmptyState onNewAppointment={() =&gt; setIsModalOpen(true)} /&gt;;
+}
+
+return &lt;AppointmentTable data={appointments} onDelete={handleDelete} /&gt;;</pre>
+      </td>
+    </tr>
+  </table>
+
+  <h3 class="subsubsection-title">3.3.6 Protocolo de Parches Quirúrgicos en Google AI Studio</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Manejo de Errores sin Desbordar Contexto:</b><br>
+        Si durante la compilación en AI Studio se presenta un error de sintaxis o de base de datos, <b>NUNCA</b> solicite: <i>"Corrige el error"</i> o <i>"Reescribe la aplicación"</i> (esto causa alucinaciones y pérdida de código funcional).<br><br>
+        Utilice la fórmula del <b>Parche Quirúrgico</b>:
+        <div style="background:#eef2ff; border-left: 3px solid #6366f1; padding: 4px 6px; margin: 3px 0; font-size:7.7pt;">
+          <i>"En el archivo <span class="code-inline">[NombreArchivo.jsx]</span>, ajusta ÚNICAMENTE la función <span class="code-inline">[nombreFuncion]</span> para que <span class="code-inline">[comportamiento esperado]</span>. NO toques el estado global, ni los estilos de otros componentes, ni la configuración de Supabase."</i>
+        </div>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #b91c1c;">Ejemplo de Prompt Quirúrgico</div>
+        <pre class="code-block">// CASO REAL: Error 42501 (Violación de RLS en Inserción)
+"En el archivo appointmentService.js, ajusta ÚNICAMENTE
+la función create(). Asegúrate de inyectar explícitamente
+el campo owner_id con el valor de session.user.id
+antes de enviar la carga útil a Supabase:
+const payload = { ...data, owner_id: user.id };
+No modifiques las funciones getAll() ni delete()."</pre>
+        <div class="tip-box" style="margin: 3px 0 0 0;">
+          <b>Resultado:</b> La IA reescribe exactamente 5 líneas de código, preservando la integridad del 100% del proyecto restante.
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <h3 class="subsubsection-title">3.3.7 Aseguramiento de la Calidad: Testing de los 4 Estados y CI/CD en la Nube</h3>
+  <table class="step-table">
+    <tr>
+      <td class="col-desc">
+        <b>Testing Automatizado con Playwright y Vitest:</b><br>
+        Para certificar que una aplicación cumple el estándar de calidad de producción, el aprendiz debe implementar pruebas automáticas para cada uno de los 4 estados de pantalla:<br><br>
+        <ul>
+          <li><b>Pruebas Unitarias (Vitest):</b> Validan que los servicios (<span class="code-inline">appointmentService.js</span>) llamen correctamente a Supabase y procesen errores 42501 sin lanzar excepciones no controladas.</li>
+          <li><b>Pruebas E2E (Playwright):</b> Automatizan la navegación del usuario en Chromium headless, verificando la aparición secuencial del Skeleton Screen, el Toast verde de confirmación y el Empty State.</li>
+        </ul>
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #008837;">Test E2E de los 4 Estados (Playwright)</div>
+        <pre class="code-block">import { test, expect } from '@playwright/test';
+
+test('Flujo completo de 4 Estados en Citas', async ({ page }) => {
+  await page.goto('/dashboard');
+  
+  // 1. Verificar Skeleton mientras carga
+  await expect(page.locator('.skeleton-pulse')).toBeVisible();
+  
+  // 2. Verificar Empty State inicial si no hay citas
+  await expect(page.locator('text=No tienes citas agendadas')).toBeVisible();
+  
+  // 3. Crear cita y verificar Toast de Éxito
+  await page.click('button:has-text("+ Agendar Cita")');
+  await page.fill('input[name="doctor"]', 'Dr. Mendoza');
+  await page.click('button:has-text("Confirmar")');
+  await expect(page.locator('.toast-success')).toHaveText('Cita agendada');
+  
+  // 4. Verificar nueva fila persistida en la tabla
+  await expect(page.locator('table')).toContainText('Dr. Mendoza');
+});</pre>
+      </td>
+    </tr>
+    <tr>
+      <td class="col-desc">
+        <b>Pipeline CI/CD con GitHub Actions y Despliegue en Vercel:</b><br>
+        Todo cambio confirmado en la rama <span class="code-inline">main</span> del repositorio debe disparar un flujo automatizado de integración continua que ejecuta linters, pruebas de tipado y despliega a producción en Vercel / Netlify.<br><br>
+        <b>Observabilidad en Producción:</b>
+        Se integra <b>Sentry</b> para rastrear excepciones no controladas en tiempo real y <b>PostHog</b> para analítica de eventos de usuario, completando las 7 fases del SDLC profesional.
+      </td>
+      <td class="col-visual">
+        <div style="font-weight: bold; margin-bottom: 3px; color: #1e293b;">Workflow GitHub Actions (.github/workflows/ci.yml)</div>
+        <pre class="code-block">name: CI/CD Pipeline
+on: [push, pull_request]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:unit
+      - name: Deploy to Vercel
+        if: github.ref == 'refs/heads/main'
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}</pre>
+      </td>
+    </tr>
+  </table>
+
+  <div class="tip-box">
+    <b>Estándar de Calidad:</b> Un desarrollo guiado por IA sólo se considera concluido cuando supera el 100% de las pruebas automatizadas y se encuentra desplegado en una URL pública accesible con persistencia en Supabase.
+  </div>
+
+  <!-- ==================== PÁGINA 13: TRANSFERENCIA 3.4 Y AUDITORÍA MAKER-CHECKER ==================== -->
+  <div class="page-break"></div>
+
+  <h2 class="subsection-title">3.4 Actividades de Transferencia del Conocimiento:</h2>
+  <div class="meta-field"><span class="meta-label">Descripción de la actividad:</span> Aplicación autónoma y en equipo de la metodología completa de Desarrollo Guiado por IA al Proyecto Formativo propio asignado en el programa ADSO. Ejecución del ciclo de verificación cruzada Maker-Checker entre pares técnicos.</div>
+  <div class="meta-field"><span class="meta-label">Ambiente requerido:</span> Ambiente de formación de desarrollo con acceso completo al ecosistema tecnológico (Gemini, Stitch, Supabase, AI Studio).</div>
+  <div class="meta-field"><span class="meta-label">Estrategias o técnicas didácticas activas:</span> Aprendizaje Basado en Proyectos (ABPr), evaluación cruzada por pares (Maker-Checker Protocol), sustentación técnica y auditoría en vivo.</div>
+  <div class="meta-field"><span class="meta-label">Materiales de formación:</span> Repositorio Git del equipo, cuentas configuradas en las plataformas, rúbrica de auditoría.</div>
+  <div class="meta-field"><span class="meta-label">Material de apoyo:</span> Guía de auditoría técnica SSoT y lista de verificación del Marco PIC 2026.</div>
+  <div class="meta-field"><span class="meta-label">Duración de la actividad:</span> 40 horas.</div>
+
+  <h3 class="subsubsection-title">3.4.1 Taller Aplicado al Proyecto Formativo del Aprendiz</h3>
+  <p>
+    Cada equipo de desarrollo debe ejecutar el ciclo integral para codificar y desplegar el módulo funcional principal de su Proyecto Formativo SENA (ej. Control de Acceso de Personal, Gestión de Inventario de Almacén, Facturación Electrónica, Gestión Clínica o Flujo de Equipos Externos), entregando los 7 artefactos de la cadena técnica:
+  </p>
+  <ol>
+    <li><b>Tetralogía Documental Aprobada:</b> Carpetas con los 4 documentos canónicos en formato Markdown (<span class="code-inline">01_PLAN</span>, <span class="code-inline">02_PRD</span> con escenarios Gherkin, <span class="code-inline">03_USER_FLOWS</span> con Catálogo de 5 a 8 Pantallas y <span class="code-inline">04_TRD</span>).</li>
+    <li><b>Base de Datos en Producción (Supabase):</b> Script SQL DDL ejecutado con llaves primarias UUID, trigger <span class="code-inline">handle_updated_at</span>, sincronización de usuarios con <span class="code-inline">auth.users</span> y políticas de RLS habilitadas y comprobadas al 100%.</li>
+    <li><b>Prototipo Validado en Google Stitch (Suite Multi-Pantalla):</b> Suite completa de pantallas (mínimo 5 a 8 vistas) generada en el mismo proyecto mediante <span class="code-inline">+ Add Screen</span>, con estilo unificado del catálogo de 40 estilos y los 4 estados de UI.</li>
+    <li><b>Aplicación Web Funcional en Google AI Studio:</b> SPA React interactiva multi-vista con Sidebar navegable y enrutador por estado (<span class="code-inline">currentView</span>) entre todas las pantallas, conectada a Supabase y con diseño responsive.</li>
+  </ol>
+
+  <h3 class="subsubsection-title">3.4.2 Protocolo de Auditoría Cruzada Maker-Checker</h3>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 7%;">N°</th>
+        <th style="width: 33%;">Punto de Verificación Técnica</th>
+        <th style="width: 45%;">Evidencia Concreta a Comprobar</th>
+        <th style="width: 15%;">Cumplimiento</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text-center"><b>01</b></td>
+        <td><b>SSoT en Base de Datos</b></td>
+        <td>No existen arreglos hardcodeados en <span class="code-inline">useState</span> ni datos simulados. Todo proviene de Supabase.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>02</b></td>
+        <td><b>Seguridad RLS al 100%</b></td>
+        <td>Todas las tablas tienen <span class="code-inline">ENABLE ROW LEVEL SECURITY</span> y políticas para SELECT, INSERT, UPDATE, DELETE.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>03</b></td>
+        <td><b>Protección de Secretos</b></td>
+        <td>El frontend utiliza únicamente <span class="code-inline">SUPABASE_ANON_KEY</span>. La clave <span class="code-inline">service_role</span> NO aparece en el código.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>04</b></td>
+        <td><b>Identificadores UUID</b></td>
+        <td>Todas las llaves primarias son de tipo UUID generadas mediante <span class="code-inline">gen_random_uuid()</span>.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>05</b></td>
+        <td><b>Estado de Carga (Loading)</b></td>
+        <td>Se muestra un Skeleton Loader con <span class="code-inline">animate-pulse</span> mientras se resuelve la promesa de Supabase.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>06</b></td>
+        <td><b>Estado Vacío (Empty State)</b></td>
+        <td>Cuando la tabla no tiene filas, muestra ilustración amigable y botón CTA para agregar el primer elemento.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>07</b></td>
+        <td><b>Feedback de Éxito (Toast)</b></td>
+        <td>Tras crear, editar o borrar registros, la UI emite una notificación flotante accesible (Toast).</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>08</b></td>
+        <td><b>Manejo de Errores (Retry)</b></td>
+        <td>Si la consulta falla o se viola RLS (42501), la UI no colapsa en blanco; muestra banner de error y botón de reintento.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>09</b></td>
+        <td><b>Sincronización de Perfiles</b></td>
+        <td>Al crear un nuevo usuario con Supabase Auth, el trigger inserta automáticamente su fila en <span class="code-inline">public.profiles</span>.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>10</b></td>
+        <td><b>Límite de Modularidad</b></td>
+        <td>Ningún archivo de componente supera las 250 líneas de código; se dividen en subcomponentes limpios.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+      <tr>
+        <td class="text-center"><b>11</b></td>
+        <td><b>Navegación Multi-Vista SPA</b></td>
+        <td>La app posee al menos 5 vistas funcionales desacopladas (Dashboard, Lista, Detalle, Wizard, Configuración) navegables desde el Sidebar sin recargas.</td>
+        <td class="text-center">[&nbsp;&nbsp;] SÍ&nbsp;&nbsp;&nbsp;[&nbsp;&nbsp;] NO</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ==================== PÁGINA 14: SECCIÓN 4 EVALUACIÓN SENA ==================== -->
+  <div class="page-break"></div>
+
+  <h1 class="section-title">4. PLANTEAMIENTO DE EVIDENCIAS DE APRENDIZAJE PARA LA EVALUACIÓN EN EL PROCESO FORMATIVO</h1>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 12%;">Fase del Proyecto Formativo</th>
+        <th style="width: 15%;">Actividad del Proyecto Formativo</th>
+        <th style="width: 15%;">Actividad de Aprendizaje</th>
+        <th style="width: 22%;">Evidencias de Aprendizaje</th>
+        <th style="width: 22%;">Criterios de Evaluación</th>
+        <th style="width: 14%;">Técnicas e Instrumentos de Evaluación</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="3" class="text-center"><b>Ejecución</b></td>
+        <td rowspan="3"><b>AP03:</b> CODIFICAR Y DESPLEGAR LOS MÓDULOS DEL SISTEMA DE INFORMACIÓN APLICANDO METODOLOGÍAS DE DESARROLLO GUIADO POR INTELIGENCIA ARTIFICIAL.</td>
+        <td rowspan="3"><b>AA09:</b> Construir aplicaciones web completas mediante el pipeline Gemini Gems, Google Stitch, Supabase y Google AI Studio Apps.</td>
+        <td>
+          <b>Evidencias de Conocimiento:</b><br>
+          Cuestionario técnico sobre la Tetralogía Documental Canónica, BDD con Gherkin, arquitectura SSoT en Supabase, políticas RLS y los 4 estados de pantalla en frontend reactivo.
+        </td>
+        <td>
+          • Modela los requisitos y arquitectura de software empleando estándares BDD y diagramas relacionales.<br>
+          • Argumenta con solvencia el impacto del Row Level Security (RLS) en la integridad y privacidad de datos.
+        </td>
+        <td class="text-center">
+          <b>Valoración de Conocimiento:</b><br>
+          Cuestionario estructurado en plataforma LMS SENA.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Evidencias de Desempeño:</b><br>
+          Observación directa del proceso de configuración de la Cadena de Gemas en Gemini, prototipado visual en Google Stitch, ejecución del script DDL en Supabase y ensamblaje de la SPA en Google AI Studio.
+        </td>
+        <td>
+          • Aplica el protocolo de parches quirúrgicos ante errores de compilación sin degradar el contexto de la IA.<br>
+          • Configura el singleton de Supabase y el listener de autenticación según buenas prácticas de seguridad.
+        </td>
+        <td class="text-center">
+          <b>Técnica:</b> Observación directa.<br>
+          <b>Instrumento:</b> Lista de chequeo de desempeño.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <b>Evidencias de Producto:</b><br>
+          Repositorio Git que incluye los 7 artefactos del pipeline, script SQL DDL con RLS verificado y enlace web a la aplicación compilada y conectada en vivo a Supabase.
+        </td>
+        <td>
+          • El software desarrollado persiste datos reales en Supabase sin depender de mocks en memoria.<br>
+          • Implementa contractualmente los 4 estados de UI (Empty, Loading Skeleton, Success Toast, Error Alert).<br>
+          • Cumple el 100% de los puntos de la auditoría técnica Maker-Checker.
+        </td>
+        <td class="text-center">
+          <b>Técnica:</b> Valoración de producto.<br>
+          <b>Instrumento:</b> Lista de verificación / Rúbrica técnica de producto.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tip-box">
+    <b>Evaluación por Proyectos:</b> La aprobación de la presente guía de aprendizaje está condicionada a la sustentación técnica en vivo donde cada aprendiz demuestra el funcionamiento de la aplicación conectada a Supabase y expone la trazabilidad de los 7 artefactos generados.
+  </div>
+
+  <!-- ==================== PÁGINA 15: GLOSARIO, REFERENTES Y CONTROL DEL DOCUMENTO ==================== -->
+  <div class="page-break"></div>
+
+  <h1 class="section-title">5. GLOSARIO DE TÉRMINOS</h1>
+  <div style="font-size: 7.1pt; line-height: 1.20; columns: 2; column-gap: 14px;">
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• BaaS (Backend as a Service):</b> Modelo en la nube para infraestructura, base de datos, autenticación y storage vía APIs unificadas (ej. Supabase).</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• BDD (Behavior-Driven Development):</b> Metodología ágil que define el comportamiento del sistema mediante escenarios de negocio <i>Dado / Cuando / Entonces</i>.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Context Rot:</b> Fenómeno donde el LLM pierde coherencia o alucina código debido a la saturación de su ventana de contexto.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Gherkin:</b> Lenguaje formal estructurado legible por humanos y máquinas para pruebas de aceptación (<span class="code-inline">GIVEN</span>, <span class="code-inline">WHEN</span>, <span class="code-inline">THEN</span>).</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Google AI Studio Apps:</b> Entorno para compilar y ejecutar prototipos fullstack asistidos por Gemini con previsualización reactiva en vivo.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Google Stitch:</b> Herramienta para traducir requisitos y prompts en interfaces web de alta fidelidad con tokens de diseño.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• JWT (JSON Web Token):</b> Estándar abierto (RFC 7519) para transmitir identidad y autorización cifrada y firmada digitalmente.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Maker-Checker:</b> Procedimiento donde un desarrollador construye ("Maker") y un auditor independiente ("Checker") verifica el apego a estándares.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Marco PIC 2026:</b> Metodología de desarrollo guiado por IA basada en <i>Precision</i>, <i>Isolation</i> y <i>Context</i>.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• RLS (Row Level Security):</b> Seguridad en PostgreSQL que restringe filas accesibles según el identificador criptográfico del usuario (<span class="code-inline">auth.uid()</span>).</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Skeleton Screen:</b> Patrón visual con animación de pulso que imita la estructura de datos mientras se resuelven promesas de red.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• SSoT (Single Source of Truth):</b> Principio donde cada dato reside en una única ubicación autoritativa (PostgreSQL), prohibiendo mocks en frontend.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• Tetralogía Canónica:</b> Conjunto de 4 planos previos al código: 01 Plan de Proyecto, 02 PRD, 03 User Flow y 04 TRD.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;"><b>• UUID (Universally Unique Identifier):</b> Identificador de 128 bits único a nivel global, utilizado como PK para evitar ataques de enumeración.</p>
+  </div>
+
+  <h1 class="section-title">6. REFERENTES BILBIOGRÁFICOS</h1>
+  <p style="font-size: 7.4pt; margin-bottom: 4px;">Construya o cite documentos de apoyo para el desarrollo de la guía, según lo establecido en la guía de desarrollo curricular (BIBLIOGRAFÍA / WEBGRAFÍA).</p>
+  <div style="font-size: 7.1pt; line-height: 1.20; columns: 2; column-gap: 14px;">
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Kendall, K. E., &amp; Kendall, J. E. (2018). <i>Análisis y Diseño de Sistemas</i> (8ª ed.). Pearson.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Martin, R. C. (2018). <i>Clean Architecture: Software Structure and Design</i>. Prentice Hall.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• PostgreSQL Global Group. (2025). <i>PostgreSQL 16 Manual: Row Security Policies &amp; Triggers</i>.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Pressman, R. S., &amp; Maxim, B. R. (2021). <i>Ingeniería del Software</i> (9ª ed.). McGraw-Hill.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Sommerville, I. (2019). <i>Ingeniería del Software</i> (10ª ed.). Pearson Educación.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Supabase Inc. (2026). <i>Supabase Documentation: Database, Auth, RLS &amp; Realtime</i>.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Google Cloud &amp; Google AI. (2026). <i>AI Studio Apps &amp; Gemini 1.5/2.0 API Developer Guide</i>.</p>
+    <p style="margin: 0 0 2px 0; break-inside: avoid;">• Servicio Nacional de Aprendizaje (SENA). (2024). <i>Modelo Pedagógico de FPI por Proyectos</i>.</p>
+  </div>
+
+  <h1 class="section-title">7. CONTROL DEL DOCUMENTO</h1>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 25%;">Nombre</th>
+        <th style="width: 20%;">Cargo</th>
+        <th style="width: 35%;">Dependencia</th>
+        <th style="width: 20%;">Fecha</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Miguel Ángel Tejedor Mendoza</b></td>
+        <td>Instructor Técnico ADSO</td>
+        <td>Coordinación Académica — Centro de Gestión Agroempresarial del Oriente / SENA</td>
+        <td>Noviembre de 2024</td>
+      </tr>
+      <tr>
+        <td><b>Comité Técnico Curricular</b></td>
+        <td>Revisor Pedagógico</td>
+        <td>Red de Conocimiento en Informática, Diseño y Desarrollo de Software</td>
+        <td>Noviembre de 2024</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h1 class="section-title">8. CONTROL DE CAMBIOS (diligenciar únicamente si realiza ajustes a la guía)</h1>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th style="width: 22%;">Nombre</th>
+        <th style="width: 18%;">Cargo</th>
+        <th style="width: 25%;">Dependencia</th>
+        <th style="width: 15%;">Fecha</th>
+        <th style="width: 20%;">Razón del Cambio</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>Miguel Ángel Tejedor Mendoza</b></td>
+        <td>Instructor</td>
+        <td>Coordinación Académica</td>
+        <td>25 de noviembre 2024</td>
+        <td>Se actualizó al formato actual GFPI-F-135 V04.</td>
+      </tr>
+      <tr>
+        <td><b>Miguel Ángel Tejedor Mendoza</b></td>
+        <td>Instructor</td>
+        <td>Coordinación Académica</td>
+        <td>01 de septiembre 2026</td>
+        <td>Actualización pedagógica mayor: Integración del Marco PIC 2026, Cadena de 4 Gemas Gemini, Google Stitch, Supabase RLS y Google AI Studio Apps.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
+"""
+
+def generate_pdf():
+    cwd = pathlib.Path(__file__).parent.resolve()
+    html_path = cwd / "GUIA_DE_APRENDIZAJE_SENA_GFPI_F_135.html"
+    raw_pdf_path = cwd / "GUIA_TEMP_RAW.pdf"
+    final_pdf_path = cwd / "GUIA_DE_APRENDIZAJE_DESARROLLO_GUIADO_IA_GFPI_F_135.pdf"
+    sena_logo_path = cwd / "sena_logo.png"
+    
+    print("[1/4] Escribiendo archivo HTML enriquecido...")
+    html_content = build_html_content()
+    html_path.write_text(html_content, encoding="utf-8")
+    
+    print("[2/4] Compilando HTML a PDF vía Google Chrome Headless...")
+    chrome_exe = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+    if not os.path.exists(chrome_exe):
+        chrome_exe = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+        
+    cmd = [
+        chrome_exe,
+        "--headless=new",
+        "--disable-gpu",
+        "--allow-file-access-from-files",
+        f"--print-to-pdf={str(raw_pdf_path)}",
+        "--no-pdf-header-footer",
+        html_path.as_uri()
+    ]
+    res = subprocess.run(cmd, capture_output=True, text=True)
+    if res.returncode != 0 or not raw_pdf_path.exists():
+        raise RuntimeError(f"Error compilando PDF con Chrome: {res.stderr}")
+    
+    print(f"      PDF intermedio compilado exitosamente ({raw_pdf_path.stat().st_size} bytes).")
+
+    print("[3/4] Creando sellos de cabecera y pie de página SENA (GFPI-F-135 V04)...")
+    reader = pypdf.PdfReader(str(raw_pdf_path))
+    writer = pypdf.PdfWriter()
+    total_pages = len(reader.pages)
+    
+    # Crear overlay de ReportLab para cada página
+    # Tamaño carta: ancho 612 pt, alto 792 pt
+    for page_num in range(total_pages):
+        packet = io.BytesIO()
+        can = canvas.Canvas(packet, pagesize=pagesizes.letter)
+        
+        # 1. Logo SENA centrado arriba
+        logo_w, logo_h = 40, 39
+        logo_x = (612 - logo_w) / 2
+        logo_y = 792 - 15 - logo_h # ~ 738 pt
+        if sena_logo_path.exists():
+            can.drawImage(str(sena_logo_path), logo_x, logo_y, width=logo_w, height=logo_h, preserveAspectRatio=True, mask='auto')
+        
+        # 2. Pie de página SENA centrado abajo: "GFPI-F-135 V04"
+        can.setFont("Helvetica-Bold", 8.5)
+        can.setFillColorRGB(0.15, 0.15, 0.15)
+        can.drawCentredString(612 / 2, 24, "GFPI-F-135 V04")
+        
+        can.save()
+        packet.seek(0)
+        
+        overlay_reader = pypdf.PdfReader(packet)
+        overlay_page = overlay_reader.pages[0]
+        
+        base_page = reader.pages[page_num]
+        base_page.merge_page(overlay_page)
+        writer.add_page(base_page)
+        
+    try:
+        with open(str(final_pdf_path), "wb") as f_out:
+            writer.write(f_out)
+    except PermissionError:
+        final_pdf_path = cwd / "GUIA_DE_APRENDIZAJE_DESARROLLO_GUIADO_IA_GFPI_F_135_DISENO_LIMPIO.pdf"
+        with open(str(final_pdf_path), "wb") as f_out:
+            writer.write(f_out)
+        print(f"      (Nota: El archivo original estaba en uso/abierto. Se generó como {final_pdf_path.name})")
+        
+    print(f"✔ PROCESO COMPLETADO: {final_pdf_path.name} generado con {total_pages} páginas ({final_pdf_path.stat().st_size} bytes).")
+    
+    # Limpieza de archivo temporal intermedio
+    if raw_pdf_path.exists():
+        raw_pdf_path.unlink()
+
+if __name__ == "__main__":
+    generate_pdf()

@@ -5,6 +5,39 @@
 
 En este paso, tomamos las especificaciones generadas por la **Gema de Gemini** (PRD y User Flow) y las convertimos en **prompts de diseño para Stitch**, dotando a nuestra aplicación de una identidad estética rica, consistente y moderna antes de pasar al código en **Google AI Studio**.
 
+> 📌 **DOCUMENTO EXACTO PARA ESTA FASE:** Únicamente **`06_PROMPTS_GOOGLE_STITCH.md`**  
+> * **¿Cómo se usa en Stitch?** Google Stitch **NO tiene un botón para subir archivos**. La interacción es **copiar y pegar texto**. Abres `06_PROMPTS_GOOGLE_STITCH.md`, copias el **`PROMPT 1`** (Auth) y lo pegas. Luego haces clic en el botón **`+ Add Screen`**, copias el **`PROMPT 2`** (Dashboard) y lo pegas. Repites `+ Add Screen` hasta maquetar toda la suite.  
+> * ❌ **Qué NUNCA debes subir a Stitch:** No subas scripts SQL (`.sql`), no subas el TRD técnico ni el PRD completo. Stitch solo comprende prompts visuales de pantalla individual.
+
+---
+
+## 🔗 El Cable a Tierra: Cómo se Conecta la Gema 3 con el Catálogo de 40 Estilos y Google Stitch
+
+Para que no te pierdas entre herramientas, comprende la secuencia de relevos:
+
+```mermaid
+flowchart LR
+    A["📚 1. Catálogo 40 Estilos<br/><i>(Eliges tu estilo visual)</i>"] --> B["💎 2. Gema 3 en Gemini<br/><i>(Genera 06_PROMPTS_STITCH.md)</i>"]
+    B --> C["🎨 3. Google Stitch<br/><i>(Maquetas con '+ Add Screen')</i>"]
+    C --> D["⚡ 4. Gema 4 + AI Studio<br/><i>(Compila código React)</i>"]
+
+    style A fill:#1e1b4b,stroke:#818cf8,color:#fff
+    style B fill:#3b0764,stroke:#c084fc,color:#fff
+    style C fill:#064e3b,stroke:#34d399,color:#fff
+    style D fill:#0c4a6e,stroke:#38bdf8,color:#fff
+```
+
+### 👣 Los 4 Momentos Exactos:
+1. **Momento 1 (Selección Visual):** Revisa el catálogo de 40 estilos frontend (abajo en este documento o en el Módulo 5 de la guía web). Escoge el estilo que mejor se adapte a tu dominio (ej. `#13 Bento Grid` para SaaS, `#2 Glassmorphism` para Fintech, `#6 Material Design` para Salud).
+2. **Momento 2 (Generación con Gema 3):** Abre tu **Gema 3** en Gemini. Sube a su sección *Conocimientos*:
+   * `01_PLAN_PROYECTO.md`
+   * `02_PRD_PRODUCTO.md`
+   * `03_USER_FLOWS_UX.md`  
+   Y envíale este mensaje exacto:
+   > *"Hola Gema 3. He cargado mis documentos. Del Catálogo de 40 Estilos Frontend he seleccionado el **Estilo #[N]: [Nombre del Estilo]**. Por favor genera el archivo unificado `06_PROMPTS_GOOGLE_STITCH.md` con el Token de Identidad Visual compartido y la Suite Completa de Prompts individuales (PROMPT 1 al PROMPT 7) listos para copiar y pegar en Stitch con '+ Add Screen'."*
+3. **Momento 3 (Maquetación en Google Stitch):** Guarda la respuesta de la Gema 3 como `06_PROMPTS_GOOGLE_STITCH.md`. Entra a [stitch.withgoogle.com](https://stitch.withgoogle.com), crea un nuevo proyecto, pega el `PROMPT 1`, haz clic en **`+ Add Screen`**, pega el `PROMPT 2` y repite con todas las pantallas.
+4. **Momento 4 (Hacia AI Studio):** Sube el archivo `06_PROMPTS_GOOGLE_STITCH.md` a los *Conocimientos* de la **Gema 4** para que ensamble el código fuente en React respetando esta misma estética.
+
 ---
 
 ## 📐 Anatomía de un Prompt de UI para Google Stitch
@@ -22,35 +55,72 @@ graph TD
 
 ---
 
-## 🪄 Fórmula Maestra de Prompt para Stitch
+## 🛑 ¿Por qué Google Stitch generaba solo una vista? (El "Efecto Monovista" y su Solución)
 
-Utiliza esta estructura cuando solicites a Stitch el diseño de tus pantallas:
+Muchos aprendices y desarrolladores se encuentran con una sorpresa frustrante al usar **Google Stitch**:  
+> *"Pegué mi prompt maestro en Stitch y solo me diseñó el Dashboard. ¿Dónde están la pantalla de login, la vista de detalles, el formulario y la configuración?"*
+
+### La Causa Técnica:
+**Google Stitch es un generador de interfaces orientado a pantallas individuales.** Cada prompt que envías a Stitch le ordena maquetar **una sola vista a la vez**. Si le entregas un prompt que describe 10 cosas distintas, el modelo priorizará la pantalla principal (el Dashboard) e ignorará el resto de vistas.
+
+### La Solución: El Protocolo de Prototipado Multi-Pantalla
+Para construir el prototipo completo de tu aplicación en Google Stitch, no debes enviar un prompt único, sino ejecutar el siguiente **flujo secuencial de pantallas**:
+
+```mermaid
+flowchart LR
+    P1["Prompt 1: Auth & Onboarding"] --> S1["📱 Pantalla 1: Auth"]
+    S1 --> BTN1["Clic '+ Add Screen'"]
+    BTN1 --> P2["Prompt 2: Dashboard"]
+    P2 --> S2["📱 Pantalla 2: Dashboard"]
+    S2 --> BTN2["Clic '+ Add Screen'"]
+    BTN2 --> P3["Prompt 3: Explorador"]
+    P3 --> S3["📱 Pantalla 3: Lista / Kanban"]
+    S3 --> BTN3["Clic '+ Add Screen'"]
+    BTN3 --> P4["Prompt 4: Detalle 360"]
+    P4 --> S4["📱 Pantalla 4: Ficha Detalle"]
+    S4 --> BTN4["Clic '+ Add Screen'"]
+    BTN4 --> P5["Prompt 5: Wizard / Form"]
+    P5 --> S5["📱 Pantalla 5: Creación"]
+    S5 --> BTN5["Clic '+ Add Screen'"]
+    BTN5 --> P6["Prompt 6: Configuración"]
+    P6 --> S6["📱 Pantalla 6: Ajustes / Perfil"]
+```
+
+### 📋 Paso a Paso para el Aprendiz en Google Stitch:
+1. **Paso 1 (Crear Proyecto):** Entra a [stitch.withgoogle.com](https://stitch.withgoogle.com) y haz clic en **"New Project"**.
+2. **Paso 2 (Generar Pantalla 1):** Pega el **Prompt 1** (Pantalla de Autenticación & Onboarding). Stitch generará la vista de login.
+3. **Paso 3 (Agregar Nueva Pantalla):** En la barra superior o en el explorador lateral de pantallas de Stitch, haz clic en el botón **"+ Add Screen"** (o **"New Screen"**).
+4. **Paso 4 (Generar Pantalla 2):** Pega el **Prompt 2** (Dashboard Principal). Stitch añadirá el Dashboard como una nueva pantalla independiente dentro del mismo proyecto.
+5. **Paso 5 (Repetir el Flujo):** Haz clic en **"+ Add Screen"** y pega sucesivamente el **Prompt 3** (Explorador / Lista), **Prompt 4** (Detalle 360), **Prompt 5** (Formulario de Creación) y **Prompt 6** (Configuración).
+6. **Paso 6 (Consistencia Visual Automática):** Al utilizar en todos los prompts el mismo estilo del catálogo de 40 estilos y los mismos colores, Stitch mantendrá la coherencia visual, el mismo Sidebar y los mismos componentes en todo el proyecto.
+
+---
+
+## 🪄 Estructura Maestra de cada Prompt en la Suite de Stitch
+
+Utiliza esta estructura para CADA una de las pantallas individuales de tu suite:
 
 ```markdown
-[ROL Y OBJETIVO DE LA PANTALLA]: Diseña una interfaz moderna tipo SaaS para [Nombre de la App], enfocada en [Objetivo Principal].
+[ROL Y OBJETIVO DE LA PANTALLA]: Diseña la pantalla [Nombre de la Pantalla] para [Nombre de la App], enfocada en [Objetivo Específico de esta Vista].
 
 [LAYOUT Y ESTRUCTURA]:
-- Barra lateral de navegación fija a la izquierda (Sidebar colapsable con logo, enlaces con iconos, perfil de usuario en el pie).
-- Barra superior (Header) con barra de búsqueda global con atajo 'Cmd+K', notificaciones con badge de contador y selector de modo claro/oscuro.
-- Área principal de contenido (Dashboard principal con rejilla de 12 columnas).
+- Si es interna (Dashboard, Lista, Detalle, Form, Config): Sidebar lateral izquierdo persistente con ítem '[Nombre de la Pantalla]' en estado ACTIVO (resaltado).
+- Header superior con breadcrumbs ('Inicio / [Sección] / [Vista]'), buscador global 'Ctrl+K' y perfil de usuario.
+- Contenedor principal estructurado según la función de esta vista específica.
 
-[COMPONENTES VISUALES]:
-1. Fila de KPIs (4 tarjetas métricas con valores numéricos grandes, porcentaje de cambio en verde/rojo e iconos en badges circulares).
-2. Gráfico principal interactivo (Curva de actividad de los últimos 30 días con selector de rango temporal).
-3. Tabla de datos enriquecida con paginación, filtros por estado, búsqueda en tiempo real, avatares y columna de acciones rápidas (Editar, Eliminar, Ver detalle).
-4. Panel lateral flotante o modal para creación rápida de nuevo registro.
+[COMPONENTES VISUALES PROPIOS DE ESTA VISTA]:
+- [Listado detallado de widgets, tarjetas, tablas, formularios o gráficos de esta pantalla].
 
-[ESTILO VISUAL Y SISTEMA DE DISEÑO]:
-- Estilo Seleccionado: [Elegir entre los 40 Estilos Visuales del Catálogo Maestro].
-- Paleta de colores: Fondo principal, tarjetas de contenido, acentos primarios y texto.
-- Acabados y elevación: Sombras, transparencias, bordes y radios de curvatura.
-- Tipografía: Familia tipográfica, escala modular y peso visual.
+[SISTEMA DE DISEÑO Y ESTILO (OBLIGATORIO REPETIR EN TODAS LAS PANTALLAS)]:
+- Estilo: [Elegir entre los 40 Estilos Visuales del Catálogo Maestro, ej. Bento Grid, Glassmorphism, etc.].
+- Paleta de colores: [Fondo, tarjetas, acentos primarios, texto].
+- Tipografía y bordes: [Fuentes, radios de curvatura, elevación].
 
-[LOS 4 ESTADOS DE INTERFAZ OBLIGATORIOS]:
-- Empty State: Ilustración y botón de llamado a la acción.
-- Loading State: Skeleton loaders animados con pulsación de gradiente.
-- Success Feedback: Toast flotante en esquina inferior derecha.
-- Error State: Banner de advertencia con botón de reintento.
+[LOS 4 ESTADOS DE INTERFAZ DE ESTA PANTALLA]:
+- Empty State: [Qué se muestra si no hay datos].
+- Loading State: [Esqueleto animado específico de esta pantalla].
+- Success Feedback: [Toast o feedback al completar acción].
+- Error State: [Banner o alerta de error].
 ```
 
 ---
@@ -444,51 +514,156 @@ En el desarrollo profesional, los mejores diseños suelen combinar **dos o tres 
 
 ---
 
-## 🖼️ Ejemplo Completo con Estilo Combinado: Prompt para Google Stitch
+## 🖼️ Ejemplo Completo: Suite Multi-Pantalla para Google Stitch (Caso "NexusFlow")
 
-A continuación, un prompt listo para pegar directamente en **Google Stitch** utilizando la combinación **Bento Grid + Glassmorphism + Dark UI**:
+A continuación, la **Suite de Prompts Pantalla a Pantalla** lista para usar en **Google Stitch** ([stitch.withgoogle.com](https://stitch.withgoogle.com)) utilizando la combinación **Bento Grid + Glassmorphism + Dark UI**.
 
+> **Instrucción para el Aprendiz:**  
+> Pega el **Prompt 1** para generar la pantalla de Auth. Luego haz clic en el botón **'+ Add Screen'** y pega el **Prompt 2** (Dashboard). Repite **'+ Add Screen'** para los Prompts 3, 4, 5 y 6. ¡Tendrás las 6 pantallas dentro del mismo proyecto de Stitch!
+
+---
+
+### 🔹 Pantalla 1 (Stitch): Auth & Onboarding Split-Screen
 ```markdown
-Diseña una interfaz web moderna y altamente profesional para "NexusFlow", una plataforma SaaS de monitoreo de microservicios e inteligencia artificial.
+Diseña una pantalla de Login y Registro (Auth & Onboarding) con estética Bento Grid + Glassmorphism + Dark UI para "NexusFlow", plataforma SaaS de telemetría de microservicios.
 
-ESTRUCTURA DE PANTALLA:
-1. Sidebar Izquierdo:
-   - Logo "NexusFlow" con icono de nodo hexagonal brillante.
-   - Navegación: Telemetría (activo), Servicios, Logs en Vivo, Alertas, Ajustes.
-   - Perfil de usuario con avatar, nombre "Elena Ruiz", rol "SRE Lead" y badge de estado online.
+ESTRUCTURA (SPLIT SCREEN 50/50):
+1. Columna Izquierda (Brand & Impact):
+   - Logo "NexusFlow" con nodo hexagonal brillante en cian (#06b6d4).
+   - Título impactante: "Observabilidad y telemetría de microservicios en milisegundos".
+   - Tarjeta en vidrio esmerilado flotante con métrica: "99.99% Uptime garantizado en +10M peticiones/seg".
+   - Fondo oscuro profundo con aurora cósmica sutil en gradiente índigo y cian.
+2. Columna Derecha (Formulario de Acceso):
+   - Selector de pestañas: "Iniciar Sesión" y "Crear Cuenta".
+   - Inputs con borde fino iluminado: Correo corporativo y Contraseña con toggle mostrar/ocultar.
+   - Botón principal de acción con gradiente cian a violeta: "Entrar al Centro de Comando →".
+   - Acceso rápido: "Ingresar con credenciales de prueba (Demo Sandbox)".
 
-2. Header Superior:
-   - Buscador global con comando rápido "Ctrl + K".
-   - Botón destacado "+ Conectar Cluster" con gradiente cian a violeta.
-   - Selector de intervalo temporal (Últimos 15 min, 1h, 24h, 7d).
-
-3. Dashboard Central en formato BENTO GRID (Rejilla Modular Asimétrica):
-   - Bloque 1 (Grande 2x2): Gráfico de latencia global de APIs en tiempo real con curva luminosa y selector de percentiles p50/p95/p99.
-   - Bloque 2 (1x1): KPI "Uptime Global" -> Valor 99.98% con badge circular esmeralda.
-   - Bloque 3 (1x1): KPI "Peticiones por Segundo" -> Valor 4,820 req/s con micro-sparkline.
-   - Bloque 4 (2x1): Tabla compacta de incidentes activos con etiquetas de severidad (Crítica, Media, Baja) y botón de resolución rápida.
-   - Bloque 5 (1x2): Consola lateral de logs en vivo con tipografía monospace y selector de nivel (INFO, WARN, ERR).
-
-SISTEMA DE DISEÑO (BENTO GRID + GLASSMORFISM + DARK UI):
-- Paleta: Fondo Dark Slate (#090d16), tarjetas en vidrio esmerilado translúcido (#131c2e con backdrop-blur-md), bordes finos con luz sutil (border-slate-700/60), acentos en Cian Neón (#06b6d4) e Índigo (#6366f1).
-- Esquinas: Redondeo amplio (rounded-2xl) para crear el efecto de caja Bento moderna.
-- Tipografía: Inter para texto general y JetBrains Mono para códigos y métricas.
-
-LOS 4 ESTADOS DE INTERFAZ:
-- Skeleton loaders animados con brillo translúcido mientras cargan los gráficos.
-- Empty state ilustrado cuando un cluster no tenga incidentes ("Todos los sistemas operando al 100%").
-- Notificación Toast flotante al resolver una alerta.
-- Alerta visual en el encabezado si la conexión de telemetría se interrumpe.
+SISTEMA DE DISEÑO:
+- Fondo Dark Slate (#090d16), tarjetas translúcidas (#131c2e con backdrop-blur-md), bordes (border-slate-700/60), acentos (#06b6d4 y #6366f1).
 ```
 
 ---
 
-## 📥 Extracción y Preparación para Google AI Studio
+### 🔹 Pantalla 2 (Stitch): Dashboard Principal Bento Grid
+```markdown
+Diseña la pantalla de Dashboard Principal para "NexusFlow" con estilo Bento Grid + Glassmorphism + Dark UI.
 
-Una vez que Stitch genera la interfaz visual con el estilo que seleccionaste:
-1. **Inspecciona la distribución:** Identifica los componentes clave (Header, Sidebar, Bento Cards, Tablas, Modales).
-2. **Copia los tokens de diseño:** Anota la paleta de color exacta, el radio de bordes y las clases de Tailwind o CSS sugeridas por Stitch.
-3. **Pasa a la siguiente fase:** Con este diseño visual claro y la base de datos de Supabase configurada, ingresaremos a **Google AI Studio** para compilar la aplicación funcional completa.
+ESTRUCTURA DE PANTALLA:
+1. Sidebar Izquierdo:
+   - Logo "NexusFlow" con icono hexagonal.
+   - Navegación: Telemetría (ACTIVO - iluminado en cian), Servicios, Incidentes, Alertas, Ajustes.
+   - Perfil en la base: Elena Ruiz (SRE Lead), avatar circular y badge online esmeralda.
+2. Header Superior:
+   - Buscador global "Buscar microservicio o cluster... (Ctrl + K)".
+   - Botón destacado: "+ Conectar Cluster".
+   - Selector temporal: Últimos 15 min, 1h, 24h, 7d.
+3. Dashboard Central en BENTO GRID:
+   - Bloque 1 (2x2): Gráfico de latencia global con curva luminosa y percentiles p50/p95/p99.
+   - Bloque 2 (1x1): KPI "Uptime Global" -> 99.98% con badge circular esmeralda.
+   - Bloque 3 (1x1): KPI "Peticiones / Seg" -> 4,820 req/s con micro-sparkline.
+   - Bloque 4 (2x1): Tabla compacta de incidentes activos con etiquetas (Crítica, Media, Baja).
+   - Bloque 5 (1x2): Consola de logs en vivo con tipografía monospace y selector de nivel (INFO, WARN, ERR).
+
+SISTEMA DE DISEÑO:
+- Mismo fondo (#090d16), tarjetas translúcidas (#131c2e), bordes iluminados y tipografía JetBrains Mono + Inter.
+```
+
+---
+
+### 🔹 Pantalla 3 (Stitch): Explorador y Gestión de Microservicios (Tabla & Kanban)
+```markdown
+Diseña la pantalla de Explorador y Catálogo de Microservicios para "NexusFlow" con estilo Bento Grid + Glassmorphism + Dark UI.
+
+ESTRUCTURA DE PANTALLA:
+1. Sidebar Izquierdo: Idéntico al Dashboard, con el ítem "Servicios" en estado ACTIVO.
+2. Header Superior: Breadcrumbs "NexusFlow / Catálogo de Servicios" y botón "+ Registrar Servicio".
+3. Barra de Control de Inventario:
+   - Buscador en tiempo real de servicios por nombre o tag.
+   - Filtros desplegables: Entorno (Prod, Staging, Dev) y Estado de Salud (Saludable, Degradado, Crítico).
+   - Conmutador de vista: "Modo Tabla" y "Modo Tarjetas de Topología".
+4. Tabla Enriquecida de Servicios:
+   - Columnas: Nombre del microservicio con icono de lenguaje (Go, Rust, Node), Estado con píldora brillante, Tasa de errores (%), Latencia p99 con sparkline dentro de la celda, Versión desplegada, Último despliegue y Menú de tres puntos (Ver Detalle, Reiniciar Pod, Métricas).
+   - Paginación inferior: "10 de 36 microservicios activos".
+
+SISTEMA DE DISEÑO:
+- Misma paleta Dark Slate, tarjetas en vidrio esmerilado translúcido y acentos cian/violeta.
+```
+
+---
+
+### 🔹 Pantalla 4 (Stitch): Vista de Detalle 360 del Microservicio
+```markdown
+Diseña la pantalla de Vista de Detalle 360 de un microservicio específico ("auth-service-v2") para "NexusFlow" con estilo Bento Grid + Glassmorphism + Dark UI.
+
+ESTRUCTURA DE PANTALLA:
+1. Header de Retorno:
+   - Botón de retroceso: "← Volver al Catálogo de Servicios".
+   - Migas de pan: "NexusFlow / Servicios / auth-service-v2".
+   - Acciones: "Reiniciar Despliegue", "Editar Variables de Entorno", "Modo Mantenimiento".
+2. Cabecera Hero del Servicio:
+   - Nombre "auth-service-v2", badge verde pulsante "Saludable (Uptime 100%)", cluster "gke-us-east-1" y réplicas "8/8 pods activos".
+3. Distribución Principal en Pestañas (Tabs):
+   - Tab 1: "Telemetría & CPU/RAM" (Gráficos en tiempo real de consumo de memoria y CPU por pod).
+   - Tab 2: "Trazas de Solicitud (Tracing)" (Waterfall de llamadas HTTP / gRPC con tiempos de respuesta).
+   - Tab 3: "Historial de Despliegues" (Timeline de commits y versiones previas con botón de rollback).
+   - Tab 4: "Logs del Contenedor" (Consola de streaming con búsqueda por regex).
+
+SISTEMA DE DISEÑO:
+- Misma identidad Bento Grid translúcido, bordes finos (#334155/60) y tipografía monoespaciada para trazas.
+```
+
+---
+
+### 🔹 Pantalla 5 (Stitch): Wizard para Conectar Nuevo Cluster / Servicio
+```markdown
+Diseña la pantalla de Formulario Wizard de Creación "Conectar Nuevo Cluster de Microservicios" para "NexusFlow" con estilo Bento Grid + Glassmorphism + Dark UI.
+
+ESTRUCTURA DE PANTALLA:
+1. Header: Breadcrumbs "NexusFlow / Clusters / Conectar Nuevo" y botón "✕ Cancelar".
+2. Stepper Superior con Indicador de Progreso:
+   - Paso 1: "Proveedor de Cloud" (Completado con check esmeralda).
+   - Paso 2: "Configuración del Cluster" (ACTIVO con anillo cian iluminado).
+   - Paso 3: "Instalación del Agente de Telemetría" (Pendiente).
+3. Área Central del Formulario (Tarjeta Bento Espaciosa):
+   - Selectores visuales en cuadrícula para proveedor: GCP GKE, AWS EKS, Azure AKS o Kubernetes On-Premise.
+   - Campos de configuración: Nombre del cluster, Región, Token de API de NexusFlow y límites de muestreo.
+   - Bloque de código interactivo con comando `helm install nexusflow-agent` y botón de "Copiar al portapapeles".
+4. Barra Inferior de Navegación:
+   - Botón "← Paso Anterior" y Botón principal "+ Validar Conexión y Finalizar →".
+
+SISTEMA DE DISEÑO:
+- Mismo estilo Glassmorphism oscuro y acentos cian.
+```
+
+---
+
+### 🔹 Pantalla 6 (Stitch): Pantalla de Configuración & Reglas de Alerta
+```markdown
+Diseña la pantalla de Configuración del Sistema y Reglas de Alerta para "NexusFlow" con estilo Bento Grid + Glassmorphism + Dark UI.
+
+ESTRUCTURA DE PANTALLA:
+1. Sidebar Izquierdo: Con el ítem "Ajustes" en estado ACTIVO.
+2. Contenido Organizado en Pestañas Verticales:
+   - Pestaña 1: "Perfil y Equipo" (Avatar, nombre de usuario, rol SRE y miembros del equipo).
+   - Pestaña 2: "Reglas de Alerta" (Configurador de umbrales: si latencia p99 > 200ms durante 5m -> Notificar vía Slack y PagerDuty).
+   - Pestaña 3: "Canales de Notificación" (Tarjetas de integración con Slack, Discord, Email y Webhooks con toggles on/off).
+   - Pestaña 4: "Claves de API y Tokens" (Lista de tokens con botón para revocar o generar nueva clave).
+3. Botón flotante: "Guardar Preferencias" con confirmación Toast.
+
+SISTEMA DE DISEÑO:
+- Coherencia total con las 5 pantallas anteriores.
+```
+
+---
+
+## 📥 Extracción de Componentes de la Suite para Google AI Studio
+
+Una vez que has generado las 6 pantallas en tu proyecto de **Google Stitch**:
+1. **Verifica la suite completa:** Confirma que en el explorador de pantallas de Stitch aparezcan tus 6 vistas: Auth, Dashboard, Explorador de Servicios, Detalle del Servicio, Wizard de Creación y Configuración.
+2. **Extrae los tokens de diseño unificados:** Anota la paleta de colores (`bg: #090d16`, `cards: #131c2e/70`, `accent: #06b6d4`), las clases de Tailwind (`backdrop-blur-md`, `rounded-2xl`, `border-slate-700/60`) y la tipografía (`Inter` y `JetBrains Mono`).
+3. **Pasa a la siguiente fase:** Con todas las pantallas maquetadas y la base de datos de Supabase lista, ingresarás a **Google AI Studio Apps** para ensamblar la SPA multi-vista navegable completa.
 
 ➡️ Continuar a **[Fase 4: Construcción de la App en Google AI Studio](./04_CONSTRUCCION_APP_AISTUDIO_Y_SUPABASE.md)** o **[Fase 6: Importación de Stitch a AI Studio](./06_FASE_IMPORTACION_STITCH_A_AISTUDIO.md)**.
+
 

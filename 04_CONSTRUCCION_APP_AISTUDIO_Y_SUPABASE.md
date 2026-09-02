@@ -5,6 +5,14 @@
 
 En esta fase, integramos todos los artefactos creados en los pasos anteriores para que AI Studio genere una **aplicación web profesional, con autenticación, CRUD completo, diseño reactivo y persistencia real en Supabase**.
 
+> 📌 **DOCUMENTO EXACTO PARA ESTA FASE:** Únicamente **`07_PROMPT_MAESTRO_AISTUDIO.md`**  
+> * **¿Cómo se usa en Google AI Studio?**  
+>   1. Abre `07_PROMPT_MAESTRO_AISTUDIO.md` en tu editor de texto.  
+>   2. Reemplaza los placeholders `[TU_SUPABASE_URL]` y `[TU_SUPABASE_ANON_KEY]` con tus credenciales reales obtenidas de Supabase (*Project Settings ➔ API*).  
+>   3. Entra a [aistudio.google.com/apps](https://aistudio.google.com/apps) y haz clic en **"Create App"** (o *New Application*).  
+>   4. Pega el prompt completo en la caja de instrucciones del sistema y presiona **"Run / Build"**.  
+> * ❌ **Qué NUNCA debes hacer aquí:** NO pegues el script SQL plano (`.sql`) directamente en AI Studio. El script SQL debe haberse ejecutado previamente en el SQL Editor de Supabase (Fase 5) para que las tablas y políticas RLS ya existan en la base de datos real.
+
 ---
 
 ## 🏗️ La Estructura de Entrada para Google AI Studio
@@ -27,62 +35,80 @@ Copia el siguiente prompt y personaliza las variables de tu proyecto:
 
 ```markdown
 # OBJETIVO DE LA APLICACIÓN
-Construye una aplicación web Single Page Application (SPA) profesional, completa y lista para producción llamada "DevTrack Pro". La aplicación es una plataforma SaaS de gestión ágil de proyectos y tareas para equipos de ingeniería, conectada a una base de datos PostgreSQL en Supabase.
+Construye una aplicación web Single Page Application (SPA) profesional, completa, modular y lista para producción llamada "DevTrack Pro". La aplicación es una plataforma SaaS de gestión ágil de proyectos y tareas para equipos de ingeniería, conectada a una base de datos PostgreSQL en Supabase y diseñada con una arquitectura de navegación multi-vista fluida.
 
 # STACK TECNOLÓGICO Y LIBRERÍAS
-- Framework: React 18/19 (o Vanilla JS modular moderno con ES Modules y Tailwind CSS).
+- Framework: React 18/19 SPA modular.
 - Estilos: Tailwind CSS (diseño moderno Dark Mode con acentos en Índigo/Púrpura y Glassmorphism sutil).
-- Iconografía: Lucide Icons (`lucide-react` o via CDN).
+- Iconografía: Lucide Icons (`lucide-react`).
 - Cliente Backend: `@supabase/supabase-js` versión 2.x.
 - Notificaciones: Sistema de notificaciones Toast accesibles para confirmar acciones o reportar errores.
 
-# CONFIGURACIÓN Y CLIENTE DE SUPABASE
-Utiliza las siguientes variables de entorno o constantes configurables en un archivo `supabaseClient.js`:
+# 1. ARQUITECTURA DE ENRUTAMIENTO MULTI-VISTA (ROUTER SPA EN REACT)
+Para evitar que la app colapse en una sola pantalla, implementa un enrutador interno por máquina de estados reactiva en `App.jsx`:
+- Estado de vista activa: `const [currentView, setCurrentView] = useState('dashboard');`
+- Estados posibles:
+  * `'auth'`: Si no existe sesión activa en Supabase Auth (renderiza pantalla de bienvenida y formulario).
+  * `'dashboard'`: Panel ejecutivo con KPIs en tiempo real, gráficos de avance y actividad reciente.
+  * `'projects-list'`: Explorador completo de proyectos con tabla interactiva, filtros por estado y vista tarjetas.
+  * `'project-detail'`: Ficha técnica 360 del proyecto seleccionado, incluyendo el tablero Kanban de sus tareas asociadas.
+  * `'project-create'`: Formulario de creación por pasos (Wizard) para registrar nuevos proyectos con validación.
+  * `'settings'`: Configuración de perfil (`public.profiles`), conmutador de tema visual y seguridad.
+- Estado de selección: `const [selectedProjectId, setSelectedProjectId] = useState(null);`
+- Reglas de transición fluidas:
+  * Clic en ítems del Sidebar -> `setCurrentView(vista)`.
+  * Clic en una fila o tarjeta de proyecto -> `setSelectedProjectId(p.id)` y `setCurrentView('project-detail')`.
+  * Clic en "+ Nuevo Proyecto" en Header o Sidebar -> `setCurrentView('project-create')`.
+  * Clic en "← Volver a Proyectos" desde detalle o formulario -> `setCurrentView('projects-list')`.
+  * Guardado exitoso -> `setCurrentView('projects-list')` con notificación Toast.
+
+# 2. LAYOUT GLOBAL NAVEGABLE (SIDEBAR + HEADER)
+- **Sidebar Izquierdo persistente:**
+  * Logo "DevTrack Pro" con icono de cohete o capas brillante.
+  * Navegación con enlaces activos claramente resaltados:
+    - Dashboard (`LayoutDashboard`) -> `currentView === 'dashboard'`
+    - Proyectos (`FolderKanban`) -> `currentView === 'projects-list'`
+    - Nuevo Proyecto (`PlusCircle`) -> `currentView === 'project-create'`
+    - Configuración (`Settings`) -> `currentView === 'settings'`
+  * Perfil de usuario en la base: avatar, nombre (`profile.full_name`), rol y botón de logout (`LogOut`).
+- **Header Superior:**
+  * Migas de pan dinámicas (*breadcrumbs*): `Inicio / Proyectos / [Título]` según la vista activa.
+  * Buscador rápido `Ctrl+K`.
+  * Botón destacado de acción rápida: "+ Nuevo Proyecto".
+
+# 3. COMPONENTES INDEPENDIENTES POR PANTALLA
+Modula la aplicación en componentes independientes:
+1. `AuthView`: Formulario de Login / Registro conectado a Supabase Auth.
+2. `DashboardView`: 4 tarjetas KPI en vivo (Total Proyectos, Tareas Pendientes, Eficiencia %, Presupuesto), gráfico de avance y resumen.
+3. `ProjectsListView`: Tabla con búsqueda en vivo, filtros por estado (`planning`, `active`, `completed`), paginación y botón para ver detalle.
+4. `ProjectDetailView`: Carga el proyecto por `selectedProjectId`, muestra sus datos y renderiza el **Tablero Kanban interactivo** de tareas con columnas (Por Hacer, En Progreso, En Revisión, Completado) y cambio de estado en vivo.
+5. `ProjectCreateView`: Formulario por pasos con validaciones (Título obligatorio > 5 chars, presupuesto positivo, fecha límite).
+6. `SettingsView`: Formulario para editar nombre y avatar en `public.profiles`, y selector de tema claro/oscuro.
+
+# 4. CONFIGURACIÓN Y CLIENTE DE SUPABASE
+Utiliza las siguientes credenciales en `supabaseClient.js`:
 - SUPABASE_URL: "https://[TU-PROYECTO].supabase.co"
 - SUPABASE_ANON_KEY: "[TU-ANON-KEY-PUBLICA]"
 
-El cliente debe inicializarse con:
 ```javascript
 import { createClient } from '@supabase/supabase-js';
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+});
 ```
 
-# GESTIÓN DE AUTENTICACIÓN Y ESTADO DE SESIÓN
-1. Implementa un AuthProvider / Contexto de Usuario que escuche cambios en la sesión mediante `supabase.auth.onAuthStateChange`.
-2. Vistas de Autenticación:
-   - Modal o pantalla de Login con correo/contraseña.
-   - Formulario de Registro que capture Nombre Completo, Correo y Contraseña.
-   - Botón de Cierre de Sesión seguro.
-3. Si el usuario no está autenticado, muestra una pantalla de bienvenida moderna con llamado a la acción para iniciar sesión. Si está autenticado, muestra el Dashboard principal con los datos del usuario activo.
-
-# ESQUEMA DE DATOS EN SUPABASE
-La aplicación debe interactuar con las siguientes tablas existentes:
-
+# 5. ESQUEMA DE DATOS EN SUPABASE
+La aplicación debe interactuar con:
 1. `profiles`: `id (UUID PK)`, `email`, `full_name`, `avatar_url`, `role`, `created_at`
 2. `projects`: `id (UUID PK)`, `owner_id (UUID FK -> profiles.id)`, `title`, `description`, `status`, `budget`, `created_at`
 3. `tasks`: `id (UUID PK)`, `project_id (UUID FK -> projects.id)`, `assigned_to (UUID FK -> profiles.id)`, `title`, `description`, `priority`, `status`, `due_date`, `created_at`
 
-# REQUERIMIENTOS FUNCIONALES (CRUD COMPLETO)
-1. **Gestión de Proyectos:**
-   - Listar todos los proyectos del usuario autenticado con filtros por estado (`planning`, `active`, `completed`).
-   - Crear un nuevo proyecto mediante un formulario modal con validaciones.
-   - Editar título, descripción y presupuesto de un proyecto existente.
-   - Eliminar un proyecto con diálogo de confirmación.
-2. **Gestión de Tareas:**
-   - Visualizar las tareas del proyecto seleccionado en dos modos: Lista de Tareas y Tablero Kanban interactivo (columnas: Por Hacer, En Progreso, En Revisión, Hecho).
-   - Crear una nueva tarea asignándola al proyecto activo con prioridad (`low`, `medium`, `high`, `urgent`) y fecha límite.
-   - Cambiar el estado de una tarea arrastrándola o mediante un menú desplegable rápido.
-   - Marcar tarea como completada y filtrar por prioridad.
-3. **Métricas en Tiempo Real (KPI Cards):**
-   - Total de proyectos activos.
-   - Tareas completadas vs totales (con barra de progreso porcentual).
-   - Tareas urgentes con vencimiento próximo.
-
-# EXPERIENCIA DE USUARIO Y CALIDAD DE CÓDIGO
-- Muestra *Skeleton Loaders* y estados de carga animados mientras las consultas a Supabase están en progreso.
-- Gestiona los posibles errores de red o base de datos mostrando mensajes amigables al usuario con Toasts.
-- Implementa *Empty States* ilustrados cuando no haya proyectos o tareas creadas.
-- El código debe ser modular, limpio, sin variables globales no controladas y con tipado claro.
+# 6. EXPERIENCIA DE USUARIO Y LOS 4 ESTADOS
+- *Skeleton Loaders* animados durante la resolución de promesas de Supabase.
+- Notificaciones *Toast* flotantes para confirmar acciones (ej. "Proyecto creado con éxito").
+- *Empty States* con ilustraciones y botón de acción cuando no existan registros.
+- Manejo de excepciones de red y RLS (código 42501) con alertas amigables y botón de reintento.
+- Código limpio, modular, sin variables globales y con tipado claro.
 ```
 
 ---

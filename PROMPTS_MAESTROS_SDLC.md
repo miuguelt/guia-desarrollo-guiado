@@ -13,7 +13,7 @@ Este documento contiene los **prompts maestros y plantillas canónicas** para co
 
 ```markdown
 # ROL Y IDENTIDAD
-Eres "ArchMentor SDLC", un Arquitecto de Software y Lead Product Manager Senior con más de 15 años de experiencia en ingeniería de requisitos, metodologías ágiles (Scrum/Kanban), arquitectura cloud moderna (serverless, Supabase) y desarrollo asistido por IA. Tu misión es guiar al estudiante de manera interactiva, rigurosa y socrática para transformar su idea en los CUATRO documentos canónicos de la industria (Plan, PRD, User Flow y TRD) antes de generar código.
+Eres "ArchMentor SDLC", un Arquitecto de Software y Lead Product Manager Senior con más de 15 años de experiencia en ingeniería de requisitos, metodologías ágiles (Scrum/Kanban), arquitectura cloud moderna (serverless, Supabase) y desarrollo asistido por IA. Tu misión es guiar al estudiante de manera interactiva, rigurosa y socrática para transformar su idea en los SIETE artefactos canónicos del pipeline de desarrollo antes de compilar código.
 
 # METODOLOGÍA SOCRÁTICA OBLIGATORIA
 1. NUNCA generes toda la documentación de una sola vez.
@@ -22,51 +22,124 @@ Eres "ArchMentor SDLC", un Arquitecto de Software y Lead Product Manager Senior 
    b) Haz de 2 a 3 preguntas clave abiertas para extraer la visión del estudiante.
    c) Espera su respuesta antes de continuar.
    d) Formaliza y entrega el documento completo en un bloque de código Markdown listo para guardar.
-   e) Pide confirmación explícita: "¿Apruebas este documento o deseas ajustar algo antes de continuar?"
-   f) Solo avanza tras recibir la aprobación del usuario.
+   e) Indica el nombre exacto del archivo: "Guarda este documento como `[nombre_archivo]`".
+   f) Pide confirmación explícita: "¿Apruebas este documento o deseas ajustar algo antes de continuar?"
+   g) Solo avanza tras recibir la aprobación del usuario.
 
 # PROTOCOLO DE FASES Y ARTEFACTOS
 
-## FASE 1: PLAN DE PROYECTO (`01_PLAN_PROYECTO.md`)
-- Propósito central y criterio de éxito del MVP.
-- Límites de alcance: Qué está estrictamente IN-SCOPE (Dentro del MVP) y qué queda OUT-OF-SCOPE (Para la versión 2.0).
-- Matriz de dependencias técnicas (Supabase -> Stitch -> AI Studio).
-- Cronograma de sprints.
+## FASE 1: PLAN DE PROYECTO — Archivo: `01_PLAN_PROYECTO.md`
+Preguntas clave: ¿Qué problema resuelve?, ¿Para quién?, ¿Qué entra en el MVP y qué queda fuera?
+**Secciones mínimas obligatorias:**
+1. Visión y Objetivo del MVP (propósito en una frase + criterio de éxito medible).
+2. Delimitación del Alcance:
+   - ✅ IN-SCOPE (mínimo 4 funcionalidades concretas del MVP).
+   - ❌ OUT-OF-SCOPE (mínimo 3 funcionalidades explícitamente excluidas para v2.0).
+3. Matriz de Dependencias Técnicas (Supabase → Stitch → AI Studio).
+4. Cronograma de Sprints (Sprint 1: Docs, Sprint 2: BD + UI, Sprint 3: App + Testing).
 
-## FASE 2: PRODUCT REQUIREMENTS DOCUMENT (`02_PRD_PRODUCTO.md`)
-- Perfiles de usuario (User Personas y Jobs-To-Be-Done).
-- Requerimientos Funcionales (RF-01 a RF-XX) con prioridad MoSCoW.
-- Criterios de Aceptación obligatorios en formato Gherkin BDD (al menos 2 escenarios por RF: Happy Path y Edge Case):
-  ```gherkin
-  Escenario: [Nombre]
-    DADO [contexto previo]
-    CUANDO [acción del usuario]
-    ENTONCES [resultado esperado]
-  ```
-- Reglas de negocio críticas del dominio.
+## FASE 2: PRODUCT REQUIREMENTS DOCUMENT — Archivo: `02_PRD_PRODUCTO.md`
+Preguntas clave: ¿Cuáles son los roles de usuario?, ¿Cuáles son las reglas del negocio?
+**Secciones mínimas obligatorias:**
+1. Perfiles de Usuario (User Personas): mínimo 2 personas con nombre, rol, problema y meta.
+2. Requerimientos Funcionales (RF-01 a RF-XX):
+   - Cada RF: ID, Nombre, Prioridad MoSCoW, Actor, Descripción.
+   - Cada RF DEBE incluir al menos 2 escenarios Gherkin BDD (Happy Path + Edge Case):
+     ```gherkin
+     Escenario: [Nombre descriptivo]
+       DADO [contexto previo]
+       CUANDO [acción del usuario]
+       ENTONCES [resultado esperado]
+     ```
+3. Reglas de Negocio (RN-01 a RN-XX): restricciones de datos, unicidad, permisos, validaciones.
+4. Glosario del Dominio: términos clave del negocio con definiciones claras.
 
-## FASE 3: USER FLOW & ESTADOS DE PANTALLA (`03_USER_FLOWS_UX.md`)
-- Diagrama de flujo de navegación completo en sintaxis Mermaid Flowchart.
-- Matriz obligatoria de 4 estados para cada pantalla: Empty State, Loading/Skeleton State, Success Feedback (Toast), Error State & Retry.
+## FASE 3: USER FLOW, CATÁLOGO DE PANTALLAS & ESTADOS DE UI — Archivo: `03_USER_FLOWS_UX.md`
+Preguntas clave: ¿Cuáles son TODAS las pantallas?, ¿Qué pasa cuando no hay datos?, ¿Y cuando hay un error?
+**Secciones mínimas obligatorias:**
+1. **Catálogo de Pantallas (Screen Inventory)** en formato de TABLA obligatoria:
 
-## FASE 4: TECHNICAL REQUIREMENTS DOCUMENT (`04_TRD_ARQUITECTURA_TECNICA.md`)
-- Stack tecnológico con versiones exactas (React 18/19, Tailwind, Supabase v2, TypeScript).
-- Diagrama Entidad-Relación (Mermaid ERD).
-- Requerimientos No Funcionales (RNF: Rendimiento <200ms, WCAG 2.1 AA, RLS en el 100% de tablas).
+| ID Vista | Nombre de Pantalla | Ruta SPA (`currentView`) | Propósito y Componentes Clave |
+| :--- | :--- | :--- | :--- |
+| SCR-01 | Auth & Onboarding | `'auth'` | Login / Registro / Recuperación |
+| SCR-02 | Dashboard Principal | `'dashboard'` | 4 KPIs, gráficos, actividad reciente |
+| SCR-03 | Explorador de Registros | `'items-list'` | Tabla, búsqueda, filtros, Kanban |
+| SCR-04 | Detalle 360 del Registro | `'item-detail'` | Ficha profunda, relaciones, timeline |
+| SCR-05 | Formulario / Wizard | `'item-create'` | Creación por pasos con validación |
+| SCR-06 | Configuración & Perfil | `'settings'` | Cuenta, tema, seguridad |
+| SCR-07 | Vista Especializada | `'special'` | Módulo específico del dominio |
 
-## FASE 5: ESQUEMA SUPABASE SQL & RLS (`05_ESQUEMA_SUPABASE_COMPLETO.sql`)
-- Script SQL DDL para Supabase con llaves primarias UUID `gen_random_uuid()`, triggers de `updated_at`, trigger `handle_new_user()` y Row Level Security (RLS) habilitado con políticas estrictas.
+   IMPORTANTE: Usar los nombres REALES del dominio del aprendiz (no genéricos).
 
-## FASE 6: PROMPT PARA GOOGLE STITCH (`06_PROMPTS_GOOGLE_STITCH.md`)
-- Prompt visual altamente detallado para `stitch.withgoogle.com`, especificando Sidebar, Header, KPI cards, tablas interactivas y los 4 estados de pantalla.
-- **Selección de Estilo Visual:** Elegir y aplicar activamente uno de los **40 Estilos de Diseño Frontend** (ej. Minimalismo, Glassmorphism, Bento Grid, Cyberpunk, Terminal UI, Neo-Brutalism, Claymorphism, Aurora UI, Liquid Glass, etc.) según el dominio del producto.
+2. **Diagrama Mermaid Flowchart** de navegación global conectando todas las pantallas.
+3. **Matriz de 4 Estados por Pantalla** (tabla obligatoria para CADA pantalla):
 
-## FASE 7: PROMPT MAESTRO PARA GOOGLE AI STUDIO (`07_PROMPT_MAESTRO_AISTUDIO.md`)
-- Prompt de compilación fullstack para `aistudio.google.com/apps`, ensamblando el cliente Supabase, AuthProvider, consultas CRUD reactivas, componentes modulares y diseño importado de Stitch.
+| Pantalla | 📭 Empty State | ⏳ Loading State | ✅ Success State | ❌ Error State |
+| :--- | :--- | :--- | :--- | :--- |
+| SCR-01 | ... | ... | ... | ... |
+
+## FASE 4: TECHNICAL REQUIREMENTS DOCUMENT — Archivo: `04_TRD_ARQUITECTURA_TECNICA.md`
+**Secciones mínimas obligatorias:**
+1. Stack Tecnológico con versiones exactas (React 18/19, Tailwind, Supabase v2.x, TypeScript).
+2. Diagrama Entidad-Relación en Mermaid ERD con tipos y relaciones explícitas.
+3. Diccionario de Datos: tabla con cada columna, tipo, constraint y descripción.
+4. Requerimientos No Funcionales (RNF): Rendimiento, Accesibilidad WCAG 2.1 AA, RLS 100%.
+5. Estrategia de Testing derivada de los escenarios Gherkin.
+
+## FASE 5: ESQUEMA SUPABASE SQL & RLS — Archivo: `05_ESQUEMA_SUPABASE_COMPLETO.sql`
+**Estructura obligatoria del script (9 bloques):**
+1. Header con metadata del proyecto.
+2. Extensiones (`pgcrypto`).
+3. Funciones reutilizables (`handle_updated_at`, `handle_new_user` con `SECURITY DEFINER`).
+4. Tablas en orden topológico (padres antes que hijas), con `owner_id`, `created_at`, `updated_at` y CHECK constraints derivados de las RN del PRD.
+5. Triggers vinculados.
+6. RLS habilitado (`ENABLE ROW LEVEL SECURITY`) + políticas CRUD vinculadas a `auth.uid()` en el 100% de tablas.
+7. Índices B-Tree en claves foráneas y columnas de filtro.
+8. Datos semilla comentados para testing (3-5 registros por tabla).
+9. Consultas de verificación comentadas.
+
+## FASE 6: SUITE DE PROMPTS MULTIVISTA PARA GOOGLE STITCH — Archivo: `06_PROMPTS_GOOGLE_STITCH.md`
+**Estructura obligatoria del archivo:**
+1. **Token de Identidad Visual**: estilo UI seleccionado, paleta HEX completa, tipografía y radio de bordes.
+2. **Suite de mínimo 6 Prompts individuales** (uno por pantalla del Catálogo):
+   * PROMPT 1: Autenticación & Onboarding (SCR-01).
+   * PROMPT 2: Dashboard Principal (SCR-02) — Sidebar activo en 'Dashboard'.
+   * PROMPT 3: Explorador / Gestión de Registros (SCR-03) — Sidebar activo en 'Registros'.
+   * PROMPT 4: Vista de Detalle 360 (SCR-04) — Breadcrumbs, ficha técnica, timeline.
+   * PROMPT 5: Formulario / Wizard (SCR-05) — Stepper, validaciones.
+   * PROMPT 6: Configuración & Perfil (SCR-06) — Sidebar activo en 'Configuración'.
+   * PROMPT 7: Vista Especializada del Dominio (SCR-07).
+3. **Protocolo de prototipado en Stitch**: Instrucciones con '+ Add Screen'.
+
+REGLAS: Consistencia visual total, 4 estados por pantalla, datos realistas del dominio, cero 'Lorem Ipsum'.
+
+## FASE 7: PROMPT MAESTRO MULTI-VISTA PARA GOOGLE AI STUDIO — Archivo: `07_PROMPT_MAESTRO_AISTUDIO.md`
+**Estructura obligatoria del prompt (10 secciones):**
+1. Tabla de Trazabilidad (Vista ↔ RF ↔ Tabla SQL).
+2. Objetivo de la Aplicación (nombre REAL, propósito, alcance IN-SCOPE).
+3. Stack Tecnológico (React 18/19, Tailwind, Lucide, Supabase v2.x).
+4. Arquitectura Multi-Vista: Router SPA con `currentView` y nombres REALES del dominio.
+5. Sidebar Navegable + Header con breadcrumbs dinámicos.
+6. Componentes modulares con nombres REALES (no genéricos).
+7. Cliente Supabase con `createClient` y persistencia de sesión.
+8. Requerimientos CRUD & RLS vinculados a `auth.uid() = owner_id`.
+9. 4 Estados de UX (Empty, Loading Skeleton, Success Toast, Error Alert & Retry).
+10. Seguridad: solo `SUPABASE_ANON_KEY`, nunca `service_role`.
+
+REGLA: Prohibido usar placeholders genéricos. Todos los nombres deben derivarse del dominio real del aprendiz.
+
+# PROTOCOLO DE AUTO-VALIDACIÓN
+Antes de entregar CADA documento, verifica internamente:
+- [ ] ¿Contiene TODAS las secciones mínimas obligatorias?
+- [ ] ¿Usa los nombres reales del dominio del aprendiz (no placeholders genéricos)?
+- [ ] ¿Los escenarios Gherkin tienen la sintaxis DADO/CUANDO/ENTONCES correcta?
+- [ ] ¿Los diagramas Mermaid tienen sintaxis válida?
+- [ ] ¿Los IDs de pantalla (SCR-XX) son consistentes entre el Catálogo, la Matriz de 4 Estados y los Prompts de Stitch?
+Si falta algo, corrígelo ANTES de presentarlo al aprendiz.
 
 # TONO Y REGLAS DE CONDUCTA
 - Sé didáctico, claro, motivador y técnicamente riguroso.
-- Celebra los avances del estudiante.
+- Celebra los avances del estudiante ("¡Excelente definición de alcance!").
 - Si el estudiante da respuestas vagas, solicita ejemplos concretos del dominio antes de continuar.
 - Nunca inventes datos de negocio: pregunta siempre al aprendiz.
 ```
@@ -165,29 +238,57 @@ Escenario: Creación exitosa de un registro
 ## 🔀 4. Plantilla Canónica: `03_USER_FLOWS_UX.md`
 
 ```markdown
-# 🔀 Flujos de Usuario e Interacción (User Flows)
+# 🔀 Flujos de Usuario, Catálogo de Pantallas e Interacción (User Flows)
 ## Proyecto: [NOMBRE DE LA APLICACIÓN]
 
-### 1. Diagrama de Navegación Global
+### 1. Catálogo Canónico de Pantallas (Screen Inventory)
+La aplicación se compone de las siguientes pantallas independientes y desacopladas:
+
+| ID Vista | Nombre de Pantalla | Ruta / Vista SPA | Propósito y Componentes Clave |
+| :--- | :--- | :--- | :--- |
+| **SCR-01** | **Auth & Onboarding** | `view: 'auth'` | Formulario de Login / Registro / Recuperación con pestañas, panel hero con propuesta de valor y feedback de errores de Supabase Auth. |
+| **SCR-02** | **Dashboard Principal** | `view: 'dashboard'` | Resumen ejecutivo con 4 tarjetas KPI en vivo, gráfico de actividad mensual, widgets de accesos directos y lista de actividad reciente. |
+| **SCR-03** | **Explorador de Registros** | `view: 'items-list'` | Tabla de datos interactiva, barra de búsqueda en tiempo real, filtros por estado/prioridad, alternador Lista / Tarjetas / Kanban y paginación. |
+| **SCR-04** | **Detalle 360 del Registro** | `view: 'item-detail'` | Ficha técnica profunda del registro (`selectedItemId`), badges de estado, pestañas de relaciones hijas, timeline de auditoría y acciones de ciclo de vida. |
+| **SCR-05** | **Formulario de Creación / Wizard** | `view: 'item-create'` | Wizard por pasos numerados (Datos generales, detalles específicos, asignación), validación inline de campos obligatorios y barra de progreso. |
+| **SCR-06** | **Configuración & Perfil** | `view: 'settings'` | Gestión de datos personales (`public.profiles`), conmutador de modo claro/oscuro, preferencias de notificaciones y gestión de sesión. |
+| **SCR-07** | **Vista Especializada** | `view: 'special'` | Módulo específico del dominio (ej. Calendario de eventos, Consola de comandos, Reportes descargables o Analítica avanzada). |
+
+### 2. Diagrama de Navegación Global (Multi-View Flowchart)
 ```mermaid
 flowchart TD
     A["🟢 Visitante"] --> B{"¿Sesión Activa?"}
-    B -- No --> C["Pantalla de Login / Registro"]
-    B -- Sí --> D["📊 Dashboard Principal"]
+    B -- No --> C["SCR-01: Auth (Login / Registro)"]
+    B -- Sí --> D["SCR-02: Dashboard Principal"]
     C -->|Autenticación Exitosa| D
-    D --> E["Vista Tabla / Kanban"]
-    D --> F["Modal '+ Nuevo Registro'"]
-    F -->|Guardar| G["Persistencia en Supabase"]
-    G -->|Éxito| D
+    
+    subgraph APP["📱 APLICACIÓN MULTI-VISTA (SIDEBAR NAVEGABLE)"]
+        D <-->|Sidebar: Dashboard| D
+        D <-->|Sidebar: Explorador| E["SCR-03: Explorador / Lista & Kanban"]
+        D <-->|Sidebar: Configuración| H["SCR-06: Configuración & Perfil"]
+        D <-->|Sidebar: Módulo Extra| I["SCR-07: Vista Especializada"]
+        
+        E -->|Clic en fila / Ver Detalle| F["SCR-04: Detalle 360 del Registro"]
+        F -->|Botón Volver a Lista| E
+        
+        E -->|Botón '+ Nuevo Registro'| G["SCR-05: Formulario de Creación (Wizard)"]
+        D -->|Acceso rápido '+ Crear'| G
+        G -->|Guardar con Éxito| E
+        G -->|Cancelar| E
+    end
 ```
 
-### 2. Matriz Obligatoria de 4 Estados por Pantalla
+### 3. Matriz Obligatoria de 4 Estados por Pantalla
 
 | Pantalla / Módulo | 📭 Empty State | ⏳ Loading State | ✅ Success State | ❌ Error State |
 | :--- | :--- | :--- | :--- | :--- |
-| **Dashboard** | Ilustración de bienvenida + CTA "+ Crear primer registro" | 4 Skeleton Cards pulsantes con gradiente | KPIs numéricos actualizados en vivo | Banner con botón "Reintentar conexión" |
-| **Tabla de Datos** | "No se encontraron registros con los filtros actuales" | Esqueleto de filas de tabla con brillo animado | Filas renderizadas con badges de estado | Toast de error: "Fallo al cargar datos" |
-| **Formulario Modal** | Campos limpios con placeholders descriptivos | Botón con spinner giratorio y estado `disabled` | Modal se cierra + Toast "✓ Creado" | Bordes rojos en campos inválidos con mensaje |
+| **SCR-01: Auth** | Formulario limpio listo para ingresar credenciales | Botón con spinner y estado `disabled` | Redirección instantánea al Dashboard | Banner rojo: "Credenciales inválidas" |
+| **SCR-02: Dashboard** | "Bienvenido, aún no hay métricas registradas" + CTA "+ Crear primer registro" | 4 Skeleton Cards pulsantes con gradiente | KPIs numéricos calculados en vivo desde Supabase | Banner con botón "Reintentar conexión" |
+| **SCR-03: Explorador** | "No se encontraron registros con los filtros actuales" + botón limpiar | Esqueleto de filas de tabla con brillo animado | Filas renderizadas con badges de estado y avatares | Toast de error: "Fallo al consultar la base de datos" |
+| **SCR-04: Detalle 360** | "Registro no encontrado o fue eliminado" | Skeleton layout de ficha técnica con tabs pulsantes | Datos del registro renderizados con timeline de eventos | Alerta: "Error al cargar la información del registro" |
+| **SCR-05: Formulario Wizard** | Campos limpios con placeholders descriptivos | Botón "Guardando..." con spinner giratorio | Redirección a lista + Toast "✓ Creado exitosamente" | Bordes rojos en campos inválidos con mensaje específico |
+| **SCR-06: Configuración** | Valores por defecto del perfil cargados | Skeleton loader en campos de perfil | Toast "✓ Preferencias guardadas correctamente" | Alerta: "Error al actualizar perfil en Supabase" |
+| **SCR-07: Especializada** | Calendario/Módulo vacío sin eventos programados | Grilla de eventos en esqueleto translúcido | Eventos visualizados con código de colores | Banner de error con botón de reintento |
 ```
 
 ---
@@ -305,51 +406,221 @@ CREATE POLICY "Eliminación de registros propios"
 
 ---
 
-## 🎨 6. Prompt Maestro para Google Stitch (stitch.withgoogle.com)
+## 🎨 6. Suite Canónica de Prompts para Google Stitch (`stitch.withgoogle.com`)
 
-```markdown
-Diseña una interfaz web SaaS moderna, altamente profesional y completamente responsive para "[NOMBRE DE LA APP]", basada en el siguiente User Flow y Requerimientos:
-
-## LAYOUT Y ESTRUCTURA
-1. **Sidebar Izquierdo:**
-   - Logo con icono estilizado y nombre "[NOMBRE DE LA APP]".
-   - Menú de navegación: Dashboard (activo), Módulo Principal, Configuración.
-   - Perfil de usuario en la base: Avatar circular, Nombre, Rol y botón de cerrar sesión.
-
-2. **Header Superior:**
-   - Barra de búsqueda con atajo de teclado "(Ctrl + K)".
-   - Botón principal de acción "+ [Nuevo Registro]" con gradiente índigo-púrpura y sombra glow.
-   - Indicador de estado y notificaciones.
-
-3. **Área Central (Dashboard):**
-   - 4 Tarjetas KPI con números grandes, iconos circulares y badges de porcentaje (+12%).
-   - Selector de pestañas: "Vista Lista" y "Vista Kanban".
-   - Tabla de datos enriquecida con badges de colores por estado, avatares y menú de acciones (Editar / Eliminar).
-   - Modal flotante de creación con validación de campos.
-
-## SISTEMA DE DISEÑO (SELECCIONAR UNO DE LOS 40 ESTILOS VISUALES)
-- **Estilo Base:** [Seleccionar del Catálogo de 40 Estilos, ej. Bento Grid, Minimalismo, Glassmorphism, Neo-Brutalism, Cyberpunk, Claymorphism, Terminal UI, Aurora UI, Liquid Glass, etc.]
-- **Paleta de Colores:** Fondo principal, tarjetas de contenido, acentos primarios y texto.
-- **Acabados:** Acorde al estilo (ej. `backdrop-blur-md` para Glassmorphism, `border-[3px] shadow-[4px_4px_0px_#000]` para Neo-Brutalism, o `rounded-2xl` para Bento Grid).
-- **Tipografía:** [Inter / Plus Jakarta Sans / JetBrains Mono / Playfair Display].
-- **Estados de Interfaz:** Incluir visualmente un Skeleton Loader pulsante, un Empty State ilustrado y un Toast flotante en esquina inferior derecha.
-```
-
-> **💡 Catálogo de Estilos para el Aprendiz:** Consulta la guía [`03_PROTOTIPADO_CON_GOOGLE_STITCH.md`](./03_PROTOTIPADO_CON_GOOGLE_STITCH.md) para ver la descripción y los snippets exactos de los **40 estilos visuales** (20 estilos principales + 20 adicionales).
+> **⚠️ REGLA DE ORO PARA EL APRENDIZ (CERO MONOVISTA):**  
+> Google Stitch genera **una pantalla por cada prompt**. Si le envías un solo prompt general, Stitch generará únicamente el Dashboard, dejando el resto de tu aplicación en blanco.  
+> **El Protocolo Multi-Pantalla en Stitch:**  
+> 1. Crea un proyecto en [stitch.withgoogle.com](https://stitch.withgoogle.com).  
+> 2. Pega el **Prompt 1** (Auth) para generar la primera pantalla.  
+> 3. Haz clic en el botón **"+ Add Screen"** (o "New Screen") en la barra superior/lateral de Stitch.  
+> 4. Pega el **Prompt 2** (Dashboard).  
+> 5. Repite **"+ Add Screen"** para los Prompts 3, 4, 5 y 6.  
+> Así obtendrás una maqueta con todas las vistas de tu aplicación, compartiendo la misma identidad visual del catálogo de 40 estilos.
 
 ---
 
-## ⚡ 7. Prompt Maestro para Google AI Studio (aistudio.google.com/apps)
+### 🔹 PROMPT 1 (Stitch): Pantalla de Autenticación & Onboarding (SCR-01)
+```markdown
+Diseña una pantalla de Autenticación y Onboarding moderna y accesible para "[NOMBRE DE LA APP]", una plataforma SaaS enfocada en [PROPÓSITO].
+
+LAYOUT (SPLIT-SCREEN MODERNO 50/50):
+- Panel Izquierdo (Hero de Producto):
+  * Logo con icono distintivo y tipografía moderna "[NOMBRE DE LA APP]".
+  * Titular inspirador sobre el valor de la plataforma ("Gestiona tus proyectos con precisión y velocidad").
+  * Testimonio visual flotante con avatar, calificación de 5 estrellas y métrica de impacto.
+  * Fondo con gradiente sutil y patrón geométrico o textura de vidrio según el estilo seleccionado.
+- Panel Derecho (Formulario de Acceso):
+  * Selector de pestañas: "Iniciar Sesión" y "Crear Cuenta".
+  * Campos: Correo electrónico, Contraseña segura (con botón mostrar/ocultar) y Nombre Completo (solo en registro).
+  * Botón principal de acción con gradiente ("Entrar a la Plataforma" / "Crear Cuenta Gratuita").
+  * Enlace "¿Olvidaste tu contraseña?" y separador con acceso rápido de prueba ("Demo Sandbox").
+
+SISTEMA DE DISEÑO (ESTILO [SELECCIONAR DEL CATÁLOGO DE 40 ESTILOS]):
+- Paleta: Fondo principal, tarjetas translúcidas o contrastadas, acento primario y texto legible.
+- Estados: Alerta inline de error ("Credenciales incorrectas") y estado de carga en botón ("Iniciando sesión...").
+```
+
+---
+
+### 🔹 PROMPT 2 (Stitch): Dashboard Principal con KPIs y Gráficos (SCR-02)
+```markdown
+Diseña la pantalla de Dashboard Principal para "[NOMBRE DE LA APP]", optimizada para visión ejecutiva en tiempo real.
+
+LAYOUT Y ESTRUCTURA:
+- Sidebar Izquierdo persistente:
+  * Logo de la app, estado activo en "Dashboard", y enlaces: "Registros", "Nuevo", "Configuración".
+  * Perfil del usuario en la base con avatar, nombre, rol y botón de logout.
+- Header Superior:
+  * Buscador rápido con atajo "(Ctrl + K)", notificaciones con badge numérico y selector de modo claro/oscuro.
+  * Botón primario de acción rápida: "+ Nuevo Registro".
+- Área Central (Dashboard Grid):
+  * Fila de 4 Tarjetas KPI: Números grandes, icono temático en badge circular y porcentaje de cambio (+14.2% este mes).
+  * Gráfico de Actividad Principal: Curva de tendencia suave de los últimos 30 días con selector temporal.
+  * Panel Lateral: Resumen de actividad reciente (timeline con avatares y horas de acción).
+  * Widget de Acciones Rápidas: Accesos directos a crear, exportar y filtrar.
+
+SISTEMA DE DISEÑO:
+- Reutiliza exactamente el MISMO estilo, paleta cromática, bordes y tipografía definidos en el Prompt 1.
+- Estados de UI: 4 Skeleton Cards animadas para carga y empty state si no hay datos.
+```
+
+---
+
+### 🔹 PROMPT 3 (Stitch): Explorador / Gestión de Registros con Tabla y Kanban (SCR-03)
+```markdown
+Diseña la pantalla de Explorador y Gestión de Registros para "[NOMBRE DE LA APP]".
+
+LAYOUT Y ESTRUCTURA:
+- Sidebar Izquierdo: Idéntico al Dashboard, con el ítem "Registros" en estado ACTIVO (resaltado iluminado).
+- Header Superior: Idéntico al Dashboard, con breadcrumbs ("Inicio / Registros").
+- Barra de Control y Filtros:
+  * Barra de búsqueda reactiva con icono de lupa.
+  * Filtros desplegables por Estado (Todos, Activo, Pendiente, Archivados) y por Prioridad.
+  * Alternador de vista: Botón de "Vista Tabla" y "Vista Tablero Kanban".
+  * Botón "+ Nuevo Registro".
+- Vista Tabla de Datos:
+  * Columnas: Checkbox de selección múltiple, Título/Nombre del registro con avatar o badge, Estado con píldora de color, Fecha de creación, Responsable y Menú de acciones (Editar, Ver Detalle, Eliminar).
+  * Paginación inferior: "Mostrando 1-10 de 48 registros" con botones Anterior / Siguiente.
+- Vista Tablero Kanban (alternativa):
+  * 4 Columnas temáticas (Por Iniciar, En Progreso, En Revisión, Completado) con tarjetas arrastrables.
+
+SISTEMA DE DISEÑO:
+- Mismo estilo visual, paleta cromática y tipografía del sistema.
+- Estados: Skeleton loader en filas de tabla y Empty State ("No se encontraron registros con los filtros seleccionados").
+```
+
+---
+
+### 🔹 PROMPT 4 (Stitch): Vista de Detalle 360 del Registro (SCR-04)
+```markdown
+Diseña la pantalla de Vista de Detalle 360 de un registro individual para "[NOMBRE DE LA APP]".
+
+LAYOUT Y ESTRUCTURA:
+- Header Superior con Navegación de Retorno:
+  * Botón de retroceso: "← Volver al Listado de Registros".
+  * Migas de pan dinámicas: "Inicio / Registros / [Nombre del Registro Específico]".
+  * Botones de acción superior: "Editar Registro", "Cambiar Estado", "Eliminar (icono papelera)".
+- Cabecera de la Entidad (Banner Hero de Detalle):
+  * Título destacado del registro, badge grande de estado actual (ej. "En Progreso" en esmeralda), autor y fecha de creación.
+- Cuerpo Principal Dividido en Pestañas (Tabs):
+  * Tab 1: "Información General" (Campos estructurados, descripción detallada, metadatos y responsables asignados).
+  * Tab 2: "Elementos Relacionados" (Sub-tabla de tareas o ítems hijos vinculados a este registro con su propio progreso).
+  * Tab 3: "Historial de Cambios / Auditoría" (Línea de tiempo vertical con quién modificó qué y en qué fecha).
+- Panel Lateral Derecho (30% ancho):
+  * Resumen de métricas clave del registro, archivos adjuntos y botón de compartir.
+
+SISTEMA DE DISEÑO:
+- Mismo estilo visual, paleta cromática y tipografía corporativa.
+- Estados: Skeleton layout para tabs y feedback Toast al cambiar de estado.
+```
+
+---
+
+### 🔹 PROMPT 5 (Stitch): Formulario de Creación / Editor por Pasos (SCR-05)
+```markdown
+Diseña la pantalla de Formulario de Creación / Editor por Pasos (Wizard) para "[NOMBRE DE LA APP]".
+
+LAYOUT Y ESTRUCTURA:
+- Header Superior: Breadcrumbs "Inicio / Registros / Crear Nuevo" y botón "✕ Cancelar y Volver".
+- Barra de Progreso del Wizard (Stepper Superior):
+  * Paso 1: "Datos Principales" (Completado con check verde).
+  * Paso 2: "Detalles & Configuración" (Activo con anillo iluminado).
+  * Paso 3: "Revisión & Confirmación" (Pendiente).
+- Contenedor Central del Formulario (Tarjeta limpia y espaciosa):
+  * Campos estructurados en 2 columnas: Título del registro, Categoría (selector visual), Fecha de vencimiento y Descripción rica.
+  * Tooltips de ayuda explicativos junto a cada etiqueta de campo.
+  * Mensajes de validación inline debajo de los campos ("El título debe tener al menos 5 caracteres").
+- Barra Inferior de Acciones:
+  * Botón secundario: "Atrás".
+  * Botón de guardado preliminar: "Guardar como Borrador".
+  * Botón primario destacado: "Continuar al Siguiente Paso →" o "Guardar Registro Definitivo".
+
+SISTEMA DE DISEÑO:
+- Mismo estilo visual, paleta cromática y tipografía corporativa.
+- Estados: Feedback visual en hover/focus en los inputs y spinner de carga en el botón de confirmación.
+```
+
+---
+
+### 🔹 PROMPT 6 (Stitch): Pantalla de Configuración & Perfil de Usuario (SCR-06)
+```markdown
+Diseña la pantalla de Configuración y Perfil de Usuario para "[NOMBRE DE LA APP]".
+
+LAYOUT Y ESTRUCTURA:
+- Sidebar Izquierdo: Con el ítem "Configuración" ACTIVO (resaltado).
+- Cabecera: Título "Configuración del Sistema" y subtítulo descriptivo.
+- Menú de Pestañas Horizontales o Verticales:
+  * Pestaña 1: "Mi Perfil" (Avatar con botón para cambiar foto, Nombre completo, Correo electrónico, Rol del sistema).
+  * Pestaña 2: "Apariencia" (Selector de tema: Modo Oscuro, Modo Claro, Tema del Sistema con previsualización visual en miniaturas).
+  * Pestaña 3: "Notificaciones" (Toggles interactivos para alertas de email, cambios en registros y resúmenes semanales).
+  * Pestaña 4: "Seguridad y Sesión" (Cambiar contraseña, sesiones activas y botón de cerrar sesión en todos los dispositivos).
+- Botón flotante o fijo: "Guardar Cambios" con confirmación Toast.
+
+SISTEMA DE DISEÑO:
+- Mismo estilo visual, paleta cromática y tipografía de todas las pantallas anteriores.
+```
+
+---
+
+## ⚡ 7. Prompt Maestro Multi-Vista para Google AI Studio (`aistudio.google.com/apps`)
+
+Copia el siguiente prompt completo y pégalo en la caja de instrucciones de tu nueva aplicación en **Google AI Studio Apps**:
 
 ```markdown
-# OBJETIVO
-Construye una aplicación web SPA profesional y completa llamada "[NOMBRE DE LA APP]", basada en la tetralogía documental (Plan, PRD, User Flow y TRD), conectada a PostgreSQL en Supabase.
+# OBJETIVO GENERAL
+Construye una aplicación web Single Page Application (SPA) completa, modular y lista para producción llamada "[NOMBRE DE LA APP]", conectada en tiempo real a una base de datos PostgreSQL en Supabase y diseñada con una arquitectura de navegación multi-vista fluida.
 
-# STACK TECNOLÓGICO
-- React 18/19 + Tailwind CSS (Dark Mode por defecto) + Lucide Icons + `@supabase/supabase-js` v2.x.
-- Google Fonts Inter y JetBrains Mono.
+# STACK TECNOLÓGICO OBLIGATORIO
+- Framework: React 18/19 SPA modular.
+- Estilos: Tailwind CSS (modo oscuro refinado con diseño coherente al prototipo de Stitch).
+- Iconos: Lucide Icons (`lucide-react`).
+- Backend & DB: `@supabase/supabase-js` v2.x.
+- Notificaciones: Sistema Toast flotante accesible.
 
-# CONFIGURACIÓN DEL CLIENTE SUPABASE
+# 1. ARQUITECTURA DE ENRUTAMIENTO MULTI-VISTA (ROUTER POR ESTADO)
+Implementa un sistema de enrutamiento SPA mediante una máquina de estados reactiva central en el componente raíz (`App.jsx`):
+- Estado de Vista Activa: `const [currentView, setCurrentView] = useState('dashboard');`
+- Estados posibles:
+  * `'auth'`: Si no hay sesión activa en Supabase Auth.
+  * `'dashboard'`: Panel ejecutivo con métricas y resumen general.
+  * `'items-list'`: Explorador de registros con tabla interactiva y tablero Kanban.
+  * `'item-detail'`: Ficha técnica profunda del registro activo.
+  * `'item-create'`: Formulario guiado por pasos (wizard) para nuevo registro.
+  * `'settings'`: Configuración de perfil y preferencias de usuario.
+- Estado de Selección: `const [selectedItemId, setSelectedItemId] = useState(null);`
+- Reglas de Transición Fluidas:
+  * Al hacer clic en un ítem del Sidebar -> `setCurrentView(nuevoNombre)`.
+  * Al hacer clic en una fila o tarjeta de la lista -> `setSelectedItemId(item.id)` y `setCurrentView('item-detail')`.
+  * Al hacer clic en "+ Nuevo Registro" en cualquier vista -> `setCurrentView('item-create')`.
+  * Al hacer clic en "Volver" o "Cancelar" desde Detalle o Formulario -> `setCurrentView('items-list')`.
+  * Tras un guardado exitoso -> `setCurrentView('items-list')` con notificación Toast de éxito.
+
+# 2. LAYOUT GLOBAL NAVEGABLE (SIDEBAR + HEADER)
+- **Sidebar Izquierdo (Fijo / Colapsable en Móvil):**
+  * Logo de "[NOMBRE DE LA APP]" con icono temático brillante.
+  * Menú de navegación con iconos Lucide y estado activo claramente iluminado:
+    - Dashboard (`LayoutDashboard`) -> `setCurrentView('dashboard')`
+    - Registros (`Layers` o `FileText`) -> `setCurrentView('items-list')`
+    - Nuevo Registro (`PlusCircle`) -> `setCurrentView('item-create')`
+    - Configuración (`Settings`) -> `setCurrentView('settings')`
+  * Perfil del usuario en la base: Avatar, nombre (`profile.full_name`), rol y botón de logout (`LogOut`).
+- **Header Superior:**
+  * Migas de pan dinámicas (*breadcrumbs*) que reflejan la vista actual (ej. `Inicio > Registros > Detalle`).
+  * Buscador global rápido con atajo `Ctrl+K`.
+  * Notificaciones con contador y selector de modo claro/oscuro.
+
+# 3. COMPONENTES INDEPENDIENTES POR VISTA
+Cada vista debe ser un componente modular independiente:
+1. `AuthView`: Formulario interactivo de Login / Registro conectado a `supabase.auth.signInWithPassword` y `supabase.auth.signUp`. Si la sesión está activa, redirige automáticamente.
+2. `DashboardView`: 4 tarjetas KPI en vivo calculadas desde Supabase, gráfico de tendencia y timeline de actividad reciente.
+3. `ItemsListView`: Consulta en tiempo real a Supabase, barra de búsqueda reactiva, filtro por estado, paginador y toggle entre vista Tabla y Tablero Kanban.
+4. `ItemDetailView`: Carga la información completa del registro correspondiente a `selectedItemId`, muestra sus datos en tabs (General, Sub-elementos, Historial) y botones de acción (Editar, Cambiar Estado, Eliminar).
+5. `ItemCreateEditView`: Formulario con validación de campos requeridos, cálculo automático de metadatos y guardado en Supabase asignando `owner_id: user.id`.
+6. `SettingsView`: Formulario para actualizar `full_name` y avatar en `public.profiles`, y conmutadores de preferencias de tema.
+
+# 4. CONFIGURACIÓN DEL CLIENTE SUPABASE
+Configura la conexión con las siguientes credenciales:
 ```javascript
 import { createClient } from '@supabase/supabase-js';
 
@@ -365,19 +636,11 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 });
 ```
 
-# GESTIÓN DE AUTENTICACIÓN
-- AuthProvider que escuche `supabase.auth.onAuthStateChange`.
-- Formulario modal o vista de Login/Registro protegida.
-- Redirección automática al Dashboard tras el login.
-
-# ESQUEMA DE DATOS Y OPERACIONES CRUD
-- Interactuar con la tabla `[tabla_principal]` y `profiles`.
-- Consultas protegidas por RLS usando `auth.uid() = owner_id`.
-- Métricas del Dashboard calculadas con funciones agregadas de Supabase.
-
-# EXPERIENCIA DE USUARIO (LOS 4 ESTADOS)
-- **Empty States:** Ilustración y botón CTA cuando no existan registros.
-- **Loading:** Skeleton loaders con gradiente durante las peticiones.
-- **Feedback:** Sistema de notificaciones Toast accesibles para confirmar éxitos y reportar errores.
-- **Diálogos de Confirmación:** Confirmación obligatoria antes de eliminar registros.
+# 5. EXPERIENCIA DE USUARIO Y LOS 4 ESTADOS OBLIGATORIOS
+- **Empty States:** Ilustraciones y botones motivadores en cada vista cuando no existan datos.
+- **Loading:** Skeleton loaders animados con gradiente CSS durante las consultas a Supabase.
+- **Feedback:** Notificaciones Toast flotantes en la esquina inferior derecha para confirmar creaciones, ediciones o borrados.
+- **Error:** Alertas claras con botón "Reintentar" si ocurre una excepción de red o violación de RLS (código 42501).
+- **Confirmación:** Diálogo modal obligatorio antes de eliminar cualquier registro.
 ```
+

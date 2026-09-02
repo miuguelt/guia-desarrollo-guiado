@@ -37,6 +37,12 @@ graph TD
 | **3. USER FLOW** | *¿Cómo recorre el usuario la aplicación pantalla a pantalla?* | Diseñadores UI/UX, Frontend Developers | Las pantallas generadas en Google Stitch quedan huérfanas, sin botones de navegación, sin estados de carga (*loading/empty*) ni manejo de errores. |
 | **4. TRD** | *¿Cuál es el modelo de base de datos, seguridad RLS y contratos?* | Backend Developers, Arquitectos, Supabase | Se generan bases de datos inseguras sin RLS, tipos inconsistentes en TypeScript y llamadas a API rotas. |
 
+> 💡 **Del Papel a la Acción: ¿A dónde van los entregables derivados de esta Tetralogía?**  
+> Una vez completados los 4 documentos de especificación (`01` al `04`), se generan los **3 entregables ejecutables** que van directamente a las plataformas de desarrollo:  
+> 1. **`05_ESQUEMA_SUPABASE_COMPLETO.sql`** ➔ Se ejecuta en el **SQL Editor de Supabase** (`supabase.com/dashboard`) para crear las tablas y RLS.  
+> 2. **`06_PROMPTS_GOOGLE_STITCH.md`** ➔ Se copia prompt por prompt en **Google Stitch** (`stitch.withgoogle.com`) para diseñar las pantallas.  
+> 3. **`07_PROMPT_MAESTRO_AISTUDIO.md`** ➔ Se inyectan las claves de Supabase y se pega en **Google AI Studio** (`aistudio.google.com/apps`) para compilar la aplicación completa.
+
 ---
 
 ## 🗓️ 1. Documento 1: Plan de Proyecto (`01_PLAN_PROYECTO.md`)
@@ -135,43 +141,57 @@ Escenario: Creación de un registro con campos obligatorios completos
 
 ---
 
-## 🔀 3. Documento 3: User Flow e Interacción (`03_USER_FLOWS_UX.md`)
+## 🔀 3. Documento 3: User Flow, Catálogo de Pantallas e Interacción (`03_USER_FLOWS_UX.md`)
 
-El **User Flow** es el mapa visual de navegación que conecta la intención del usuario con las pantallas de la aplicación. Es la entrada directa para **Google Stitch** y herramientas de diseño.
+El **User Flow** es el mapa visual y contractual de navegación que conecta la intención del usuario con las pantallas de la aplicación. Es la entrada directa para **Google Stitch** y herramientas de prototipado.
+
+> **💡 Regla Crítica contra el "Efecto Monovista":**  
+> Si el User Flow solo describe el Dashboard, Google Stitch y AI Studio únicamente generarán una sola pantalla. Para construir una aplicación real y completa, el aprendiz debe definir obligatoriamente un **Catálogo de Pantallas (Screen Inventory)** con un mínimo de 5 a 8 vistas independientes antes de diseñar.
+
+### 📱 Catálogo Canónico de Pantallas (Screen Inventory):
+Toda aplicación web orientada a producción debe contar con al menos estas vistas desacopladas:
+1. **SCR-01: Auth & Onboarding:** Vista dividida (*split-screen*) con formulario de Login / Registro y panel de presentación.
+2. **SCR-02: Dashboard Principal:** Vista ejecutiva con 4 KPIs calculados en vivo, gráficos temporales y accesos rápidos.
+3. **SCR-03: Explorador / Lista de Datos:** Tabla enriquecida con búsqueda en vivo, filtros facetados por estado y selector Lista/Kanban.
+4. **SCR-04: Detalle 360 del Registro:** Ficha técnica profunda con sub-elementos relacionados, timeline de auditoría y acciones de ciclo de vida.
+5. **SCR-05: Formulario de Creación (Wizard):** Editor guiado por pasos para registrar nuevos datos sin abrumar al usuario.
+6. **SCR-06: Configuración & Perfil:** Administración de cuenta de usuario, preferencias de tema visual y seguridad.
+7. **SCR-07: Vista Especializada:** Módulo del dominio específico (ej. Calendario, Telemedicina, Analítica avanzada o Reportes).
 
 ```mermaid
 flowchart TD
-    START(["🟢 Inicio: Visitante"]) --> LOGIN{"¿Tiene cuenta?"}
-    LOGIN -- No --> REG["Pantalla de Registro"]
-    LOGIN -- Sí --> AUTH["Pantalla de Login"]
-    REG --> SUBMIT_REG["Enviar Formulario"]
-    SUBMIT_REG --> CREATED{"¿Registro OK?"}
-    CREATED -- Error --> REG_ERR["Mostrar Toast Error & Resaltar campos"]
-    CREATED -- Éxito --> AUTO_LOGIN["Crear Perfil & Iniciar Sesión"]
-    AUTH --> SUBMIT_LOGIN["Validar Credenciales"]
-    SUBMIT_LOGIN --> AUTH_OK{"¿Credenciales OK?"}
-    AUTH_OK -- No --> LOGIN_ERR["Mostrar Alerta 'Credenciales Inválidas'"]
-    AUTH_OK -- Sí --> DASH["📊 Dashboard Principal"]
-    AUTO_LOGIN --> DASH
+    START(["🟢 Visitante"]) --> LOGIN{"¿Sesión Activa?"}
+    LOGIN -- No --> AUTH["SCR-01: Pantalla de Login / Registro"]
+    LOGIN -- Sí --> DASH["SCR-02: Dashboard Principal (4 KPIs)"]
+    AUTH -->|Login Exitoso| DASH
 
-    DASH --> VIEW_LIST["Ver Lista / Kanban"]
-    DASH --> OPEN_MODAL["Abrir Modal '+ Nuevo Item'"]
-    OPEN_MODAL --> SAVE_ITEM["Guardar en Supabase"]
-    SAVE_ITEM --> REFETCH["Actualizar Grid Reactivamente + Toast"]
+    subgraph NAVEGACION["📱 ARQUITECTURA MULTI-VISTA (SIDEBAR NAVEGABLE)"]
+        DASH <-->|Nav: Registros| LIST["SCR-03: Explorador / Tabla & Kanban"]
+        DASH <-->|Nav: Ajustes| SETTINGS["SCR-06: Perfil & Configuración"]
+        DASH <-->|Nav: Módulo Especial| SPECIAL["SCR-07: Vista Especializada"]
+        
+        LIST -->|Clic en fila / Ver Ficha| DETAIL["SCR-04: Detalle 360 del Registro"]
+        DETAIL -->|Volver a Lista| LIST
+        
+        LIST -->|Botón '+ Nuevo'| WIZARD["SCR-05: Formulario de Creación (Wizard)"]
+        DASH -->|Acceso rápido '+ Crear'| WIZARD
+        WIZARD -->|Guardar con Éxito| LIST
+    end
 
     style START fill:#14532d,stroke:#4ade80,color:#fff
     style DASH fill:#0c4a6e,stroke:#38bdf8,color:#fff
-    style REG_ERR fill:#7f1d1d,stroke:#f87171,color:#fff
-    style LOGIN_ERR fill:#7f1d1d,stroke:#f87171,color:#fff
+    style LIST fill:#1e1b4b,stroke:#818cf8,color:#fff
+    style DETAIL fill:#3b0764,stroke:#c084fc,color:#fff
 ```
 
-### Matriz de los 4 Estados de Interfaz (Obligatoria para cada pantalla):
-Para que la interfaz generada por Stitch y AI Studio sea profesional, el User Flow debe especificar los 4 estados:
+### Matriz de los 4 Estados de Interfaz (Obligatoria para CADA pantalla):
+Para que la interfaz generada por Stitch y AI Studio sea profesional, el User Flow debe especificar los 4 estados para cada vista del catálogo:
 
-1. **Estado Vacío (Empty State):** ¿Qué ve el usuario cuando aún no ha creado ningún registro? (Ej: Ilustración amigable + Botón CTA "+ Crear mi primer registro").
-2. **Estado de Carga (Loading / Skeleton State):** ¿Cómo se visualiza la pantalla mientras los datos vienen de Supabase? (Ej: Placeholders pulsantes con gradiente Tailwind, sin bloquear la UI).
-3. **Estado de Éxito (Success Feedback):** ¿Cómo sabe el usuario que su acción funcionó? (Ej: Notificación toast accesible en esquina inferior derecha + actualización reactiva inmediata).
+1. **Estado Vacío (Empty State):** ¿Qué ve el usuario cuando aún no ha creado ningún registro o la búsqueda no arroja resultados? (Ej: Ilustración amigable + Botón CTA "+ Crear mi primer registro").
+2. **Estado de Carga (Loading / Skeleton State):** ¿Cómo se visualiza la pantalla mientras los datos vienen de Supabase? (Ej: Placeholders pulsantes con gradiente Tailwind, sin bloquear la UI ni usar spinners toscos).
+3. **Estado de Éxito (Success Feedback):** ¿Cómo sabe el usuario que su acción funcionó? (Ej: Notificación toast accesible en esquina inferior derecha + actualización reactiva inmediata de la tabla o dashboard).
 4. **Estado de Error (Error / Edge Case):** ¿Qué ocurre si se pierde la conexión a internet o falla la base de datos? (Ej: Banner con botón "Reintentar" y mensaje claro sin jerga técnica).
+
 
 ---
 

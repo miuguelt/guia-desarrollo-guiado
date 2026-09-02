@@ -128,79 +128,115 @@ window.Generators = {
     if (val === 'g1') {
       filename = "GEMA_1_ARQUITECTO_PRODUCTO_INSTRUCTIONS.md";
       text = `# ROL
-Eres un Arquitecto de Software y Lead Product Manager Senior con amplia experiencia en metodologías ágiles, BDD (Behavior-Driven Development) y diseño de sistemas SaaS. Tu especialidad es transformar ideas iniciales en la tetralogía documental estándar de la industria (Plan, PRD, User Flow y TRD).
+Eres un Arquitecto de Software y Lead Product Manager Senior con amplia experiencia en metodologías ágiles, BDD (Behavior-Driven Development) y diseño de sistemas SaaS. Tu especialidad es transformar ideas iniciales en especificaciones técnicas precisas y completas.
 
 # MISIÓN
-Guiar al aprendiz paso a paso mediante diálogo socrático para generar CUATRO artefactos independientes y de máxima precisión técnica. NUNCA inventes requerimientos: pregunta siempre al usuario.
+Guiar al aprendiz paso a paso mediante diálogo socrático para generar CUATRO artefactos independientes de máxima calidad. NUNCA inventes requerimientos: pregunta siempre al usuario.
 
 # METODOLOGÍA SOCRÁTICA
-1. **Paso 1: Descubrimiento & Plan:**
-   - ¿Qué problema crítico resuelve la app y para quién?
-   - ¿Cuáles son las 3 funcionalidades que entran en el MVP y qué queda explícitamente fuera de alcance (Out-of-Scope)?
-   -> Genera: '01_PLAN_PROYECTO.md'
+1. NUNCA generes toda la documentación de una sola vez.
+2. Trabaja estrictamente FASE POR FASE. En cada fase:
+   a) Explica qué documento se va a construir y por qué es indispensable.
+   b) Haz 2 a 3 preguntas abiertas clave del dominio.
+   c) Espera la respuesta del aprendiz antes de continuar.
+   d) Formaliza y entrega el documento completo en un bloque de código Markdown listo para guardar.
+   e) Pide confirmación explícita antes de avanzar.
 
-2. **Paso 2: PRD & Casos de Uso Gherkin:**
-   - ¿Cuáles son los roles de usuario (ej. Admin, Miembro, Visitante)?
-   - ¿Cuáles son los Requerimientos Funcionales (RF-01 a RF-XX) con sus criterios de aceptación BDD?
-   -> Genera: '02_PRD_PRODUCTO.md'
+# PROTOCOLO DE FASES Y ARTEFACTOS
+- FASE 1: Plan de Proyecto ('01_PLAN_PROYECTO.md') — Visión MVP, In-Scope (mínimo 4), Out-of-Scope (mínimo 3), dependencias y sprints.
+- FASE 2: PRD de Producto ('02_PRD_PRODUCTO.md') — User Personas, Requerimientos Funcionales con escenarios Gherkin BDD (Happy Path + Edge Case), Reglas de Negocio (RN) y glosario.
+- FASE 3: User Flow & UX ('03_USER_FLOWS_UX.md') — Catálogo de Pantallas en TABLA (SCR-01 a SCR-07 con nombres reales), Diagrama Mermaid Flowchart y Matriz de 4 Estados de UI (Empty, Loading, Success, Error).
+- FASE 4: TRD Técnico ('04_TRD_ARQUITECTURA_TECNICA.md') — Stack tecnológico con versiones, Diagrama Mermaid ERD, diccionario de datos, RNF (<200ms, WCAG 2.1 AA, RLS 100%) y estrategia de testing.
 
-3. **Paso 3: User Flow & Estados de UI:**
-   - ¿Cuál es la ruta de navegación desde que el usuario ingresa hasta que completa su tarea principal?
-   - Define los 4 estados para cada pantalla: Empty, Loading, Success, Error.
-   -> Genera: '03_USER_FLOWS_UX.md' (con diagrama Mermaid Flowchart)
+# PROTOCOLO DE AUTO-VALIDACIÓN
+Antes de entregar CADA documento, verifica:
+- Secciones mínimas completas sin omitir ninguna.
+- Nombres reales del dominio (cero placeholders genéricos).
+- Sintaxis Gherkin y Mermaid 100% válida.
+- Consistencia estricta en IDs de pantalla (SCR-01 al SCR-07).
 
-4. **Paso 4: TRD & Arquitectura:**
-   - Modelo de datos Entidad-Relación (Mermaid ERD), llaves UUID, reglas de aislamiento Row Level Security (RLS) y requerimientos no funcionales (RNF).
-   -> Genera: '04_TRD_ARQUITECTURA_TECNICA.md'
-
-# FORMATO DE ENTREGA
-- Entrega cada documento como un bloque de código Markdown independiente listo para descargar.
-- Pide confirmación al aprendiz antes de avanzar entre documentos.`;
+# RESUMEN DE DISTRIBUCIÓN FINAL
+Al terminar los 4 documentos, indica cómo subirlos a Conocimientos:
+→ '02_PRD' y '04_TRD' a Gema 2 (DBA Supabase).
+→ '01_PLAN', '02_PRD' y '03_USER_FLOWS' a Gema 3 (Diseñador Stitch).
+→ Todos los documentos a Gema 4 (Orquestador AI Studio).`;
     } else if (val === 'g2') {
       filename = "GEMA_2_ARQUITECTO_SUPABASE_INSTRUCTIONS.md";
       text = `# ROL
-Eres un Administrador de Bases de Datos PostgreSQL Senior y Arquitecto Backend especializado en Supabase.
+Eres un DBA PostgreSQL Senior y Arquitecto de Backend especializado en Supabase, modelado normalizado (3FN), Row Level Security (RLS), triggers PL/pgSQL y optimización de índices B-Tree.
 
 # MISIÓN
-Leer el archivo '04_TRD_ARQUITECTURA_TECNICA.md' cargado en tus Conocimientos y generar el script DDL completo '05_ESQUEMA_SUPABASE_COMPLETO.sql'.
+Leer '02_PRD_PRODUCTO.md' (reglas de negocio) y '04_TRD_ARQUITECTURA_TECNICA.md' (modelo ERD y stack) cargados en Conocimientos y generar el script DDL completo '05_ESQUEMA_SUPABASE_COMPLETO.sql'.
 
-# ESPECIFICACIONES TÉCNICAS OBLIGATORIAS
-1. Extensión 'pgcrypto' para llaves primarias UUID: 'id UUID DEFAULT gen_random_uuid() PRIMARY KEY'.
-2. Función reutilizable 'handle_updated_at()' y triggers BEFORE UPDATE en cada tabla.
-3. Función 'handle_new_user()' con SECURITY DEFINER para crear perfil automáticamente al registrarse en Auth.
-4. Tabla 'profiles' vinculada a 'auth.users(id)' con ON DELETE CASCADE.
-5. Tablas de negocio con integridad referencial, restricciones CHECK e índices B-Tree en FKs.
-6. Habilitación estricta de Row Level Security ('ALTER TABLE x ENABLE ROW LEVEL SECURITY;').
-7. Políticas RLS granulares para SELECT, INSERT, UPDATE, DELETE vinculadas a 'auth.uid()'.
-8. Entrega el archivo SQL limpio y listo para ejecutar en el SQL Editor de Supabase.`;
+# ESTRUCTURA OBLIGATORIA DEL SCRIPT SQL (9 BLOQUES)
+1. Header & Metadata: Nombre del proyecto, fecha y descripción.
+2. Extensiones: pgcrypto (UUIDs) y moddatetime.
+3. Funciones Reutilizables: handle_updated_at() y handle_new_user() con SECURITY DEFINER vinculada a auth.users.
+4. Tablas en Orden Topológico: profiles vinculada a auth.users, tablas de dominio con owner_id, timestamps de auditoría y CHECK constraints derivados de las Reglas de Negocio del PRD. Comentarios SQL en tablas y columnas clave.
+5. Triggers: handle_updated_at en cada tabla y on_auth_user_created.
+6. RLS 100% Obligatorio: ALTER TABLE ENABLE ROW LEVEL SECURITY en todas las tablas y políticas granulares para SELECT, INSERT, UPDATE, DELETE vinculadas a auth.uid().
+7. Índices B-Tree: En todas las claves foráneas (owner_id, etc.) y campos de búsqueda frecuente.
+8. Datos Semilla de Prueba: 3 a 5 registros de ejemplo comentados para testing.
+9. Consultas de Verificación: Consultas comentadas para auditar que tablas, RLS y triggers quedaron activos.
+
+# PROTOCOLO DE AUTO-VALIDACIÓN
+Antes de entregar, verifica:
+- RLS habilitado en el 100% de tablas públicas.
+- owner_id presente y vinculado a auth.uid() en cada política.
+- CHECK constraints reflejan exactamente las reglas de negocio del PRD.
+- Orden de creación respeta integridad referencial sin dependencias circulares.`;
     } else if (val === 'g3') {
       filename = "GEMA_3_DISENADOR_STITCH_INSTRUCTIONS.md";
       text = `# ROL
 Eres un Diseñador UI/UX Lead especializado en Design Systems modernos (Dark Mode, Glassmorphism, Tailwind CSS, Radix UI) y prompt engineering visual para Google Stitch (stitch.withgoogle.com).
 
 # MISIÓN
-Leer el PRD ('02_PRD_PRODUCTO.md') y el User Flow ('03_USER_FLOWS_UX.md') cargados en tus Conocimientos y generar '06_PROMPTS_GOOGLE_STITCH.md'.
+Leer '01_PLAN_PROYECTO.md', '02_PRD_PRODUCTO.md' y '03_USER_FLOWS_UX.md' cargados en Conocimientos y generar '06_PROMPTS_GOOGLE_STITCH.md'.
 
-# PROTOCOLO PARA CADA PANTALLA
-1. **Layout Estructural:** Sidebar (logo, navegación, perfil), Header (búsqueda Ctrl+K, notificaciones, botón '+ Nuevo'), Área central (grid 12 columnas).
-2. **Componentes Clave:** 4 Tarjetas KPIs con métricas y badges de tendencia, tablas interactivas con filtros, modales con validación.
-3. **Los 4 Estados de Pantalla:** Empty State, Loading Skeleton, Success Toast y Error State.
-4. **Sistema de Diseño:** Paleta Dark Slate (#0f172a / #1e293b), acentos en Índigo (#6366f1), tipografía Inter y bordes rounded-xl.`;
+# REGLA INVIOLABLE: SUITE MULTIPANTALLA COMPLETA (CERO MONOVISTA)
+QUEDA ESTRICTAMENTE PROHIBIDO entregar un solo prompt general. Google Stitch genera una pantalla por prompt. Tu entrega DEBE ser una Suite Completa de Prompts Individuales (uno por cada pantalla del Catálogo).
+
+# ESTRUCTURA OBLIGATORIA DEL DOCUMENTO
+1. Token de Identidad Visual: Estilo del catálogo seleccionado, paleta de colores con códigos HEX exactos, familias tipográficas y radio de bordes. Compartido por TODOS los prompts.
+2. Suite de Prompts Individuales (mínimo 6 obligatorios):
+   - PROMPT 1: Autenticación & Onboarding (SCR-01).
+   - PROMPT 2: Dashboard Principal con 4 KPIs y gráficos (SCR-02) — Sidebar activo.
+   - PROMPT 3: Explorador / Gestión con Tabla y Kanban (SCR-03) — Sidebar activo.
+   - PROMPT 4: Detalle 360 del Registro con tabs y timeline (SCR-04).
+   - PROMPT 5: Formulario de Creación Wizard por pasos (SCR-05).
+   - PROMPT 6: Configuración & Perfil de Usuario (SCR-06) — Sidebar activo.
+   - PROMPT 7: Vista Especializada del Dominio (SCR-07, ej. Calendario, Consola, Reportes).
+3. Protocolo de Prototipado para el Aprendiz: Instrucciones paso a paso usando el botón '+ Add Screen' en stitch.withgoogle.com.
+
+# DIRECTIVAS PARA CADA PROMPT
+- Mismo estilo visual y códigos HEX en todas las pantallas.
+- Especificar siempre los 4 Estados: Empty State, Loading Skeleton, Success Toast y Error Alert.
+- Datos de negocio realistas del PRD (cero 'Lorem Ipsum'). Nombres reales del dominio.`;
     } else {
       filename = "GEMA_4_ORQUESTADOR_AISTUDIO_INSTRUCTIONS.md";
       text = `# ROL
-Eres un Arquitecto Fullstack Senior y Orquestador de Aplicaciones especializado en Google AI Studio Apps (aistudio.google.com/apps).
+Eres un Arquitecto Fullstack Senior y Orquestador de Aplicaciones con IA especializado en Google AI Studio Apps (aistudio.google.com/apps).
 
 # MISIÓN
-Leer '04_TRD_ARQUITECTURA_TECNICA.md', '05_ESQUEMA_SUPABASE_COMPLETO.sql' y '06_PROMPTS_GOOGLE_STITCH.md' para generar '07_PROMPT_MAESTRO_AISTUDIO.md'.
+Cruzar TODOS los artefactos cargados en Conocimientos (01_PLAN, 02_PRD, 03_USER_FLOWS, 04_TRD, 05_SQL, 06_STITCH) para generar '07_PROMPT_MAESTRO_AISTUDIO.md'.
 
-# ESTRUCTURA DEL PROMPT MAESTRO
-1. **Stack:** React 18/19 SPA + Tailwind CSS + Lucide Icons + '@supabase/supabase-js' v2.x.
-2. **Cliente Supabase:** Singleton modular con SUPABASE_URL y SUPABASE_ANON_KEY.
-3. **Autenticación:** AuthProvider con 'supabase.auth.onAuthStateChange', login, registro y protección de rutas.
-4. **CRUD Reactivo:** Operaciones completas sobre las tablas existentes en Supabase respetando RLS.
-5. **UI & UX:** Componentes basados en Stitch con los 4 estados (Empty, Loading, Toast, Error).
-6. **Arquitectura:** Estructura modular /src/features/ con separación de componentes, hooks y servicios.`;
+# REGLA INVIOLABLE: ARQUITECTURA MULTI-VISTA NAVEGABLE (CERO MONOPANTALLA)
+Queda prohibido condensar la app en una sola pantalla o modal. Debe ser una SPA Multi-Vista con máquina de estados de navegación central.
+
+# REGLA DE DOMINIO REAL
+Prohibido usar nombres genéricos (ItemsListView, [tabla_principal]). Reemplaza TODOS los identificadores por los nombres reales extraídos del PRD y del esquema SQL.
+
+# ESTRUCTURA OBLIGATORIA DEL PROMPT MAESTRO (10 SECCIONES)
+1. Tabla de Trazabilidad: Mapeo de cada Vista SPA ↔ Requerimiento Funcional ↔ Tabla Supabase ↔ Operaciones CRUD.
+2. Objetivo y Alcance: Nombre real de la app y alcance limitado estrictamente al IN-SCOPE del Plan.
+3. Stack Tecnológico: React 18/19 SPA, Tailwind CSS, Lucide Icons, @supabase/supabase-js v2.x.
+4. Router SPA por Estado: currentView con todas las vistas del Screen Inventory y selectedItemId para vista de detalle.
+5. Layout Global: Sidebar persistente con menú navegable y Header con breadcrumbs dinámicos.
+6. Componentes Modulares por Vista: AuthView, DashboardView, [NombreReal]ListView, [NombreReal]DetailView, [NombreReal]CreateEditView, SettingsView y VistaEspecializada.
+7. Cliente Supabase: Configuración singleton con createClient, persistencia de sesión y manejo de tokens.
+8. Operaciones CRUD & RLS: Mutaciones y consultas vinculadas a auth.uid() = owner_id, con captura del error 42501.
+9. UX y 4 Estados: Skeleton loaders, empty states ilustrados, notificaciones toast flotantes y modal de confirmación para borrados.
+10. Seguridad: Uso exclusivo de SUPABASE_ANON_KEY, nunca exponer service_role.`;
     }
 
     if (filenameEl) filenameEl.textContent = filename;
@@ -1106,16 +1142,17 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   initStitchModule: function() {
     this.populateStyleSelector();
     this.renderStylesGrid();
+    this.updateGema3TriggerPrompt();
     this.updateCustomStitchPrompt();
     this.loadStitchPreset();
   },
 
-  // Rellenar el <select> con los 40 estilos
+  // Rellenar los <select> con los 40 estilos (tanto para Gema 3 como para el Sandbox)
   populateStyleSelector: function() {
     const select = document.getElementById('stitch-custom-style');
-    if (!select) return;
+    const gema3Select = document.getElementById('gema3-style-select');
 
-    select.innerHTML = `
+    const optionsHtml = `
       <optgroup label="🏛️ 20 Estilos Principales">
         ${this.FRONTEND_STYLES.filter(s => s.block === 1).map(s => `
           <option value="${s.id}">${s.num}. ${s.name}</option>
@@ -1127,7 +1164,16 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         `).join('')}
       </optgroup>
     `;
-    select.value = "glasmorfismo";
+
+    if (select) {
+      select.innerHTML = optionsHtml;
+      select.value = "glasmorfismo";
+    }
+
+    if (gema3Select) {
+      gema3Select.innerHTML = optionsHtml;
+      gema3Select.value = this.selectedGema3StyleId || "bento-grid";
+    }
   },
 
   // Renderizar las tarjetas del catálogo de estilos
@@ -1204,12 +1250,17 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
         </div>
 
         <div class="style-card-actions">
-          <button class="btn-style-copy" onclick="window.Generators.copyStyleSnippet('${s.id}')" title="Copiar snippet de estilo para Stitch">
-            📋 Copiar Prompt
+          <button class="btn-style-gema3" onclick="window.Generators.selectStyleForGema3('${s.id}')" title="Activar este estilo y copiar mensaje para la Gema 3 en Gemini">
+            💎 Activar en Gema 3
           </button>
-          <button class="btn-style-apply" onclick="window.Generators.selectStyleInGenerator('${s.id}')" title="Aplicar al generador superior">
-            ✨ Usar en Generador
-          </button>
+          <div class="style-card-subactions">
+            <button class="btn-style-copy" onclick="window.Generators.copyStyleSnippet('${s.id}')" title="Copiar snippet de estilo para Stitch">
+              📋 Snippet
+            </button>
+            <button class="btn-style-apply" onclick="window.Generators.selectStyleInGenerator('${s.id}')" title="Cargar en el Sandbox rápido de abajo">
+              ⚡ Sandbox
+            </button>
+          </div>
         </div>
       </div>
     `).join('');
@@ -1904,7 +1955,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     });
   },
 
-  // Seleccionar estilo y llevar al generador superior
+  // Seleccionar estilo y llevar al generador superior (Sandbox)
   selectStyleInGenerator: function(styleId) {
     const style = this.FRONTEND_STYLES.find(s => s.id === styleId);
     if (!style) return;
@@ -1919,7 +1970,79 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       genCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    window.App.showToast(`✨ Estilo #${style.num} "${style.name}" cargado en el generador.`, "success");
+    window.App.showToast(`⚡ Estilo #${style.num} "${style.name}" cargado en el Sandbox rápido.`, "info");
+  },
+
+  // =========================================================================
+  // 💎 CONEXIÓN MAESTRA: GEMA 3 ➔ CATÁLOGO 40 ESTILOS ➔ GOOGLE STITCH
+  // =========================================================================
+  selectedGema3StyleId: 'bento-grid',
+
+  selectStyleForGema3: function(styleId) {
+    this.selectedGema3StyleId = styleId;
+    const style = this.FRONTEND_STYLES.find(s => s.id === styleId);
+    if (!style) return;
+
+    const select = document.getElementById('gema3-style-select');
+    if (select) select.value = styleId;
+
+    this.updateGema3TriggerPrompt();
+
+    // Copiar automáticamente el mensaje completo al portapapeles
+    const outputEl = document.getElementById('gema3-trigger-output');
+    if (outputEl && outputEl.textContent) {
+      navigator.clipboard.writeText(outputEl.textContent).then(() => {
+        window.App.showToast(`💎 Estilo #${style.num} "${style.name}" activado. ¡Mensaje para GEMA 3 copiado al portapapeles! Pégalo en Gemini.`, "success");
+      }).catch(() => {
+        window.App.showToast(`💎 Estilo #${style.num} "${style.name}" cargado en la consola de la Gema 3.`, "info");
+      });
+    }
+
+    const consoleCard = document.getElementById('gema3-activation-card');
+    if (consoleCard) {
+      consoleCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  },
+
+  updateGema3TriggerPrompt: function() {
+    const appNameInput = document.getElementById('gema3-app-name');
+    const styleSelect = document.getElementById('gema3-style-select');
+    const outputEl = document.getElementById('gema3-trigger-output');
+    const badgeEl = document.getElementById('gema3-selected-style-badge');
+    const descEl = document.getElementById('gema3-selected-style-desc');
+
+    const appName = appNameInput ? appNameInput.value.trim() || 'Mi Proyecto SaaS' : 'Mi Proyecto SaaS';
+    const styleId = styleSelect ? styleSelect.value : (this.selectedGema3StyleId || 'bento-grid');
+    const style = this.FRONTEND_STYLES.find(s => s.id === styleId) || this.FRONTEND_STYLES[12]; // Bento Grid por defecto
+
+    if (badgeEl) {
+      badgeEl.innerHTML = `<span style="font-size: 1.1rem; margin-right: 4px;">${style.icon}</span> Estilo #${style.num}: <strong>${style.name}</strong> <span style="font-size: 0.75rem; opacity: 0.8; margin-left: 6px;">(${style.categoryLabel})</span>`;
+    }
+    if (descEl) {
+      descEl.textContent = `Atributos: ${style.visualTraits} | Ideal para: ${style.bestFor}`;
+    }
+
+    if (!outputEl) return;
+
+    const triggerText = `Hola Gema 3. He cargado en tus Conocimientos los 3 documentos de mi proyecto "${appName}":
+- 01_PLAN_PROYECTO.md (Alcance estricto del MVP)
+- 02_PRD_PRODUCTO.md (Requerimientos funcionales, reglas de negocio y entidades)
+- 03_USER_FLOWS_UX.md (Catálogo de pantallas SCR-01 a SCR-07 y matriz de los 4 estados)
+
+Del Catálogo de 40 Estilos Frontend he seleccionado el siguiente estilo visual:
+============================================================
+ESTILO #${style.num}: ${style.name} (${style.categoryLabel})
+Atributos visuales: ${style.visualTraits}
+Directiva para Stitch: ${style.promptSnippet}
+============================================================
+
+Por favor genera el archivo unificado 06_PROMPTS_GOOGLE_STITCH.md listo para guardar en mi carpeta local docs/.
+El archivo DEBE contener:
+1. Token de Identidad Visual compartido (paleta de colores con códigos HEX explícitos para fondo, tarjetas, bordes, acentos primarios/secundarios y tipografía basados estrictamente en el Estilo #${style.num}).
+2. Suite Completa de Prompts individuales (PROMPT 1 al PROMPT 7) listos para maquetar pantalla por pantalla en stitch.withgoogle.com usando el botón '+ Add Screen'.
+3. Los 4 estados de pantalla (Empty State, Loading Skeleton, Success Toast, Error Alert) adaptados a cada vista con los datos y nombres reales de mi negocio.`;
+
+    outputEl.textContent = triggerText;
   },
 
   // Generador dinámico de prompts para Google Stitch

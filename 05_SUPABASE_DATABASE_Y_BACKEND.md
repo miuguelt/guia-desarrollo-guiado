@@ -5,6 +5,11 @@
 
 Para que nuestra aplicación construida con **Google AI Studio** sea segura y profesional, debemos diseñar el esquema SQL siguiendo las mejores prácticas de la industria.
 
+> 📌 **DOCUMENTO EXACTO PARA ESTA FASE:** Únicamente **`05_ESQUEMA_SUPABASE_COMPLETO.sql`**  
+> * **¿Cómo se usa en Supabase?** Entra a [supabase.com/dashboard](https://supabase.com/dashboard) ➔ Selecciona tu proyecto ➔ Menú lateral **SQL Editor** ➔ Clic en **"New Query"** (o botón `+`). Abre `05_ESQUEMA_SUPABASE_COMPLETO.sql`, copia todo su contenido, pégalo en el editor y presiona **"Run"** (o `Ctrl + Enter`).  
+> * 🔍 **Verificación:** En el menú lateral **Table Editor**, comprueba que tus tablas aparezcan con el candado verde 🔒 (**RLS activo**).  
+> * ❌ **Qué NUNCA debes pegar en Supabase:** NO pegues texto Markdown (`.md`), prompts de Stitch ni código de componentes React. Supabase es un motor PostgreSQL que solo entiende comandos SQL puros (`CREATE TABLE`, `CREATE POLICY`, `CREATE TRIGGER`, etc.).
+
 ---
 
 ## 🔐 ¿Por qué es Crítico el Row Level Security (RLS)?
